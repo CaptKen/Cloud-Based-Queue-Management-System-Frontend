@@ -1,13 +1,19 @@
 import Axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
 class Admin extends Component {
+    constructor(props){
+    super(props);
+    this.state = {apiResponse:[]};
+  }
     callAPI = () => {
         axios.get('http://localhost:8080/getqueue')
+            .then(res => this.setState({apiResponse: res.data}))
             .then((res) => {
-                console.log(res.data);
+                console.log(this.state.apiResponse);
             })
+            
             .catch((err) => {
                 console.log(err);
             })
@@ -45,7 +51,26 @@ class Admin extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {this.state.apiResponse.map((item, i) => {
+                            return(
+                                <Fragment>
+                                    <tr key={i}>
+                                        <th scope="row">{item.id}</th>
+                            <td>{item.name}</td>
+                            <td>Otto</td>
+                            <td>
+                                <div>
+                                    <button type="button" className="btn btn-success">รับคิว</button>
+                                    <button type="button" className="btn btn-danger" style={{
+                                        marginLeft: 10
+                                    }}>ยกเลิกคิว</button>
+                                </div>
+                            </td>
+                                    </tr>
+                                </Fragment>
+                            )
+                        })}
+                        {/* <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
@@ -83,7 +108,7 @@ class Admin extends Component {
                                     }}>ยกเลิกคิว</button>
                                 </div>
                             </td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
             </div>

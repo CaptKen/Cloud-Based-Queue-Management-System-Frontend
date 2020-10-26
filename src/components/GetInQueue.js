@@ -1,18 +1,67 @@
 import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Axios from "axios";
+import axios from 'axios';
 
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      formElements: {
+        name:'',
+        surname:'',
+        email:'',
+        message:''
+      }
     };
   }
-  handleClose = () => {
+
+  onFormChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    let updateForm = { ...this.state.formElements };
+    updateForm[name] = value;
+
+    this.setState({
+        ...this.state,
+        formElements: updateForm
+    })
+
+}
+
+
+  handleClose = (e) => {
+    let config = {
+      headers: {
+        'Access-Control-Allow-Origin': "*",
+      },
+    }
+    e.preventDefault();
+      const formData = {};
+      for (let name in this.state.formElements) {
+          if (name === 'formValid') {
+              console.log("formValidformValidformValid");
+              continue;
+          }
+          formData[name] = this.state.formElements[name];
+      }
+      console.log(formData);
+
+      axios.post('/addqueue', formData, config)
+          .then((res) => {
+            console.log("res" + res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+
     this.setState({
       show: false,
     });
+    
   };
   handleShow = () => {
     console.log("show");
@@ -33,10 +82,11 @@ class GetInQueue extends Component {
               type="text"
               className="form-control"
               id="firstname"
-              name="firstname"
+              name="name"
               placeholder="Firstname"
               tabIndex="1"
               required
+              onChange={this.onFormChange}
             />
           </div>
 
@@ -46,10 +96,11 @@ class GetInQueue extends Component {
               type="text"
               className="form-control"
               id="Lastname"
-              name="Lastname"
+              name="surname"
               placeholder="Lastname"
               tabIndex="1"
               required
+              onChange={this.onFormChange}
             />
           </div>
 
@@ -63,6 +114,7 @@ class GetInQueue extends Component {
               placeholder="Your Email"
               tabIndex="2"
               required
+              onChange={this.onFormChange}
             />
           </div>
 
@@ -77,6 +129,7 @@ class GetInQueue extends Component {
               placeholder="Message..."
               tabIndex="4"
               required
+              onChange={this.onFormChange}
             ></textarea>
           </div>
           <div className="text-center">
