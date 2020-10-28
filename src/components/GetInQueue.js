@@ -3,17 +3,20 @@ import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Axios from "axios";
 import axios from 'axios';
+import { Link, Redirect } from "react-router-dom";
 
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      redirectFalg: false,
       formElements: {
-        name:'',
-        surname:'',
-        email:'',
-        message:''
+        name: '',
+        surname: '',
+        email: '',
+        telephone: '',
+        message: ''
       }
     };
   }
@@ -26,42 +29,49 @@ class GetInQueue extends Component {
     updateForm[name] = value;
 
     this.setState({
-        ...this.state,
-        formElements: updateForm
+      ...this.state,
+      formElements: updateForm
     })
 
-}
+  }
+
 
 
   handleClose = (e) => {
+    console.log("Hello click")
     let config = {
       headers: {
         'Access-Control-Allow-Origin': "*",
       },
     }
+
     e.preventDefault();
-      const formData = {};
-      for (let name in this.state.formElements) {
-          if (name === 'formValid') {
-              console.log("formValidformValidformValid");
-              continue;
-          }
-          formData[name] = this.state.formElements[name];
+    const formData = {};
+    for (let name in this.state.formElements) {
+      if (name === 'formValid') {
+        console.log("formValidformValidformValid");
+        continue;
       }
-      console.log(formData);
+      formData[name] = this.state.formElements[name];
+    }
+    console.log(formData);
 
-      axios.post('/addqueue', formData, config)
-          .then((res) => {
-            console.log("res" + res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    axios.post('/addqueue', formData, config)
+      .then((res) => {
+        console.log("res " + res.data);
 
-    this.setState({
-      show: false,
-    });
-    
+        if (res.data === 'OK') {
+          this.setState({
+            show: false,
+            redirectFalg: true
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+
   };
   handleShow = () => {
     console.log("show");
@@ -70,6 +80,14 @@ class GetInQueue extends Component {
     });
   };
   render() {
+    if (this.state.redirectFalg) {
+      return <Redirect
+        to={{
+          pathname: "/CurrentQueue",
+          state: { name: this.state.formElements.name }
+        }}
+      />
+    }
     return (
       <div className="container">
         <div className="text-center">
@@ -112,6 +130,20 @@ class GetInQueue extends Component {
               id="email"
               name="email"
               placeholder="Your Email"
+              tabIndex="2"
+              required
+              onChange={this.onFormChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Your Phone</label>
+            <input
+              type="number"
+              className="form-control"
+              id="phone"
+              name="telephone"
+              placeholder="Your Phone"
               tabIndex="2"
               required
               onChange={this.onFormChange}

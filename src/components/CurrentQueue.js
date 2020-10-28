@@ -3,16 +3,22 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class CurrentQueue extends Component {
-    
-        componentWillMount() {
-            axios.post('/check', "Aisoon")
-          .then((res) => {
-            console.log("res" + res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        }
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: this.props.location.state.name ? this.props.location.state.name : '',
+            user: []
+
+        };
+    }
+
+    componentWillMount() {
+        axios.post("/QueueByName", this.state.username)
+            .then((res) => {
+                this.setState({ user: res.data })
+                console.log(user);
+            })
+    }
     render() {
         return (
             <div className="container">
