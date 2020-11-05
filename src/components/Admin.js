@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
@@ -12,6 +11,7 @@ class Admin extends Component {
             .then(res => this.setState({apiResponse: res.data}))
             .then((res) => {
                 console.log(this.state.apiResponse);
+                // console.log("res "+ res);
             })
             
             .catch((err) => {
@@ -25,6 +25,7 @@ class Admin extends Component {
     render() {
         return (
             <div className="container">
+                <h1 className = "text-center">ชื่อร้านอาหาร</h1>
                 <div className="card text-center">
                     <div className="card-header">
                         คิวปัจจุบัน

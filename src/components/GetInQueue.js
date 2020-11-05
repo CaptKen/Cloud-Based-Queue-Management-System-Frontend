@@ -3,12 +3,14 @@ import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Axios from "axios";
 import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      redirectFlag: false,
       formElements: {
         name:'',
         surname:'',
@@ -60,6 +62,7 @@ class GetInQueue extends Component {
 
     this.setState({
       show: false,
+      redirectFlag: true
     });
     
   };
@@ -70,6 +73,14 @@ class GetInQueue extends Component {
     });
   };
   render() {
+    if (this.state.redirectFlag) {
+      return (<Redirect
+      to={{
+      pathname: "/currentQueue",
+      state: { name: this.state.formElements.name }
+    }}
+  />)
+    }
     return (
       <div className="container">
         <div className="text-center">

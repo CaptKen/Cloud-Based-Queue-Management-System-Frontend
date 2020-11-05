@@ -3,11 +3,28 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class CurrentQueue extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          name: this.props.location.state.name != undefined ? this.props.location.state.name : '',
+          userQueue:'',
+          waitingQueue:''
+        };
+      }
     
         componentWillMount() {
-            axios.post('/check', "Aisoon")
+            console.log("name " + this.props.location.state.name);
+            axios.post('/QueueByName2', this.state.name)
           .then((res) => {
-            console.log("res" + res.data);
+              console.log(res);
+              console.log(res.data);
+            this.setState({
+                queueDetail: res.data,
+                userQueue: res.data.userQueue,
+                waitingQueue: res.data.waitingQueue
+              });
+              console.log("waitingQueue " + this.state.waitingQueue);
+
         })
         .catch((err) => {
             console.log(err);
@@ -18,7 +35,7 @@ class CurrentQueue extends Component {
             <div className="container">
                 <div className="card text-center">
                     <div className="card-header">
-                        คิวปัจจุบัน
+                    ชื่อร้านอาหาร
                     </div>
                     <div className="card-body">
                         <h5 className="card-title">ปัจจุบันคิวที่</h5>
