@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import  SideNav  from './SideBar';
 
 class Admin extends Component {
     constructor(props){
@@ -25,6 +26,7 @@ class Admin extends Component {
     render() {
         return (
             <div className="container">
+                {/* <SideNav/> */}
                 <h1 className = "text-center">ชื่อร้านอาหาร</h1>
                 <div className="card text-center">
                     <div className="card-header">
