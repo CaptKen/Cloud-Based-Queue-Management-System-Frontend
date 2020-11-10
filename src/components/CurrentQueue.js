@@ -6,14 +6,14 @@ class CurrentQueue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          name: this.props.location.state.name != undefined ? this.props.location.state.name : '',
+        //   name: this.props.location.state.name != undefined ? this.props.location.state.name : '',
           userQueue:'',
           waitingQueue:''
         };
       }
     
         componentWillMount() {
-            console.log("name " + this.props.location.state.name);
+            // console.log("name " + this.props.location.state.name);
             axios.post('/QueueByName2', this.state.name)
           .then((res) => {
               console.log(res);

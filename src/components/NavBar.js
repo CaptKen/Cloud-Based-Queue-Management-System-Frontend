@@ -1,10 +1,12 @@
 // import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 // import { Nav } from 'react-bootstrap';
-// import { Modal, Button } from "react-bootstrap";
-// import Login from "./LoginPage";
+
+
 // import { logout } from "../actions/auth";
 // import SignUpPage from "./SignUpPage"
+// import Login from "./LoginPage";
+// import { Modal, Button } from "react-bootstrap";
 
 // class NavBar extends Component {
 //     constructor(props) {
@@ -187,6 +189,8 @@ import React, { Component } from 'react';
 import { Nav, Navbar, Form, FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
 import { connect } from "react-redux";
+import SignUpPage from "./SignUpPage"
+import Login from "./LoginPage";
 
 import { logout } from "../actions/auth";
 import  SideNav  from './SideBar';
@@ -241,36 +245,7 @@ class NavigationBar extends Component{
     this.props.dispatch(logout());
     console.log("logout");
   }
-  handleShow = () => {
-    console.log("show");
-    this.setState({
-      show: true,
-      showLogin : true
-    });
-  };
-
-  handleClose = (e) => {
-    this.setState({
-      show: false,
-      showLogout : false
-    });
-    
-  };
-
-  showRegister = () => {
-    this.setState({
-        showLogin: !this.state.showLogin
-      });
-  }
-
-  toggleMenu = () => {
-    this.setState({ menu: !this.state.menu })
-  }
-  showLogout = () => {
-  this.setState({
-    showLogout : true
-  });
-  };
+  
 
   render(){
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
@@ -280,7 +255,11 @@ class NavigationBar extends Component{
         <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#9FFFCB'}} onClick={this.toggleMenu}/>
           <Navbar.Brand href="/">QMS</Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ml-auto">
             {/* <Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link> */}
+            <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
+            <Nav.Item><Nav.Link href="/">ประเภทคิว</Nav.Link></Nav.Item>
+            <Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>
           {showAdminBoard ? (
                 <SideNav/>
               ):(<Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link>)
@@ -299,22 +278,34 @@ class NavigationBar extends Component{
                 <Nav.Link href="/user">User Board</Nav.Link>
               )}
             
-            <Nav className="ml-auto">
+            
               {currentUser ? (
-                <span>
+                <div>
                   <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item>
-                </span>
+                </div>
                 ):(
                   <div>
-                    <Nav.Item><Nav.Link href="/login">login</Nav.Link></Nav.Item> 
+                    {/* <Nav.Item>
+                    <Login/>
+                    </Nav.Item> */}
+                    <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item>
+                    {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
                   </div>
                 )
               }
 
+              {/* {currentUser && (
+                <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
+              )} */}
+              
               {currentUser ? (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
               ):(
                 <Nav.Item><Nav.Link href="/register">register</Nav.Link></Nav.Item>
+                
+                // <Nav.Item>
+                //     <SignUpPage/>
+                //     </Nav.Item>
               )}
 
               
@@ -326,6 +317,7 @@ class NavigationBar extends Component{
             <FormControl type="text" placeholder="Search" className="" />
           </Form> */}
         </Navbar>
+       
       </Styles>
     )
   }

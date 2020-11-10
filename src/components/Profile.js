@@ -8,7 +8,7 @@ class Profile extends Component {
     const { user: currentUser } = this.props;
 
     if (!currentUser) {
-      return <Redirect to="/login" />;
+      return <Redirect to="/" />;
     }
 
     return (

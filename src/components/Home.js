@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import UserService from "../services/user.service";
 import Carousel from 'react-bootstrap/Carousel'
 import { Col, Nav, Tab, Row } from "react-bootstrap";
+import range from 'lodash/range';
+import styled from 'styled-components';
+import AutoPlayCarousel from './PlaceList';
+
 
 export default class Home extends Component {
   constructor(props) {
@@ -39,11 +43,14 @@ export default class Home extends Component {
       //   </header> */}
         
       // </div>
-    <Carousel>
+    
+
+    <div>
+      <Carousel>
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
-          src="https://lh3.googleusercontent.com/proxy/GL2dKTXjfYBwlOuJjjd6PivvclO4PfYpQV3mXL1NU7TO9X_DiE_R_mNIH7smtTcCjGFlUmFn0w-5Hk1ZHClXvwMG7y0p0mL6zMVLZrNfjWJz"
+          src="https://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -65,7 +72,7 @@ export default class Home extends Component {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://lh3.googleusercontent.com/proxy/GL2dKTXjfYBwlOuJjjd6PivvclO4PfYpQV3mXL1NU7TO9X_DiE_R_mNIH7smtTcCjGFlUmFn0w-5Hk1ZHClXvwMG7y0p0mL6zMVLZrNfjWJz"
+          src="https://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg"
           alt="Third slide"
         />
         <Carousel.Caption>
@@ -74,7 +81,17 @@ export default class Home extends Component {
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
+    
+      <AutoPlayCarousel typeName="ร้านอาหาร"/>
+      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+
+
+    </div>
 
     );
   }
 }
+
+
