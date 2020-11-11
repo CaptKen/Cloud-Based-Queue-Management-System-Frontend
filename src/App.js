@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, Switch, Route, BrowserRouter, Router } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-import GetInQueue from "./components/GetInQueue";
+import GetQueue from "./components/GetQueue";
 import NavigationBar from './components/NavBar';
 import CurrentQueue from './components/CurrentQueue';
 import Admin from './components/Admin'
@@ -168,13 +168,13 @@ showLogout = () => {
           <div className="container mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={SignUpPage} />
+              {/* <Route exact path="/login" component={Login} /> */}
+              {/* <Route exact path="/register" component={SignUpPage} /> */}
               <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={Admin} />
-              <Route path="/getQueue" component={GetInQueue} />
+              <Route path="/getqueue" component={GetQueue} />
               <Route path="/currentQueue" component={CurrentQueue} />
             </Switch>
           </div>

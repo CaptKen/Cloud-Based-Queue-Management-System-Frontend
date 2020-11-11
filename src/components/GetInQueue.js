@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Axios from "axios";
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
@@ -83,9 +82,7 @@ class GetInQueue extends Component {
     }
     return (
       <div className="container">
-        <div className="text-center">
-          <h2>ชื่อร้าน</h2>
-        </div>
+        
         <form id="contact-form" className="form" onSubmit={this.submit}>
           <div className="form-group">
             <label className="form-label">Firstname</label>

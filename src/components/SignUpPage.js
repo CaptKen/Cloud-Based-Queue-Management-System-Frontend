@@ -302,7 +302,7 @@ class SignUpPage extends Component {
 
     return (
       <div className="col-md-12">
-        <h1 className="text-center">Sign Up</h1>
+        {/* <h1 className="text-center">Sign Up</h1> */}
         <div>
           <Form
             onSubmit={this.handleRegister}
@@ -349,7 +349,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">Sign Up</button>
+                  <button className="btn btn-primary btn-block" style={{backgroundColor: "#255"}} >สมัครสมาชิก</button>
                 </div>
               </div>
             )}
@@ -368,9 +368,9 @@ class SignUpPage extends Component {
               }}
             />
           </Form>
-          <h5 className="text-right">Already has account ? <Link to={"/login"}>
+          {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
                     Sign in
-                  </Link></h5>
+                  </Link></h5> */}
         </div>
       </div>
     );

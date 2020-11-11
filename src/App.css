@@ -70,4 +70,15 @@ label {
   margin-right: 10px;
 }
 
+.storeProfile-img-card {
+  width: 200px;
+  height: 200px;
+  /* margin: 0 auto 10px 10; */
+  display: inline;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  /* border-radius: 50%; */
+  margin-bottom: 20px;
+}
+
 

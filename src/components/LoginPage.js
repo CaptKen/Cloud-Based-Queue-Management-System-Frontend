@@ -162,9 +162,11 @@ import { Redirect, Link} from 'react-router-dom';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import { Modal, Button } from "react-bootstrap";
 
 import { connect } from "react-redux";
 import { login } from "../actions/auth";
+import SignUpPage from "./SignUpPage"
 
 const required = (value) => {
   if (!value) {
@@ -187,8 +189,38 @@ class Login extends Component {
       username: "",
       password: "",
       loading: false,
+      show:false,
+      showLogin: true,
+      showLogout: false
     };
   }
+  toggleMenu() {
+        this.setState({ menu: !this.state.menu })
+    }
+    handleShow = () => {
+        console.log("show");
+        this.setState({
+          show: true,
+          showLogin : true
+        });
+      };
+    
+      handleClose = (e) => {
+        this.setState({
+          show: false,
+        });
+        
+      };
+
+      showRegister = () => {
+        this.setState({
+            showLogin: !this.state.showLogin
+          });
+      }
+    
+      toggleMenu() {
+        this.setState({ menu: !this.state.menu })
+    }
 
   onChangeUsername(e) {
     this.setState({
@@ -216,8 +248,8 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       dispatch(login(this.state.username, this.state.password))
         .then(() => {
-          history.push("/profile");
           window.location.reload();
+          history.push("/profile");
         })
         .catch(() => {
           this.setState({
@@ -234,75 +266,105 @@ class Login extends Component {
   render() {
     const { isLoggedIn, message } = this.props;
 
-    if (isLoggedIn) {
-      return <Redirect to="/profile" />;
-    }
+    // if (isLoggedIn) {
+    //   return <Redirect to="/profile" />;
+    // }
 
     return (
       <div className="col-md-12">
-        <h1 className="text-center">Sign in</h1>
-        <div>
+        
+        <Button style={{backgroundColor: "#255"}} onClick={this.handleShow}>
+            Login
+      </Button>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal.Header closeButton>
+        <h1 style={{textAlign: "center"}}>
+        {this.state.showLogin ? "เข้าสู่ระบบ":"สมัครสมาชิก"}
+        </h1>
+        {/* <h1 className="text-center">เข้าสู่ระบบ</h1> */}
+        </Modal.Header>
+        <Modal.Body>
+            {this.state.showLogin ? (
+              <div>
 
-          <Form
-            onSubmit={this.handleLogin}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
+              <Form
+                onSubmit={this.handleLogin}
+                ref={(c) => {
+                  this.form = c;
+                }}
               >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Sign in</span>
-              </button>
-            </div>
-
-            {message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {message}
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    validations={[required]}
+                  />
                 </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={(c) => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-          <h5 className="text-right">No Account ? <Link to={"/register"}>
-                    Sign Up
-                  </Link></h5>
-        </div>
+    
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChangePassword}
+                    validations={[required]}
+                  />
+                </div>
+    
+                <div className="form-group">
+                  <button
+                    className="btn btn-primary btn-block"
+                    disabled={this.state.loading}
+                    style={{backgroundColor: "#255"}}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>เข้าสู่ระบบ</span>
+                  </button>
+                </div>
+    
+                {message && (
+                  <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                      {message}
+                    </div>
+                  </div>
+                )}
+                <CheckButton
+                  style={{ display: "none",
+                 }}
+                  ref={(c) => {
+                    this.checkBtn = c;
+                  }}
+                />
+              </Form>
+              {/* <h5 className="text-right">No Account ? <Link to={"/register"}>
+                        Sign Up
+                      </Link></h5> */}
+              {/* <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
+                  สมัครสมาชิก
+              </Button> */}
+            </div>
+            ):<SignUpPage/>}
+            
+        </Modal.Body>
+        <Modal.Footer>
+          <p className="text-right" >
+          {this.state.showLogin ? "No Account ?":"Already has account ?"}  
+          </p>
+          <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
+          {this.state.showLogin ? "สมัครสมาชิก":"เข้าสู่ระบบ"}
+              </Button>
+        </Modal.Footer>
+      </Modal>
+        
       </div>
     );
   }

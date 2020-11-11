@@ -258,25 +258,24 @@ class NavigationBar extends Component{
           <Nav className="ml-auto">
             {/* <Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link> */}
             <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
-            <Nav.Item><Nav.Link href="/">ประเภทคิว</Nav.Link></Nav.Item>
+            {/* <Nav.Item><Nav.Link href="/">ประเภทคิว</Nav.Link></Nav.Item> */}
             <Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>
-          {showAdminBoard ? (
+          {showAdminBoard && (
                 <SideNav/>
-              ):(<Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link>)
-              }
+              )}
           
           
           {showModeratorBoard && (
                 <Nav.Link href="/mod">Moderator Board</Nav.Link>
               )}
 
-              {/* {showAdminBoard && (
+              {showAdminBoard && (
                 <Nav.Link href="/admin">Admin Board</Nav.Link>
-              )} */}
-
-              {currentUser && (
-                <Nav.Link href="/user">User Board</Nav.Link>
               )}
+
+              {/* {currentUser && (
+                <Nav.Link href="/user">User Board</Nav.Link>
+              )} */}
             
             
               {currentUser ? (
@@ -285,20 +284,18 @@ class NavigationBar extends Component{
                 </div>
                 ):(
                   <div>
-                    {/* <Nav.Item>
                     <Login/>
-                    </Nav.Item> */}
-                    <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item>
+                    {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
                     {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
                   </div>
                 )
               }
 
-              {/* {currentUser && (
+              {currentUser && (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
-              )} */}
+              )}
               
-              {currentUser ? (
+              {/* {currentUser ? (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
               ):(
                 <Nav.Item><Nav.Link href="/register">register</Nav.Link></Nav.Item>
@@ -306,7 +303,7 @@ class NavigationBar extends Component{
                 // <Nav.Item>
                 //     <SignUpPage/>
                 //     </Nav.Item>
-              )}
+              )} */}
 
               
             </Nav>

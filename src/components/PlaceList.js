@@ -3,6 +3,7 @@ import range from 'lodash/range';
 import styled from 'styled-components';
 // import ItemsCarousel from '../ItemsCarousel';
 import ItemsCarousel from 'react-items-carousel';
+import {withRouter} from 'react-router-dom';
 
 const noOfItems = 12;
 const noOfCards = 3;
@@ -25,8 +26,7 @@ const SlideItem = styled.div`
   font-weight: bold;
 `;
 
-
-export default class AutoPlayCarousel extends React.Component {
+class AutoPlayCarousel extends React.Component {
   state = {
     activeItemIndex: 0,
     noOfItems: 12,
@@ -51,6 +51,10 @@ export default class AutoPlayCarousel extends React.Component {
   }));
 
   onChange = value => this.setState({ activeItemIndex: value });
+
+  redirectToStore = () => {
+    this.props.history.push('/getqueue');
+  }
 
   render() {
     return (
@@ -85,7 +89,7 @@ export default class AutoPlayCarousel extends React.Component {
             outsideChevron
             chevronWidth={this.state.chevronWidth}
         >
-        <SlideItem style={{ height: 200, background: '#EEE' }}>First card</SlideItem>
+        <SlideItem style={{ height: 200, background: '#EEE' }} onClick={this.redirectToStore}>First card</SlideItem>
         <div style={{ height: 200, background: '#EEE' }}>Second card</div>
         <SlideItem style={{ height: 200, background: '#EEE' }}>Third card</SlideItem>
         <div style={{ height: 200, background: '#EEE' }}>Fourth card</div>
@@ -95,3 +99,5 @@ export default class AutoPlayCarousel extends React.Component {
     );
   }
 }
+
+export default withRouter(AutoPlayCarousel)
