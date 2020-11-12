@@ -14,7 +14,7 @@ class GetQueueHeader extends Component {
     render() {
         return (
             <div>
-                <Media style={{marginTop:"75px"}}>
+                <Media style={{marginTop:"100px"}}>
                 <img
                     src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                     alt="profile-img"
