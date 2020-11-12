@@ -157,8 +157,6 @@
 // export default connect(mapStateToProps)(LoginPage);
 
 import React, { Component } from "react";
-import { Redirect, Link} from 'react-router-dom';
-
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -194,9 +192,6 @@ class Login extends Component {
       showLogout: false
     };
   }
-  toggleMenu() {
-        this.setState({ menu: !this.state.menu })
-    }
     handleShow = () => {
         console.log("show");
         this.setState({
@@ -273,7 +268,7 @@ class Login extends Component {
     return (
       <div>
         
-        <Button style={{backgroundColor: "#255"}} onClick={this.handleShow}>
+        <Button style={{backgroundColor: "#3D9280"}} onClick={this.handleShow}>
             Login
       </Button>
         <Modal show={this.state.show} onHide={this.handleClose}>

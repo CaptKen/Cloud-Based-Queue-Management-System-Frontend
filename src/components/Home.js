@@ -2,9 +2,6 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 import Carousel from 'react-bootstrap/Carousel'
-import { Col, Nav, Tab, Row } from "react-bootstrap";
-import range from 'lodash/range';
-import styled from 'styled-components';
 import AutoPlayCarousel from './PlaceList';
 
 

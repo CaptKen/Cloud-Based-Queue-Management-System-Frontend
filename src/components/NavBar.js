@@ -186,10 +186,10 @@
 // export default NavBar;
 
 import React, { Component } from 'react';
-import { Nav, Navbar, Form, FormControl, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { connect } from "react-redux";
-import SignUpPage from "./SignUpPage"
+// import SignUpPage from "./SignUpPage"
 import Login from "./LoginPage";
 
 import { logout } from "../actions/auth";
@@ -252,8 +252,8 @@ class NavigationBar extends Component{
     return(
       <Styles>
         <Navbar expand="lg" fixed="top">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#9FFFCB'}} onClick={this.toggleMenu}/>
-          <Navbar.Brand href="/">QMS</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#3D9280'}} onClick={this.toggleMenu}/>
+          <Navbar.Brand href="/">KQQ (Kill QueQ)</Navbar.Brand>
           
           <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">

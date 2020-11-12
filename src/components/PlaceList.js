@@ -1,20 +1,18 @@
 import React from 'react';
-import range from 'lodash/range';
 import styled from 'styled-components';
-// import ItemsCarousel from '../ItemsCarousel';
 import ItemsCarousel from 'react-items-carousel';
 import {withRouter} from 'react-router-dom';
 
-const noOfItems = 12;
-const noOfCards = 3;
-const autoPlayDelay = 2000;
-const chevronWidth = 40;
+// const noOfItems = 12;
+// const noOfCards = 3;
+// const autoPlayDelay = 2000;
+// const chevronWidth = 40;
 
-const Wrapper = styled.div`
-  padding: 0 ${chevronWidth}px;
-  max-width: 1000px;
-  margin: 0 auto;
-`;
+// const Wrapper = styled.div`
+//   padding: 0 ${chevronWidth}px;
+//   max-width: 1000px;
+//   margin: 0 auto;
+// `;
 
 const SlideItem = styled.div`
   height: 200px;
@@ -31,7 +29,7 @@ class AutoPlayCarousel extends React.Component {
     activeItemIndex: 0,
     noOfItems: 12,
     noOfCards:3,
-    autoPlayDelay: 2000,
+    autoPlayDelay: 500,
     chevronWidth: 40,
     setActiveItemIndex: 0,
     typeName: this.props.typeName

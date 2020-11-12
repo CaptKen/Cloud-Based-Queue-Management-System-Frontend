@@ -28,7 +28,7 @@ class GetQueue extends Component {
       }
     }
     render() {
-        const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+        const { currentUser} = this.state;
         return (
             <Container>
               <GetQueueHeader storeName="test" waitingQueue={56}/>

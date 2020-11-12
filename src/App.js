@@ -7,13 +7,10 @@ import GetQueue from "./components/GetQueue";
 import NavigationBar from './components/NavBar';
 import CurrentQueue from './components/CurrentQueue';
 import Admin from './components/Admin'
-import LoginPage from './components/LoginPage'
-import SignUpPage from './components/SignUpPage'
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
-import Login from "./components/LoginPage";
 
 
 import { logout } from "./actions/auth";
@@ -21,7 +18,6 @@ import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
-import  SideNav  from './components/SideBar';
 
 class App extends Component {
   constructor(props) {

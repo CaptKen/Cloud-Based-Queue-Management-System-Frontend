@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import  SideNav  from './SideBar';
 
 class Admin extends Component {
     constructor(props){
