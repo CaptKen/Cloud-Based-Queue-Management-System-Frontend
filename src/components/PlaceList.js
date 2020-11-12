@@ -91,7 +91,7 @@ class AutoPlayCarousel extends React.Component {
         >
         <SlideItem style={{ height: 200, background: '#EEE' }} onClick={this.redirectToStore}>First card</SlideItem>
         <div style={{ height: 200, background: '#EEE' }}>Second card</div>
-        <SlideItem style={{ height: 200, background: '#EEE' }}>Third card</SlideItem>
+        <SlideItem style={{ height: 200, background: '#EEE' }} onClick={this.redirectToStore}>Third card</SlideItem>
         <div style={{ height: 200, background: '#EEE' }}>Fourth card</div>
       </ItemsCarousel>
         </div>

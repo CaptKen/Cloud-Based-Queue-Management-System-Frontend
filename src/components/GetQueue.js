@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Container } from 'react-bootstrap';
 import GetQueueHeader from './GetQueueHeader';
 import GetInQueue from './GetInQueue';
+import GetInQueueWithLogin from './GetInQueueWithLogin';
 
 class GetQueue extends Component {
     constructor(props) {
@@ -30,10 +31,10 @@ class GetQueue extends Component {
         const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
         return (
             <Container>
-              <GetQueueHeader/>
+              <GetQueueHeader storeName="test" waitingQueue={56}/>
                 {currentUser  ?(
                     <div>
-                        logined
+                        <GetInQueueWithLogin/>
                     </div>
                 ):(
                     <div>

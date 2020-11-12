@@ -186,7 +186,7 @@
 // export default NavBar;
 
 import React, { Component } from 'react';
-import { Nav, Navbar, Form, FormControl } from 'react-bootstrap';
+import { Nav, Navbar, Form, FormControl, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import SignUpPage from "./SignUpPage"
@@ -251,9 +251,10 @@ class NavigationBar extends Component{
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return(
       <Styles>
-        <Navbar expand="lg">
+        <Navbar expand="lg" fixed="top">
         <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#9FFFCB'}} onClick={this.toggleMenu}/>
           <Navbar.Brand href="/">QMS</Navbar.Brand>
+          
           <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             {/* <Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link> */}
@@ -278,22 +279,11 @@ class NavigationBar extends Component{
               )} */}
             
             
-              {currentUser ? (
-                <div>
-                  <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item>
-                </div>
-                ):(
-                  <div>
-                    <Login/>
-                    {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
-                    {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
-                  </div>
-                )
-              }
+              
 
-              {currentUser && (
+              {/* {currentUser && (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
-              )}
+              )} */}
               
               {/* {currentUser ? (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
@@ -308,7 +298,25 @@ class NavigationBar extends Component{
               
             </Nav>
           </Navbar.Collapse>
-          
+          {currentUser ? (
+                <div>
+                  {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
+                    <NavDropdown title={currentUser.username} id="nav-dropdown">
+                    <NavDropdown.Item href="#/profile">Profile</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/" onClick={this.logOut}>Logout</NavDropdown.Item>
+                  </NavDropdown>
+                </div>
+                ):(
+                  <div>
+                    <Login/>
+                    {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
+                    {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
+                  </div>
+                )
+              }
           
           {/* <Form className="form-center">
             <FormControl type="text" placeholder="Search" className="" />

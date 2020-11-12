@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
-class GetInQueue extends Component {
+class GetInQueueWithLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,58 +82,8 @@ class GetInQueue extends Component {
   />)
     }
     return (
-      <div className="container" style={{paddingLeft:"0px", paddingRight:"0px"}}>
-        
+      <div className="container">
         <form id="contact-form" className="form" onSubmit={this.submit} style={{margin:"20px"}}>
-          <div className="form-inline">
-            <label className="col-3 form-label" style={{justifyContent:"left"}}>ชื่อ
-            </label>
-            <input
-              type="text"
-              className=" col-9 form-control"
-              id="firstname"
-              name="name"
-              placeholder="ชื่อ"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="col-3 form-inline" style={{justifyContent:"left"}}>นามสกุล
-            </label>
-            <input
-              type="text"
-              className="form-control col-9"
-              id="Lastname"
-              name="surname"
-              placeholder="นามสกุล"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-inline col-3" style={{justifyContent:"left"}}>อีเมลล์
-            </label>
-            <input
-              type="email"
-              className="form-control  col-9"
-              id="email"
-              name="email"
-              placeholder="อีเมลล์"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
-            />
-            
-          </div>
-
           <div className="form-inline">
             <label className="form-label col-3" style={{justifyContent:"left"}}>รายละเอียดเพิ่มเติม
             </label>
@@ -191,4 +141,4 @@ class GetInQueue extends Component {
   }
 }
 
-export default GetInQueue;
+export default GetInQueueWithLogin;
