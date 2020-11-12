@@ -271,7 +271,7 @@ class Login extends Component {
     // }
 
     return (
-      <div className="col-md-12">
+      <div>
         
         <Button style={{backgroundColor: "#255"}} onClick={this.handleShow}>
             Login

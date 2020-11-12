@@ -257,22 +257,22 @@ class NavigationBar extends Component{
           
           <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
-            {/* <Nav.Link href="/getqueue">เข้าคิว/ต่อคิว</Nav.Link> */}
-            <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
-            {/* <Nav.Item><Nav.Link href="/">ประเภทคิว</Nav.Link></Nav.Item> */}
-            <Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>
-          {showAdminBoard && (
+            
+          {showAdminBoard ? (
                 <SideNav/>
-              )}
+              ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
+              {showAdminBoard ? (
+                <div></div>
+              ):(<Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>)}
           
           
           {showModeratorBoard && (
                 <Nav.Link href="/mod">Moderator Board</Nav.Link>
               )}
 
-              {showAdminBoard && (
+              {/* {showAdminBoard && (
                 <Nav.Link href="/admin">Admin Board</Nav.Link>
-              )}
+              )} */}
 
               {/* {currentUser && (
                 <Nav.Link href="/user">User Board</Nav.Link>
@@ -302,11 +302,11 @@ class NavigationBar extends Component{
                 <div>
                   {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
                     <NavDropdown title={currentUser.username} id="nav-dropdown">
-                    <NavDropdown.Item href="#/profile">Profile</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="/" onClick={this.logOut}>Logout</NavDropdown.Item>
+                      <NavDropdown.Item href="#/profile">Profile</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item href="/" onClick={this.logOut}>Logout</NavDropdown.Item>
                   </NavDropdown>
                 </div>
                 ):(
@@ -335,4 +335,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(NavigationBar);
+
+
+// res ปุ่ม login หลุดไปใน ตอนย่อ
 
