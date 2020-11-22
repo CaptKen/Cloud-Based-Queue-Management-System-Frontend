@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
+import StorePage from "./components/StorePage"
 
 
 import { logout } from "./actions/auth";
@@ -172,6 +173,7 @@ showLogout = () => {
               <Route path="/admin" component={Admin} />
               <Route path="/getqueue" component={GetQueue} />
               <Route path="/currentQueue" component={CurrentQueue} />
+              <Route path="/store" component={StorePage} />
             </Switch>
           </div>
         </div>

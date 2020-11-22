@@ -2,6 +2,7 @@ import axios from 'axios';
 import authHeader from './auth-header';
 
 const API_URL = 'http://localhost:8080/api/test/';
+const RESTAURANTS_URL_API = 'http://localhost:3000/';
 
 class UserService {
   getPublicContent() {
@@ -18,6 +19,10 @@ class UserService {
 
   getAdminBoard() {
     return axios.get(API_URL + 'admin', { headers: authHeader() });
+  }
+
+  getRestaurantByName(name) {
+    return axios.get(RESTAURANTS_URL_API + name, {headers: authHeader()});
   }
 }
 

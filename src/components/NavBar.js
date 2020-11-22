@@ -315,11 +315,11 @@ class NavigationBar extends Component{
                 <div>
                   {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
                     <NavDropdown title={currentUser.username} id="nav-dropdown">
-                      <NavDropdown.Item href="#/profile">Profile</NavDropdown.Item>
+                      <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                       <NavDropdown.Divider />
-                      <NavDropdown.Item href="/" onClick={this.logOut}>Logout</NavDropdown.Item>
+                      <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>
                     </NavDropdown>
                 </div>
                 ):(

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button'
+import {withRouter} from 'react-router-dom';
 
 import {Container, Row, Col, Media} from 'react-bootstrap'
 
@@ -11,6 +13,30 @@ class GetQueueHeader extends Component {
           waitingQueue: this.props.waitingQueue
         };
       }
+
+    redirectToGetQueue = () =>{
+        this.props.history.push('/getqueue');
+    }
+        // componentDidMount() {
+    //     UserService.getRestaurantByName("burin").then(
+    //       response => {
+    //         this.setState({
+    //           content: response.data
+    //         });
+    //       },
+    //       error => {
+    //         this.setState({
+    //           content:
+    //             (error.response &&
+    //               error.response.data &&
+    //               error.response.data.message) ||
+    //             error.message ||
+    //             error.toString()
+    //         });
+    //       }
+    //     );
+    //   }
+    
     render() {
         return (
             <div>
@@ -22,9 +48,10 @@ class GetQueueHeader extends Component {
                     
                 />
                 <Media.Body style={{marginTop:"75px"}}>
-                    <h5>ชื่อร้าน : {this.state.storeName}</h5>
+                    <h5>ร้านอาหาร : {this.state.storeName}</h5>
                     <br/>
-                    <h1>จำนวนคิว : {this.state.waitingQueue}</h1>
+                    <h1>คิวในระบบ : {this.state.waitingQueue} <Button variant="success" onClick={this.redirectToGetQueue}>ต่อคิว</Button></h1> 
+                    <h1>เวลาเปิดบริการ : 10.00น.-10.05น <Button variant="success">จองเวลา</Button> </h1> 
                 </Media.Body>
                 </Media>
                 <Container>
@@ -61,4 +88,4 @@ class GetQueueHeader extends Component {
     }
 }
 
-export default GetQueueHeader;
+export default withRouter(GetQueueHeader);

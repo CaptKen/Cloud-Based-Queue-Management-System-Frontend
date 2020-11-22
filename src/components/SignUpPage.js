@@ -191,7 +191,6 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input';
 
 import { connect } from "react-redux";
 import { register } from "../actions/auth";
@@ -201,7 +200,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        กรุณากรอกข้อมูล!
       </div>
     );
   }
@@ -211,17 +210,17 @@ const email = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        อีเมลไม่ถูกต้อง!
       </div>
     );
   }
 };
 
 const vusername = (value) => {
-  if (value.length < 3 || value.length > 20) {
+  if (value.length < 8 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
+        ชื่อผู้ใช้งานต้องมีความยาวระหว่าง 8 ถึง 20 ตัวอักษร.
       </div>
     );
   }
@@ -231,7 +230,7 @@ const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        รหัสผ่านต้องมีความยาวระหว่าง 6 ถึง 40 ตัวอักษร
       </div>
     );
   }
@@ -242,7 +241,7 @@ const vtelephone = (value) => {
   if (value.length != 10 && !Number.isInteger(value) && !(value>0)) {
     return (
       <div className="alert alert-danger" role="alert">
-        The telephone number must be 10 characters.
+        เบอร์โทรศัพท์ไม่ถูกต้อง !
       </div>
     );
   }
@@ -273,7 +272,7 @@ class SignUpPage extends Component {
     if (value != this.state.password) {
       return (
         <div className="alert alert-danger" role="alert">
-          Password did not match, Please try again.
+          รหัสผ่านทั้ง 2 ช่องไม่ตรงกัน
         </div>
       );
     }
@@ -353,7 +352,7 @@ class SignUpPage extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username">Username*</label>
+                  <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -365,7 +364,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">Email*</label>
+                  <label htmlFor="email">อีเมลล์*</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -377,7 +376,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password*</label>
+                  <label htmlFor="password">รหัสผ่าน*</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -389,7 +388,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="checkPassword">Confirm Password*</label>
+                  <label htmlFor="checkPassword">ยืนยันรหัสผ่าน*</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -402,7 +401,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="telephone">Phone Number</label>
+                  <label htmlFor="telephone">เบอร์โทรศัพท์</label>
                   <Input
                     type="text"
                     className="form-control"

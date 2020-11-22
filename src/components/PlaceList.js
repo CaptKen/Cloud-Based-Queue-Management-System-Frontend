@@ -51,7 +51,7 @@ class AutoPlayCarousel extends React.Component {
   onChange = value => this.setState({ activeItemIndex: value });
 
   redirectToStore = () => {
-    this.props.history.push('/getqueue');
+    this.props.history.push('/store');
   }
 
   render() {

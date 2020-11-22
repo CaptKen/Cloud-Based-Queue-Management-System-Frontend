@@ -171,7 +171,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        กรุณากรอกข้อมูล!
       </div>
     );
   }
@@ -270,7 +270,7 @@ class Login extends Component {
       <div>
         
         <Button style={{backgroundColor: "#3D9280"}} onClick={this.handleShow}>
-            Login
+            เข้าสู่ระบบ
       </Button>
         <Modal show={this.state.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
@@ -290,7 +290,7 @@ class Login extends Component {
                 }}
               >
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -302,7 +302,7 @@ class Login extends Component {
                 </div>
     
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">รหัสผ่าน*</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -353,7 +353,7 @@ class Login extends Component {
         </Modal.Body>
         <Modal.Footer>
           <p className="text-right" >
-          {this.state.showLogin ? "No Account ?":"Already has account ?"}  
+          {this.state.showLogin ? "ต้องการสร้างบัญชีใหม่ ?":""}  
           </p>
           <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
           {this.state.showLogin ? "สมัครสมาชิก":"เข้าสู่ระบบ"}
