@@ -292,7 +292,7 @@ class NavigationBar extends Component{
 
               
             </Nav>
-          </Navbar.Collapse>
+          
           {showAdminBoard ? (
                 <SideNav/>
               ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
@@ -334,6 +334,7 @@ class NavigationBar extends Component{
           {/* <Form className="form-center">
             <FormControl type="text" placeholder="Search" className="" />
           </Form> */}
+          </Navbar.Collapse>
         </Navbar>
        
       </Styles>

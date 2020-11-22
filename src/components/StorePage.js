@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Carousel from 'react-bootstrap/Carousel';
 import GetQueueHeader from './GetQueueHeader';
 import { Container } from 'react-bootstrap';
+import AutoPlayCarousel from './PlaceList';
 
 class StorePage extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class StorePage extends Component {
     return (
         <Container>
             <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
-            <Carousel>
+            <Carousel style={{marginTop:"20px"}}>
                 <Carousel.Item interval={1000}>
                     <img
                     className="d-block w-100"
@@ -51,6 +52,9 @@ class StorePage extends Component {
                     </Carousel.Caption>
                 </Carousel.Item>
                 </Carousel>
+
+                <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+
         </Container>
     );
   }
