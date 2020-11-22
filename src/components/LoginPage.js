@@ -161,6 +161,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { Modal, Button } from "react-bootstrap";
+import { clearMessage } from "../actions/message";
 
 import { connect } from "react-redux";
 import { login } from "../actions/auth";
@@ -211,6 +212,7 @@ class Login extends Component {
         this.setState({
             showLogin: !this.state.showLogin
           });
+          this.props.dispatch(clearMessage()); // clear message when changing location
       }
     
       toggleMenu() {
@@ -260,7 +262,6 @@ class Login extends Component {
 
   render() {
     const { isLoggedIn, message } = this.props;
-
     // if (isLoggedIn) {
     //   return <Redirect to="/profile" />;
     // }

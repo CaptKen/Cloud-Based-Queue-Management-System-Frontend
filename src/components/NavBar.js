@@ -258,12 +258,7 @@ class NavigationBar extends Component{
           <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             
-          {showAdminBoard ? (
-                <SideNav/>
-              ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
-              {showAdminBoard ? (
-                <div></div>
-              ):(<Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>)}
+          
           
           
           {showModeratorBoard && (
@@ -298,6 +293,24 @@ class NavigationBar extends Component{
               
             </Nav>
           </Navbar.Collapse>
+          {showAdminBoard ? (
+                <SideNav/>
+              ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
+              {showAdminBoard ? (
+                <div></div>
+              ):(<div>
+                
+                    <Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>
+              </div>)}
+              {showAdminBoard ? (
+                <div></div>
+              ):(<div>
+                <NavDropdown title="ประเภทกิจการ" id="nav-dropdown">
+                      <NavDropdown.Item href="#/">ร้านอาหาร</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.2">อาคาร</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.3">สำนักงาน</NavDropdown.Item>
+                    </NavDropdown>
+              </div>)}
           {currentUser ? (
                 <div>
                   {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
@@ -307,7 +320,7 @@ class NavigationBar extends Component{
                       <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                       <NavDropdown.Divider />
                       <NavDropdown.Item href="/" onClick={this.logOut}>Logout</NavDropdown.Item>
-                  </NavDropdown>
+                    </NavDropdown>
                 </div>
                 ):(
                   <div>

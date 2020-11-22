@@ -191,9 +191,11 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input';
 
 import { connect } from "react-redux";
 import { register } from "../actions/auth";
+
 
 const required = (value) => {
   if (!value) {
@@ -235,6 +237,18 @@ const vpassword = (value) => {
   }
 };
 
+
+const vtelephone = (value) => {
+  if (value.length != 10 && !Number.isInteger(value) && !(value>0)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The telephone number must be 10 characters.
+      </div>
+    );
+  }
+};
+
+
 class SignUpPage extends Component {
   constructor(props) {
     super(props);
@@ -242,14 +256,28 @@ class SignUpPage extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-
+    this.onChangeCheckPassword = this.onChangeCheckPassword.bind(this);
+    this.vCheckPassword = this.vCheckPassword.bind(this);
+    this.onChangeTelephone = this.onChangeTelephone.bind(this);
     this.state = {
       username: "",
       email: "",
       password: "",
+      checkPassword: "",
+      telephone:"",
       successful: false,
     };
   }
+  vCheckPassword = (value) => {
+    console.log("value: ", value);
+    if (value != this.state.password) {
+      return (
+        <div className="alert alert-danger" role="alert">
+          Password did not match, Please try again.
+        </div>
+      );
+    }
+  };
 
   onChangeUsername(e) {
     this.setState({
@@ -269,6 +297,19 @@ class SignUpPage extends Component {
     });
   }
 
+  onChangeCheckPassword(e) {
+    this.setState({
+      checkPassword: e.target.value,
+    });
+  }
+
+  onChangeTelephone(e) {
+    this.setState({
+      telephone: e.target.value,
+    });
+  }
+
+
   handleRegister(e) {
     e.preventDefault();
 
@@ -281,7 +322,7 @@ class SignUpPage extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       this.props
         .dispatch(
-          register(this.state.username, this.state.email, this.state.password)
+          register(this.state.username, this.state.email, this.state.password, this.state.telephone)
         )
         .then(() => {
           this.setState({
@@ -312,7 +353,7 @@ class SignUpPage extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">Username*</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -324,7 +365,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email">Email*</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -336,7 +377,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">Password*</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -344,6 +385,32 @@ class SignUpPage extends Component {
                     value={this.state.password}
                     onChange={this.onChangePassword}
                     validations={[required, vpassword]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="checkPassword">Confirm Password*</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="checkPassword"
+                    value={this.state.checkPassword}
+                    onChange={this.onChangeCheckPassword}
+                    validations={[required, this.vCheckPassword]}
+                    
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="telephone">Phone Number</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="telephone"
+                    value={this.state.telephone}
+                    onChange={this.onChangeTelephone}
+                    validations={[vtelephone]}
+                    maxLength={10}
                   />
                 </div>
 

@@ -31,7 +31,7 @@ class GetQueue extends Component {
         const { currentUser} = this.state;
         return (
             <Container>
-              <GetQueueHeader storeName="test" waitingQueue={56}/>
+              <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
                 {currentUser  ?(
                     <div>
                         <GetInQueueWithLogin/>
