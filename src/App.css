@@ -86,3 +86,17 @@ label {
 }
 
 
+@media (max-width :990px){
+  .myapp{
+    padding-left: 0px;
+    padding-top: 80px;
+  }
+}
+
+@media (min-width :991px){
+  .myapp{
+    padding-left: 75px;
+    padding-top: 80px;
+  }
+}
+

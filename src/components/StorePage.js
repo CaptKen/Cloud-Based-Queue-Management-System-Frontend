@@ -15,9 +15,9 @@ class StorePage extends Component {
 
   render() {
     return (
-        <Container>
+        <div>
             <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
-            <Carousel style={{marginTop:"20px"}}>
+            <Carousel style={{margin:50}}>
                 <Carousel.Item interval={1000}>
                     <img
                     className="d-block w-100"
@@ -54,8 +54,7 @@ class StorePage extends Component {
                 </Carousel>
 
                 <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
-
-        </Container>
+        </div>
     );
   }
 }

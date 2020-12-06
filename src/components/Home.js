@@ -43,7 +43,7 @@ export default class Home extends Component {
     
 
     <div>
-      <Carousel style={{marginTop:"75px"}}>
+      <Carousel>
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"

@@ -251,9 +251,10 @@ class NavigationBar extends Component{
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return(
       <Styles>
-        <Navbar expand="lg" fixed="top">
+        <Navbar expand="md" fixed="top">
+        <Navbar.Brand href="/">KQQ (Kill QueQ)</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#3D9280'}} onClick={this.toggleMenu}/>
-          <Navbar.Brand href="/">KQQ (Kill QueQ)</Navbar.Brand>
+          
           
           <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
@@ -314,7 +315,7 @@ class NavigationBar extends Component{
           {currentUser ? (
                 <div>
                   {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
-                    <NavDropdown title={currentUser.username} id="nav-dropdown">
+                    <NavDropdown title={currentUser.username} id="nav-dropdown" style={{float:"right"}}>
                       <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
@@ -351,5 +352,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(NavigationBar);
 
 
-// res ปุ่ม login หลุดไปใน ตอนย่อ
+// responsive ปุ่ม login หลุดไปใน ตอนย่อ
 

@@ -88,9 +88,8 @@ showLogout = () => {
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
-      <div>
+      <div className="myapp">
         <Router history={history}>
-        <div>
           {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
               QMS
@@ -162,7 +161,7 @@ showLogout = () => {
               <SideNav/>
               )} */}
           
-          <div className="container mt-3">
+          <div className="container">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
               {/* <Route exact path="/login" component={Login} /> */}
@@ -175,7 +174,6 @@ showLogout = () => {
               <Route path="/currentQueue" component={CurrentQueue} />
               <Route path="/store" component={StorePage} />
             </Switch>
-          </div>
         </div>
             
       </Router>
