@@ -12,6 +12,10 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import StorePage from "./components/StorePage"
+import CheckQueuePage from "./components/CheckQueuePage";
+import Footer from './components/Footer';
+import './footer.css';
+import UserQueueList from './components/UserQueueList';
 
 
 import { logout } from "./actions/auth";
@@ -88,8 +92,9 @@ showLogout = () => {
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
-      <div className="myapp">
-        <Router history={history}>
+      <div >
+        <div className="myapp">
+          <Router history={history}>
           {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
               QMS
@@ -160,24 +165,29 @@ showLogout = () => {
           {/* {showAdminBoard && (
               <SideNav/>
               )} */}
-          
+
           <div className="container">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
               {/* <Route exact path="/login" component={Login} /> */}
               {/* <Route exact path="/register" component={SignUpPage} /> */}
               <Route exact path="/profile" component={Profile} />
+              <Route path="/check" component={CheckQueuePage} />
               <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={Admin} />
               <Route path="/getqueue" component={GetQueue} />
               <Route path="/currentQueue" component={CurrentQueue} />
               <Route path="/store" component={StorePage} />
+              <Route path="/queueList" component={UserQueueList} />
+              
             </Switch>
+            
         </div>
             
-      </Router>
-      
+        </Router>
+        </div>
+        <Footer/>
       </div>
     );
   }

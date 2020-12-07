@@ -301,7 +301,7 @@ class NavigationBar extends Component{
                 <div></div>
               ):(<div>
                 
-                    <Nav.Item><Nav.Link href="/currentQueue">เช็คคิว</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
               </div>)}
               {showAdminBoard ? (
                 <div></div>
@@ -317,7 +317,7 @@ class NavigationBar extends Component{
                   {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
                     <NavDropdown title={currentUser.username} id="nav-dropdown" style={{float:"right"}}>
                       <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                      <NavDropdown.Item href="/check">เช็คคิว</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                       <NavDropdown.Divider />
                       <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>

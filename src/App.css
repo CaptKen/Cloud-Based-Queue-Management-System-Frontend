@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
 .App {
   text-align: center;
 }
+
+ html, body #root{
+     font-family: 'Rubik', sans-serif;
+     height: 100% !important;
+     background-image: url("https://images.pexels.com/photos/62693/pexels-photo-62693.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+     background-size: cover;
+     
+ }
 
 .App-logo {
   height: 40vmin;
@@ -85,18 +94,36 @@ label {
   background-color: #222222;
 }
 
+.myapp {
+  padding-top: 100px;
+  min-height: 100vh; /* will cover the 100% of viewport or 100*/ 
+  display: block;
+  position: relative;
+}
 
-@media (max-width :990px){
+
+/* @media (max-width :990px){
   .myapp{
     padding-left: 0px;
     padding-top: 80px;
   }
+} */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-@media (min-width :991px){
-  .myapp{
-    padding-left: 75px;
-    padding-top: 80px;
-  }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

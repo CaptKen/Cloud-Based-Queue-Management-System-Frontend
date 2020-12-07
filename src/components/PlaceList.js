@@ -34,7 +34,6 @@ class AutoPlayCarousel extends React.Component {
     chevronWidth: 40,
     setActiveItemIndex: 0,
     typeName: this.props.typeName
-
   };
 
   componentDidMount() {
@@ -57,8 +56,8 @@ class AutoPlayCarousel extends React.Component {
 
   render() {
     return (
-            <div >
-            <h1>{this.state.typeName}</h1>
+            <div style={{marginTop: "30px"}}>
+            <h1 className="h1">{this.state.typeName}</h1>
         <hr/><br/>
         <ItemsCarousel
             requestToChangeActive={this.onChange}

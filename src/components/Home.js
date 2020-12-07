@@ -80,9 +80,7 @@ export default class Home extends Component {
     </Carousel>
     
       <AutoPlayCarousel typeName="ร้านอาหาร"/>
-      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
-      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
-      <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+
 
 
     </div>
