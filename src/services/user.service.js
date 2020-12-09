@@ -22,7 +22,7 @@ class UserService {
   }
 
   postQueueNotLogin(formDate){
-    return axios.post(QUEUE_URL_API + 'addQueue', { headers: authHeader() }, formDate);
+    return axios.post(QUEUE_URL_API + 'addQueue', formDate);
   }
 
   //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
