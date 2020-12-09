@@ -2,7 +2,7 @@ import axios from 'axios';
 import authHeader from './auth-header';
 
 const API_URL = 'http://localhost:8080/api/test/';
-const RESTAURANTS_URL_API = 'http://localhost:3000/';
+const QUEUE_URL_API = 'http://localhost:8080/api/queue/';
 
 class UserService {
   getPublicContent() {
@@ -21,8 +21,13 @@ class UserService {
     return axios.get(API_URL + 'admin', { headers: authHeader() });
   }
 
-  getRestaurantByName(name) {
-    return axios.get(RESTAURANTS_URL_API + name, {headers: authHeader()});
+  postQueueNotLogin(formDate){
+    return axios.post(QUEUE_URL_API + 'addQueue', { headers: authHeader() }, formDate);
+  }
+
+  //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
+  getQueueDetail(username, businessName){
+    return axios.get(QUEUE_URL_API + 'detail', { headers: authHeader() , username, businessName})
   }
 }
 

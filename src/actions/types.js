@@ -6,3 +6,6 @@ export const LOGOUT = "LOGOUT";
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+
+export const ADD_QUEUE_SUCCESS = "ADD_QUEUE_SUCCESS";
+export const VIEW_QUEUE = "VIEW_QUEUE";

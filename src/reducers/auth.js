@@ -21,6 +21,7 @@ import {
           ...state,
           isLoggedIn: false,
         };
+      
       case REGISTER_FAIL:
         return {
           ...state,

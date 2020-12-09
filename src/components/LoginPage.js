@@ -241,7 +241,7 @@ class Login extends Component {
     this.form.validateAll();
 
     const { dispatch, history } = this.props;
-
+    
     if (this.checkBtn.context._errors.length === 0) {
       dispatch(login(this.state.username, this.state.password))
         .then(() => {

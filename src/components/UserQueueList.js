@@ -80,7 +80,7 @@ class UserQueueList extends Component {
             </Col>
 
             <Col sm md style={{padding:"15px"}}>
-                <button type="button" class="btn btn-danger btn-lg">ยกเลิกคิว</button>
+                <button type="button" className="btn btn-danger btn-lg">ยกเลิกคิว</button>
             </Col>
         </Row>
 
@@ -109,7 +109,7 @@ class UserQueueList extends Component {
             </Col>
 
             <Col sm md style={{padding:"15px"}}>
-                <button type="button" class="btn btn-danger btn-lg">ยกเลิกคิว</button>
+                <button type="button" className="btn btn-danger btn-lg">ยกเลิกคิว</button>
             </Col>
         </Row>
         
