@@ -8,4 +8,5 @@ export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
 export const ADD_QUEUE_SUCCESS = "ADD_QUEUE_SUCCESS";
+export const ADD_QUEUE_FAIL = "ADD_QUEUE_FAIL";
 export const VIEW_QUEUE = "VIEW_QUEUE";

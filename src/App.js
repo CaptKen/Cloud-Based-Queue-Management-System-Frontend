@@ -177,7 +177,7 @@ showLogout = () => {
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={Admin} />
               <Route path="/getqueue" component={GetQueue} />
-              <Route path="/currentQueue" component={CurrentQueue} />
+              <Route path="/currentQueue" render={(props) => <CurrentQueue{...props}/>} />
               <Route path="/store" component={StorePage} />
               <Route path="/queueList" component={UserQueueList} />
               

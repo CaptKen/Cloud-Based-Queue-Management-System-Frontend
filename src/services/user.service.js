@@ -25,9 +25,14 @@ class UserService {
     return axios.post(QUEUE_URL_API + 'addQueue', formDate);
   }
 
+  // //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
+  // getQueueDetail(username, businessName){
+  //   return axios.get(QUEUE_URL_API + 'detail', { headers: authHeader() , username, businessName})
+  // }
+
   //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
-  getQueueDetail(username, businessName){
-    return axios.get(QUEUE_URL_API + 'detail', { headers: authHeader() , username, businessName})
+  getQueueDetail(businessName, username){
+    return axios.get(QUEUE_URL_API + 'queueStatusDetail?business_name=' + businessName +"&username=" + username)
   }
 }
 

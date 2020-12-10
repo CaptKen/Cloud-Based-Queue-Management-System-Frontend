@@ -6,6 +6,7 @@ import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
 import {addqueue} from "../actions/userQueue";
 import { connect } from "react-redux";
+import { clearMessage } from "../actions/message";
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +22,8 @@ class GetInQueue extends Component {
         user_detail:'',
         queue_type:'normail',
         business_detail_id: 0,
-        activeFlag: false,
-        business_name: "burinLKB"
+        status: 'waiting',
+        business_name: "burinLKB",
       }
     };
   }
@@ -82,8 +83,8 @@ class GetInQueue extends Component {
   handleClose = (e) => {
     this.setState({
       show: false,
-      redirectFlag: true
     });
+    this.props.dispatch(clearMessage()); // clear message when changing location
     
   };
 
@@ -94,11 +95,13 @@ class GetInQueue extends Component {
     });
   };
   render() {
+    const { message } = this.props;
+
     if (this.state.redirectFlag) {
       return (<Redirect
       to={{
       pathname: "/currentQueue",
-      state: { name: this.state.formElements.name }
+      state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
     }}
   />)
     }
@@ -199,6 +202,13 @@ class GetInQueue extends Component {
               <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
             </Modal.Header>
             <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
+            {message && (
+              <div className="form-group">
+                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                  {message}
+                </div>
+              </div>
+            )}
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก

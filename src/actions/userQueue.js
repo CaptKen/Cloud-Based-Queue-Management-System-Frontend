@@ -1,7 +1,8 @@
 import {
     SET_MESSAGE,
     ADD_QUEUE_SUCCESS,
-    VIEW_QUEUE
+    VIEW_QUEUE,
+    ADD_QUEUE_FAIL
   } from "./types";
 
 import UserService from "../services/user.service";
@@ -27,6 +28,15 @@ export const addqueue = (formData) => (dispatch) => {
             error.response.data.message) ||
           error.message ||
           error.toString();
+        
+          dispatch({
+            type: ADD_QUEUE_FAIL,
+          });
+    
+          dispatch({
+            type: SET_MESSAGE,
+            payload: message,
+          });
           
         return Promise.reject();
       }
