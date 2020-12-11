@@ -20,10 +20,10 @@ class GetInQueue extends Component {
         user_email:'',
         user_telephone:'',
         user_detail:'',
-        queue_type:'normail',
+        queue_type:'normal',
         business_detail_id: 0,
         status: 'waiting',
-        business_name: "burinLKB",
+        business_name: "eiei",
       }
     };
   }
@@ -77,6 +77,7 @@ class GetInQueue extends Component {
           this.setState({
             successful: false,
           });
+          
         });
   }
 
@@ -85,7 +86,6 @@ class GetInQueue extends Component {
       show: false,
     });
     this.props.dispatch(clearMessage()); // clear message when changing location
-    
   };
 
   handleShow = () => {

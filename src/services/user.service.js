@@ -34,6 +34,19 @@ class UserService {
   getQueueDetail(businessName, username){
     return axios.get(QUEUE_URL_API + 'queueStatusDetail?business_name=' + businessName +"&username=" + username)
   }
+
+  //cancel คิว
+  cancelQueue(username, queueDetail){
+    return axios.patch(QUEUE_URL_API + 'cancelQueue/'+ username, queueDetail);
+  }
+
+  listQueue(username){
+    return axios.get(QUEUE_URL_API + 'checkQueueWithLoginUsername?username=' + username);
+  }
+
+  allQueue(business_name, username){
+    return axios.get(QUEUE_URL_API + 'findWatingQueueByBusiness?business_name=' +business_name + "&username=" + username)
+  }
 }
 
 export default new UserService();
