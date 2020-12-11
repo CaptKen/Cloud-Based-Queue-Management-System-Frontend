@@ -62,12 +62,10 @@ class GetInQueue extends Component {
       }
       console.log(formData);
 
-    const {history, dispatch } = this.props;
-    dispatch(addqueue(formData))
+    const {history } = this.props;
+    this.props.dispatch(addqueue(formData))
         .then(() => {
-          // window.location.reload();
-          // history.push("/currentQueue");
-          // console.log("in dispatch");
+          console.log("in dispatch");
           this.setState({
             successful: true,
             redirectFlag: true
@@ -77,19 +75,19 @@ class GetInQueue extends Component {
           this.setState({
             successful: false,
           });
-          
         });
   }
 
   handleClose = (e) => {
     this.setState({
       show: false,
+      redirectFlag: true
     });
-    this.props.dispatch(clearMessage()); // clear message when changing location
   };
 
   handleShow = () => {
     console.log("show");
+    this.props.dispatch(clearMessage()); // clear message when changing location
     this.setState({
       show: true,
     });

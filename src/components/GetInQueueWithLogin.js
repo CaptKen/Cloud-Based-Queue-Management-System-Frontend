@@ -19,11 +19,14 @@ class GetInQueueWithLogin extends Component {
       currentUser: undefined,
       successful: false,
       formElements: {
-        name:'',
-        surname:'',
-        email:'',
-        message:'',
-        noOfCus:''
+        username:'',
+        user_email:'',
+        user_telephone:'',
+        user_detail:'',
+        queue_type:'normal',
+        business_detail_id: 0,
+        status: 'waiting',
+        business_name: "eiei",
       }
     };
   }
@@ -70,6 +73,7 @@ class GetInQueueWithLogin extends Component {
               console.log("formValidformValidformValid");
               continue;
           }
+          console.log('name', name);
           formData[name] = this.state.formElements[name];
       }
       console.log(formData);
@@ -112,7 +116,7 @@ class GetInQueueWithLogin extends Component {
       return (<Redirect
       to={{
       pathname: "/currentQueue",
-      state: { name: this.state.formElements.name }
+      state: { username: currentUser.username, business_name: this.state.formElements.business_name }
     }}
   />)
     }
@@ -121,6 +125,23 @@ class GetInQueueWithLogin extends Component {
         <form id="contact-form" className="form" onSubmit={this.submit} ref={(c) => {
               this.form = c;
             }} style={{margin:"20px"}}>
+          
+          <div className="form-inline">
+            <label className="col-3 form-inline" style={{justifyContent:"left"}}>เบอร์โทรศัพท์
+            </label>
+            <input
+              type="text"
+              className="form-control col-9"
+              id="Lastname"
+              name="user_telephone"
+              placeholder="เบอร์โทรศัพท์"
+              tabIndex="1"
+              required
+              onChange={this.onFormChange}
+              style={{marginBottom:"10px"}}
+            />
+          </div>
+
           <div className="form-inline">
             <label className="form-label col-3" style={{justifyContent:"left"}}>รายละเอียดเพิ่มเติม
             </label>
@@ -139,7 +160,7 @@ class GetInQueueWithLogin extends Component {
             
           </div>
 
-          <div className="form-inline">
+          {/* <div className="form-inline">
             <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>
             <input
               type="number"
@@ -151,7 +172,7 @@ class GetInQueueWithLogin extends Component {
               required
               onChange={this.onFormChange}
             />
-          </div>
+          </div> */}
           <div className="text-center" style={{margin:"20px"}}>
             <Button variant="primary" onClick={this.handleShow}>
               บันทึก

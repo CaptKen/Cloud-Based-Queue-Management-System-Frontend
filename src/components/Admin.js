@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import userService from '../services/user.service';
+import ManageQueueTable from './ManageQueueTable';
 
 class Admin extends Component {
     constructor(props){
@@ -7,16 +9,13 @@ class Admin extends Component {
     this.state = {apiResponse:[]};
   }
     callAPI = () => {
-        axios.get('http://localhost:8080/getqueue')
-            .then(res => this.setState({apiResponse: res.data}))
-            .then((res) => {
-                console.log(this.state.apiResponse);
-                // console.log("res "+ res);
-            })
-            
-            .catch((err) => {
-                console.log(err);
-            })
+        userService.allQueueOfBusiness("BurinLKB").then(
+            res => {
+                this.setState({
+                    apiResponse: res.data
+                })
+            }
+        )
     }
 
     componentWillMount() {
@@ -25,11 +24,9 @@ class Admin extends Component {
     render() {
         return (
             <div className="container">
-                {/* <SideNav/> */}
-                <h1 className = "text-center">ชื่อร้านอาหาร</h1>
                 <div className="card text-center">
                     <div className="card-header">
-                        คิวปัจจุบัน
+                       ชื่อร้านอาหาร
                     </div>
                     <div className="card-body">
                         <h5 className="card-title">ข้อมูลคิว</h5>
@@ -42,7 +39,8 @@ class Admin extends Component {
                         </div>
                     </div>
                 </div>
-                <br />
+                <ManageQueueTable data={this.state.apiResponse} />
+                {/* <br />
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -72,7 +70,7 @@ class Admin extends Component {
                                 </Fragment>
                             )
                         })}
-                        {/* <tr>
+                        <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
@@ -110,9 +108,9 @@ class Admin extends Component {
                                     }}>ยกเลิกคิว</button>
                                 </div>
                             </td>
-                        </tr> */}
+                        </tr>
                     </tbody>
-                </table>
+                </table> */}
             </div>
         );
     }

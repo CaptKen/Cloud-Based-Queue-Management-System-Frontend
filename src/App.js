@@ -16,6 +16,7 @@ import CheckQueuePage from "./components/CheckQueuePage";
 import Footer from './components/Footer';
 import './footer.css';
 import UserQueueList from './components/UserQueueList';
+import ManageQueuetable from './components/ManageQueueTable';
 
 
 import { logout } from "./actions/auth";
@@ -179,6 +180,7 @@ showLogout = () => {
               <Route path="/getqueue" component={GetQueue} />
               <Route path="/currentQueue" render={(props) => <CurrentQueue{...props}/>} />
               <Route path="/store" component={StorePage} />
+              <Route path="/ManageQueuetable" component={ManageQueuetable} />
               <Route path="/queueList" component={UserQueueList} />
               
             </Switch>

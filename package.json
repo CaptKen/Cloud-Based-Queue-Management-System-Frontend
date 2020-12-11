@@ -31,6 +31,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-sidebar": "^3.0.2",
+    "react-table": "^7.6.2",
     "react-validation": "^3.0.7",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

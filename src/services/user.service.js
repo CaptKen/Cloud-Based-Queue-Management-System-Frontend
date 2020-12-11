@@ -47,6 +47,10 @@ class UserService {
   allQueue(business_name, username){
     return axios.get(QUEUE_URL_API + 'findWatingQueueByBusiness?business_name=' +business_name + "&username=" + username)
   }
+
+  allQueueOfBusiness(business_name){
+    return axios.get(QUEUE_URL_API + 'queueByBusiness?business_name=' +business_name)
+  }
 }
 
 export default new UserService();
