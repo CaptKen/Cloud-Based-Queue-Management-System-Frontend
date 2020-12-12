@@ -5,7 +5,7 @@
  .container-fluid {
      /* overflow: hidden; */
      background: #222;
-     color: #9FFFCB !important;
+     color: #F2C035 !important;
      margin-bottom: 0;
      padding-bottom: 0;
      
@@ -16,7 +16,7 @@
  }
 
  .bold-text {
-     color: #9FFFCB !important
+     color: #F2C035!important
  }
 
  .mt-55 {

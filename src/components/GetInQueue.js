@@ -23,7 +23,7 @@ class GetInQueue extends Component {
         queue_type:'normal',
         business_detail_id: 0,
         status: 'waiting',
-        business_name: "eiei",
+        business_name: this.props.business_name,
       }
     };
   }
@@ -81,7 +81,6 @@ class GetInQueue extends Component {
   handleClose = (e) => {
     this.setState({
       show: false,
-      redirectFlag: true
     });
   };
 
@@ -153,7 +152,6 @@ class GetInQueue extends Component {
               onChange={this.onFormChange}
               style={{marginBottom:"10px"}}
             />
-            
           </div>
 
           <div className="form-inline">

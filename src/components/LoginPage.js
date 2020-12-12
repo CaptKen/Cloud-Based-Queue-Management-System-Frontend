@@ -269,7 +269,7 @@ class Login extends Component {
     return (
       <div>
         
-        <Button style={{backgroundColor: "#3D9280"}} onClick={this.handleShow}>
+        <Button style={{backgroundColor: "#b38f2d", borderColor:"#b38f2d"}} onClick={this.handleShow}>
             เข้าสู่ระบบ
       </Button>
         <Modal show={this.state.show} onHide={this.handleClose}>
@@ -315,9 +315,9 @@ class Login extends Component {
     
                 <div className="form-group">
                   <button
-                    className="btn btn-primary btn-block"
+                    className="btn btn-block"
                     disabled={this.state.loading}
-                    style={{backgroundColor: "#255"}}
+                    style={{backgroundColor: "#b38f2d", borderColor:"#b38f2d", color:"white"}}
                   >
                     {this.state.loading && (
                       <span className="spinner-border spinner-border-sm"></span>
@@ -355,7 +355,7 @@ class Login extends Component {
           <p className="text-right" >
           {this.state.showLogin ? "ต้องการสร้างบัญชีใหม่ ?":""}  
           </p>
-          <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
+          <Button style={{backgroundColor: "#b38f2d", borderColor: "#b38f2d", float:"right"}} onClick={this.showRegister}>
           {this.state.showLogin ? "สมัครสมาชิก":"เข้าสู่ระบบ"}
               </Button>
         </Modal.Footer>

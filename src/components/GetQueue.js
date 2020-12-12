@@ -31,14 +31,14 @@ class GetQueue extends Component {
         const { currentUser} = this.state;
         return (
             <Container>
-              <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
+              <GetQueueHeader storeName="BurinLKB" waitingQueue={3}/>
                 {currentUser  ?(
                     <div>
-                        <GetInQueueWithLogin/>
+                        <GetInQueueWithLogin business_name="BurinLKB" currentUser={currentUser} />
                     </div>
                 ):(
                     <div>
-                        <GetInQueue/>
+                        <GetInQueue business_name="BurinLKB"/>
                     </div>
                 )}
                

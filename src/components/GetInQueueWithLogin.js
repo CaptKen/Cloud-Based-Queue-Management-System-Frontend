@@ -26,27 +26,37 @@ class GetInQueueWithLogin extends Component {
         queue_type:'normal',
         business_detail_id: 0,
         status: 'waiting',
-        business_name: "eiei",
+        business_name: this.props.business_name,
       }
     };
   }
 
   componentDidMount() {
-    const user = this.props.user;
-    console.log(user);
+    // const user = this.props.user;
+    // console.log(user);
     this.setState({
-      redirectFlag: false
+      redirectFlag: false,
+      formElements:{
+        username: this.props.currentUser.username,
+        business_name: this.props.business_name,
+        user_email:this.props.currentUser.email,
+        user_telephone:this.props.currentUser.telephone,
+        user_detail:'',
+        queue_type:'normal',
+        business_detail_id: 0,
+        status: 'waiting',
+      }
     });
-    if (user) {
-      this.setState({
-        currentUser: user,
-        formElements: {
-          name:user.username,
-          surname:user.username,
-          email:user.email,
-        }
-      });
-    }
+    // if (user) {
+    //   this.setState({
+    //     currentUser: user,
+    //     formElements: {
+    //       name:user.username,
+    //       surname:user.username,
+    //       email:user.email,
+    //     }
+    //   });
+    // }
   }
 
   onFormChange = (e) => {
@@ -76,7 +86,7 @@ class GetInQueueWithLogin extends Component {
           console.log('name', name);
           formData[name] = this.state.formElements[name];
       }
-      console.log(formData);
+      console.log("formData",formData);
 
     const {history } = this.props;
     this.props.dispatch(addqueue(formData))
@@ -98,7 +108,7 @@ class GetInQueueWithLogin extends Component {
   handleClose = (e) => {
     this.setState({
       show: false,
-      redirectFlag: true
+      redirectFlag: false
     });
     
   };
@@ -112,11 +122,13 @@ class GetInQueueWithLogin extends Component {
   render() {
     const { message } = this.props;
     const {currentUser} = this.state;
+    console.log("currentUser", this.props.currentUser);
+    console.log("business_name", this.props.business_name);
     if (this.state.redirectFlag) {
       return (<Redirect
       to={{
       pathname: "/currentQueue",
-      state: { username: currentUser.username, business_name: this.state.formElements.business_name }
+      state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
     }}
   />)
     }
@@ -126,6 +138,23 @@ class GetInQueueWithLogin extends Component {
               this.form = c;
             }} style={{margin:"20px"}}>
           
+          <div className="form-inline">
+            <label className="col-3 form-label" style={{justifyContent:"left"}}>ชื่อผู้จอง
+            </label>
+            <input
+              type="text"
+              className=" col-9 form-control"
+              id="firstname"
+              name="username"
+              placeholder="ชื่อ"
+              tabIndex="1"
+              value={this.state.formElements.username}
+              required
+              onChange={this.onFormChange}
+              style={{marginBottom:"10px"}}
+            />
+          </div>
+
           <div className="form-inline">
             <label className="col-3 form-inline" style={{justifyContent:"left"}}>เบอร์โทรศัพท์
             </label>
@@ -137,7 +166,27 @@ class GetInQueueWithLogin extends Component {
               placeholder="เบอร์โทรศัพท์"
               tabIndex="1"
               required
+              value={this.props.currentUser.telephone}
               onChange={this.onFormChange}
+              readOnly
+              style={{marginBottom:"10px"}}
+            />
+          </div>
+
+          <div className="form-inline">
+            <label className="form-inline col-3" style={{justifyContent:"left"}}>อีเมลล์
+            </label>
+            <input
+              type="email"
+              className="form-control  col-9"
+              id="email"
+              name="user_email"
+              placeholder="อีเมลล์"
+              tabIndex="2"
+              required
+              onChange={this.onFormChange}
+              readOnly
+              value={this.props.currentUser.email}
               style={{marginBottom:"10px"}}
             />
           </div>
@@ -208,10 +257,10 @@ class GetInQueueWithLogin extends Component {
   }
 }
 function mapStateToProps(state) {
-  const { user } = state.auth;
+  // const { user } = state.auth;
   const { message } = state.message;
   return {
-    user,
+    // user,
     message
   };
 }

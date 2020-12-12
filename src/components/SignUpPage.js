@@ -414,7 +414,7 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block" style={{backgroundColor: "#255"}} >สมัครสมาชิก</button>
+                  <button className="btn btn-primary btn-block" style={{backgroundColor: "#b38f2d", borderColor:"#b38f2d"}} >สมัครสมาชิก</button>
                 </div>
               </div>
             )}
