@@ -10,6 +10,8 @@ class CheckQueuePage extends Component {
         super(props)
         this.state = {
             currentUser: undefined,
+            listQueue:[],
+            username:''
           };
     }
 
@@ -18,7 +20,7 @@ class CheckQueuePage extends Component {
 
         if (user) {
         this.setState({
-            currentUser: user,
+            currentUser: user.username,
         });
         // UserService.listQueue(user.username).then(
         //     response => {
@@ -39,26 +41,30 @@ class CheckQueuePage extends Component {
         }
         
     }
+
+    handelSearch(){
+        console.log(this.state.username);
+    }
+
+    onChangeUsername = (e) => {
+        this.setState({
+            username: e.target.value,
+          });
+          
+    }
         
 
     render() {
         const { currentUser } = this.state;
+        console.log("currentUser", currentUser);
         return (
                 <div className="container align-items-start">
                     {
                 currentUser ? (
-                    <UserQueueList username={currentUser.username}/>
+                    <UserQueueList username={currentUser}/>
                 ):(
                     <div>
-                        <form>
-                            <div className="form-group text-center">
-                                <label className="h1" for="username">เช็คคิวของท่าน</label>
-                                <div className="col-8" style={{display: "inline-flex"}}>
-                                    <input type="text" className="form-control form-control-lg" id="username" placeholder="กรุณากรอกชื่อที่ทำการจอง" style={{borderTopRightRadius:0, borderBottomRightRadius:0}}/>
-                                    <button type="submit" className="btn btn-primary mb-2 btn-lg" style={{borderTopLeftRadius:0, borderBottomLeftRadius:0}}>เช็ค</button>
-                                </div>
-                            </div>
-                </form>
+                        
                 <UserQueueList/>
                     </div>
                 )

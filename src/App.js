@@ -173,7 +173,7 @@ showLogout = () => {
               {/* <Route exact path="/login" component={Login} /> */}
               {/* <Route exact path="/register" component={SignUpPage} /> */}
               <Route exact path="/profile" component={Profile} />
-              <Route path="/check" component={CheckQueuePage} />
+              <Route path="/check" component={UserQueueList} />
               <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={Admin} />
@@ -181,7 +181,7 @@ showLogout = () => {
               <Route path="/currentQueue" render={(props) => <CurrentQueue{...props}/>} />
               <Route path="/store" component={StorePage} />
               <Route path="/ManageQueuetable" component={ManageQueuetable} />
-              <Route path="/queueList" component={UserQueueList} />
+              {/* <Route path="/queueList" component={UserQueueList} /> */}
               
             </Switch>
             
