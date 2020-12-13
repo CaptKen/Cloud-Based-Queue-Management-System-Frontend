@@ -4,6 +4,10 @@ import GetQueueHeader from './GetQueueHeader';
 import { Container } from 'react-bootstrap';
 import AutoPlayCarousel from './PlaceList';
 
+import IMG1 from '../statics/business adv/ก.jpg'
+import IMG2 from '../statics/business adv/ข.jpg'
+import IMG3 from '../statics/business adv/ค.jpg'
+
 class StorePage extends Component {
   constructor(props) {
     super(props);
@@ -17,43 +21,46 @@ class StorePage extends Component {
     return (
         <div>
             <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
-            <Carousel style={{margin:50}}>
-                <Carousel.Item interval={1000}>
+            <Carousel style={{margin:50}} >
+                <Carousel.Item interval={1000} style={{borderRadius:"15px"}}>
                     <img
-                    className="d-block w-100"
-                    src="https://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg"
-                    alt="First slide"
+                      className="img-responsive"
+                      src={IMG1}
+                      alt="First slide"
+                      width="100%"
                     />
                     <Carousel.Caption>
                     <h3>First slide label</h3>
-                    <p>โฆษณา โปรโมชั่น</p>
+                    <p>Descriptions</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item interval={500}>
                     <img
-                    className="d-block w-100"
-                    src="https://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg"
-                    alt="Third slide"
+                      className="img-responsive"
+                      src={IMG2}
+                      alt="First slide"
+                      width="100%"
                     />
                     <Carousel.Caption>
                     <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Descriptions</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
                     <img
-                    className="d-block w-100"
-                    src="https://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg"
-                    alt="Third slide"
+                      className="img-responsive"
+                      src={IMG3}
+                      alt="First slide"
+                      width="100%"
                     />
                     <Carousel.Caption>
                     <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                    <p>Descriptions</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 </Carousel>
 
-                <AutoPlayCarousel typeName="ร้านอื่นๆ"/>
+                {/* <AutoPlayCarousel typeName="ร้านอื่นๆ"/> */}
         </div>
     );
   }

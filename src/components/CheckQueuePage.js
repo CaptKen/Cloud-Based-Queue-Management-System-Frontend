@@ -42,16 +42,7 @@ class CheckQueuePage extends Component {
         
     }
 
-    handelSearch(){
-        console.log(this.state.username);
-    }
-
-    onChangeUsername = (e) => {
-        this.setState({
-            username: e.target.value,
-          });
-          
-    }
+    
         
 
     render() {
