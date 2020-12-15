@@ -17,6 +17,8 @@ class Admin extends Component {
                 this.setState({
                     apiResponse: res.data
                 })
+                
+        
             }
         )
 
@@ -34,6 +36,7 @@ class Admin extends Component {
         console.log(this.state.currentQueueDetailRes);
     }
     render() {
+        console.log(this.state.apiResponse);
         return (
             <div className="container">
                 <div className="card text-center">

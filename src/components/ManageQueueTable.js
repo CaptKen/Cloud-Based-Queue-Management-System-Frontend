@@ -66,7 +66,7 @@ function Table({ columns, data }) {
           <div key={column.id} style={{padding: "8px"}}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{' '}
-              {console.log(column.Header)}
+              {console.log(column)}
               {/* {column.id} */}
               {column.Header}
             </label>
@@ -91,7 +91,7 @@ function Table({ columns, data }) {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                    console.log(cell.column.Header == "จัดการ" ?"THIS IS BUTTON":null);
+                    console.log(cell.column.Header == "จัดการ" ?"THIS IS BUTTON":cell);
                   return <td {...cell.getCellProps()}>{cell.column.Header == "จัดการ" ?<div><Button variant="success">รับคิว</Button>{'           '}<Button variant="outline-danger">ยกเลิกคิว</Button></div>:cell.render('Cell')}</td>
                 //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 // return <td {...cell.getCellProps()}>eiei</td>
@@ -139,7 +139,7 @@ function ManageQueueTable(props) {
           },
           {
             Header: 'หมายเหตุ',
-            accessor: 'detail',
+            accessor: 'user_detail',
           },
           {
             Header: 'จัดการ',
