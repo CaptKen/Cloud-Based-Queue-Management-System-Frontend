@@ -25,7 +25,7 @@ class Admin extends Component {
         userService.currentQueueDetail("BurinLKB").then(
             response => {
                 this.setState({
-                    currentQueueDetailRes: response.data.currentQueueDetail
+                    currentQueueDetailRes: response.data.currentQueueDetail[0]
                 })
             }
         )
@@ -36,16 +36,23 @@ class Admin extends Component {
         console.log(this.state.currentQueueDetailRes);
     }
     render() {
-        console.log(this.state.apiResponse);
+        console.log("this.state.apiResponse", this.state.apiResponse);
+        console.log("this.state.currentQueueDetailRes", this.state.currentQueueDetailRes);
         return (
             <div className="container">
                 <div className="card text-center">
-                    <div className="card-header">
+                    <div className="card-header h1">
                        BurinLKB
                     </div>
                     <div className="card-body">
-                        <h5 className="card-title">ข้อมูลคิว</h5>
-                        <p className="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit eum quod repudiandae assumenda amet, recusandae eaque optio. Molestias sapiente minus dolorum sunt facere, nemo numquam autem enim veniam laboriosam necessitatibus.</p>
+                    <h1 className="card-title h3">คิวปัจจุบัน</h1>
+                        <div style={{textAlignLast: "justify", paddingLeft: "100px", paddingRight: "100px"}}>
+                        <h5 style={{borderBottomWidth: "3px"}} className="card-title">หมายเลขคิว {this.state.currentQueueDetailRes.queue_no}</h5>
+                        <p style={{borderBottomWidth: "3px"}} className="card-title">ชื่อผู้ใช้บริการ {this.state.currentQueueDetailRes.username}</p>
+                        <p style={{borderBottomWidth: "3px"}} className="card-title">รายละเอียดเพิ่มเติม {this.state.currentQueueDetailRes.user_detail}</p>
+                        <p style={{borderBottomWidth: "3px"}} className="card-title">สถานะ {this.state.currentQueueDetailRes.status}</p>
+                        <br/>
+                        </div>
                         <div>
                             <button type="button" className="btn btn-success">รับคิว</button>
                             <button type="button" className="btn btn-danger" style={{
