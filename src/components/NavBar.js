@@ -252,7 +252,7 @@ class NavigationBar extends Component{
     return(
       <Styles>
         <Navbar expand="md" fixed="top">
-        <Navbar.Brand href="/">KQQ (Kill QueQ)</Navbar.Brand>
+        <Navbar.Brand href="/">QMS</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#3D9280'}} onClick={this.toggleMenu}/>
           
           

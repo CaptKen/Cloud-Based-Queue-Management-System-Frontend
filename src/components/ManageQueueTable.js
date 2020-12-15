@@ -57,7 +57,7 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <div className="d-flex justify-content-center">
+      <div className="justify-content-center" style={{display:"-webkit-inline-box"}}>
         {/* <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
@@ -66,7 +66,9 @@ function Table({ columns, data }) {
           <div key={column.id} style={{padding: "8px"}}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{' '}
-              {column.id}
+              {console.log(column.Header)}
+              {/* {column.id} */}
+              {column.Header}
             </label>
           </div>
         ))}

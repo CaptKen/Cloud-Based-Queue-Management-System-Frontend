@@ -6,7 +6,10 @@ import ManageQueueTable from './ManageQueueTable';
 class Admin extends Component {
     constructor(props){
     super(props);
-    this.state = {apiResponse:[]};
+    this.state = {
+        apiResponse:[],
+        currentQueueDetailRes:[]
+    };
   }
     callAPI = () => {
         userService.allQueueOfBusiness("BurinLKB").then(
@@ -16,17 +19,26 @@ class Admin extends Component {
                 })
             }
         )
+
+        userService.currentQueueDetail("BurinLKB").then(
+            response => {
+                this.setState({
+                    currentQueueDetailRes: response.data.currentQueueDetail
+                })
+            }
+        )
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.callAPI();
+        console.log(this.state.currentQueueDetailRes);
     }
     render() {
         return (
             <div className="container">
                 <div className="card text-center">
                     <div className="card-header">
-                       ชื่อร้านอาหาร
+                       BurinLKB
                     </div>
                     <div className="card-body">
                         <h5 className="card-title">ข้อมูลคิว</h5>

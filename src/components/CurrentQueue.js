@@ -33,7 +33,7 @@ class CurrentQueue extends Component {
     
             UserService.getQueueDetail(business_name, username).then(
                 response => {
-                    console.log(response.data.QueueDetail);
+                    console.log("response.data.QueueDetail", response.data.QueueDetail);
                     this.setState({
                         queueDetail: response.data.QueueDetail.userQueueDetail[0],
                         business_name: business_name,
@@ -100,7 +100,8 @@ class CurrentQueue extends Component {
             <div className="container">
                 <div className="card text-center">
                     <div className="card-header">
-                    {this.state.business_name}
+                    {/* {this.state.business_name} */}
+                    {this.state.queueDetail.business_name}
                     </div>
                     <div className="card-body">
                         <h5 className="card-title">หมายเลขคิวของท่าน : {this.state.queueDetail.queue_no}</h5>

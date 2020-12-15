@@ -106,7 +106,7 @@ onChangeUsername = (e) => {
       return (<Redirect
       to={{
       pathname: "/currentQueue",
-      state: { username: this.state.username, business_name: this.state.business_name }
+      state: { business_name: this.state.businessName, username: this.state.username }
     }}
   />)
     }

@@ -50,14 +50,14 @@ class GetQueueHeader extends Component {
                         />
                         <div>
                             <h1>{this.state.storeName}</h1>
-                            <p>สาขา : "api call (3km.)"</p>
+                            <p>สาขา : ลาดกระบัง</p>
                         </div>
                         </Col>
                         <Col xs={7} sm={3} style={{display:"inline-grid"}}>
                         {/* <p style={{display:"inline-flex"}}>เวลาเปิดบริการ : 10.00น.-10.05น </p>
                             <Button variant="success" style={{justifySelf:"center"}}>จองเวลา</Button><br/> */}
                         <p style={{display:"inline-flex"}}>เวลาเปิดบริการ :</p>
-                        <p style={{display:"inline-flex"}}>10.00น.-10.05น</p>
+                        <p style={{display:"inline-flex"}}>17.00น.-23.00น</p>
                         <Button variant="success">จองเวลา</Button><br/>
                         <p style={{display:"inline-flex"}}>คิวในระบบ : {this.state.waitingQueue}</p>
                         <p style={{display:"inline-flex"}}>ระยะเวลารอคิว : {this.state.waitingQueue} </p>

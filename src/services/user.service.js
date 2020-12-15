@@ -49,7 +49,11 @@ class UserService {
   }
 
   allQueueOfBusiness(business_name){
-    return axios.get(QUEUE_URL_API + 'queueByBusiness?business_name=' +business_name)
+    return axios.get(QUEUE_URL_API + 'queueByBusiness?business_name=' + business_name)
+  }
+  
+  currentQueueDetail(business_name){
+    return axios.get(QUEUE_URL_API + 'currentQueue?business_name=' + business_name)
   }
 }
 

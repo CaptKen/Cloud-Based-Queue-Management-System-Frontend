@@ -17,15 +17,15 @@ class Footer extends Component {
              <div className="col-11">
                  <div className="row ">
                      <div className="col-xl-8 col-md-4 col-sm-4 col-12 my-auto mx-auto a">
-                         <h3 className="text-muted mb-md-0 mb-5 bold-text">KQQ</h3>
-                         <p>(Kill QueQ)</p>
+                         <h3 className="text-muted mb-md-0 mb-5 bold-text">QMS</h3>
+                         <p>(Queue Management System)</p>
                      </div>
                      <div className="col-xl-2 col-md-4 col-sm-4 col-12">
                          <h6 className="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
                          <ul className="list-unstyled">
                             
                              <li><Link to="/home">Home</Link></li>
-                             <li><Link to="#/about">About</Link></li>
+                             <li><Link to="/check">Check Queue</Link></li>
                              <li>Blog</li>
                              <li>Portfolio</li>
                          </ul>
