@@ -259,10 +259,9 @@ import { render } from "react-dom";
 
 // ===================================================================== แบบที่ 3====================
 
-class FieldManage extends React.Component {
+class TableManage extends React.Component {
     constructor(props) {
         super(props);
-        this.handleEdit = this.handleEdit.bind(this);
         this.state = {
           apiResponse:[],
           showModeratorBoard: false,
@@ -309,27 +308,12 @@ class FieldManage extends React.Component {
       console.log(this.state.rows);
       console.log("apiResponse data: ", this.state.apiResponse);
     };
-    handleEdit = (idx) => () => {
-      console.log(idx)
-      this.setState({
-        editMode:{
-          status: true,
-          rowKey: idx
-        }
-      });
-    };
     handleAddRow = () => {
-      console.log("add")
       const fieldName = "";
       this.setState({
         // rows: [...this.state.rows, item]
-        apiResponse: [...this.state.apiResponse, fieldName],
-        editMode:{
-          status: true,
-          rowKey: this.state.apiResponse.length
-        }
+        apiResponse: [...this.state.apiResponse, fieldName]
       });
-      // console.log(this.state.apiResponse.length)
     };
     // handleRemoveRow = () => {
     //   this.setState({
@@ -342,7 +326,14 @@ class FieldManage extends React.Component {
       this.setState({ apiResponse });
     };
 
-    
+    handleEdit = (idx) => () => {
+      this.setState({
+        editMode:{
+          status: true,
+          rowKey: idx
+        }
+      });
+    };
 
     handleSave = () => {
       console.log("save");
@@ -358,6 +349,7 @@ class FieldManage extends React.Component {
       console.log(this.state.editMode.status);
       return (
         <div>
+          <div className="container">
             <div className="row clearfix">
               <div className="col-md-12 column">
                 <table
@@ -367,7 +359,7 @@ class FieldManage extends React.Component {
                   <thead>
                     <tr style={{backgroundColor: "#F2C035"}}>
                       {/* <th className="text-center"> </th> */}
-                      <th colspan="2"> ข้อมูลสำหรับการจอง</th>
+                      <th colspan="2"> ข้อมูลโต๊ะอาหาร</th>
                       {/* <th className="text-center">  </th> */}
                     </tr>
                   </thead>
@@ -430,7 +422,7 @@ class FieldManage extends React.Component {
                       </tr>
                     ))}
                     <tr>
-                      <td colSpan="2" className="text-center">
+                      <td colSpan="2">
                       <button onClick={this.handleAddRow} className="btn btn-primary">
                           Add Row
                         </button>
@@ -448,6 +440,7 @@ class FieldManage extends React.Component {
                 </button> */}
               </div>
             </div>
+          </div>
         </div>
       );
     }
@@ -455,4 +448,4 @@ class FieldManage extends React.Component {
 
 // =================================================================================================
 
-export default FieldManage
+export default TableManage

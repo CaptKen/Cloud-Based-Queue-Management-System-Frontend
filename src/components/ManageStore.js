@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Container } from 'react-bootstrap';
 import FieldManage from './FieldManage';
 import businessService from '../services/business.service';
+import TableManage from './TableManage';
 
 
 class ManageStore extends Component {
@@ -19,9 +20,9 @@ class ManageStore extends Component {
     // callAPI = () => {
     //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
     //         res => {
-    //           console.log("apiResponse" + res.data.BusinessDetail[0]);
+    //           console.log("apiResponse" + res.data.BusinessDetail[0].fixedField);
     //             this.setState({
-    //                 apiResponse: res.data.BusinessDetail[0]
+    //                 apiResponse: res.data.BusinessDetail[0].fixedField
     //             })
     //         }
     //     )
@@ -44,8 +45,9 @@ class ManageStore extends Component {
         const { currentUser} = this.state;
         return (
             <Container>
-               <h1>Manage Store</h1>
+               <h1 className="h1">Manage Store</h1>
                <FieldManage/>
+               {/* <TableManage/> */}
             </Container>
         );
     }
