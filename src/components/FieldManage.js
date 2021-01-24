@@ -270,7 +270,8 @@ class FieldManage extends React.Component {
           currentUser: undefined,
           rows: [{}],
           editMode:{
-            status: false
+            status: false,
+            rowKey: null
           }
         };
     }
@@ -367,11 +368,14 @@ class FieldManage extends React.Component {
                   <thead>
                     <tr style={{backgroundColor: "#F2C035"}}>
                       {/* <th className="text-center"> </th> */}
-                      <th colspan="2"> ข้อมูลสำหรับการจอง</th>
-                      {/* <th className="text-center">  </th> */}
+                      <th colSpan="2"> ข้อมูลสำหรับการจอง</th>
                     </tr>
                   </thead>
                   <tbody style={{backgroundColor: 'white'}}>
+                    <tr style={{backgroundColor:"#CCC7BB"}}>
+                      <td className="text-center">ชื่อฟิลด์</td>
+                      <td className="text-center" style={{width: "200px"}}>จัดการ</td>
+                    </tr>
                     {this.state.apiResponse.map((item, idx) => (
                       <tr id="addr0" key={idx}>
                         {/* <td>{idx}</td> */}
@@ -398,7 +402,7 @@ class FieldManage extends React.Component {
                             className="form-control"
                           />
                         </td> */}
-                        <td>
+                        <td className="text-center">
                           {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
                             <button
                               className={"btn btn-outline-success btn-sm"}

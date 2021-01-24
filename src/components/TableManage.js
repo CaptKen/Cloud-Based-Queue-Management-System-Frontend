@@ -269,21 +269,19 @@ class TableManage extends React.Component {
           currentUser: undefined,
           rows: [{}],
           editMode:{
-            status: false
+            status: false,
+            rowKey: null
           }
         };
     }
-    // state = {
-    //   rows: []
-    // };
     
-
     callAPI = () => {
         businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
             res => {
-              console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+              console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
                 this.setState({
-                    apiResponse: res.data.BusinessDetail[0].fields
+                    apiResponse: res.data.BusinessDetail[0].tableDetail,
+                    rows:res.data.BusinessDetail[0].tableDetail
                 })
             }
         )
@@ -295,38 +293,61 @@ class TableManage extends React.Component {
         console.log("apiResponse data: ", this.state.apiResponse);
     }
 
-    handleChange = (idx) => (e) => {
+    handleChange = idx => e => {
       const { name, value } = e.target;
-      const apiResponse = [...this.state.apiResponse];
-    //   rows[idx] = {
-    //     [name]: value
-    //   };
-    apiResponse[idx] = value;
+      const rows = [...this.state.rows];
+      switch(name) {
+        case "name":
+          rows[idx] = {
+            [name]: value,
+            "quantity": rows[idx].quantity,
+            "typeSymbol": rows[idx].typeSymbol
+          };
+          break;
+        case "quantity":
+          // code block
+          rows[idx] = {
+            [name]: value,
+            "name": rows[idx].name,
+            "typeSymbol": rows[idx].typeSymbol
+          };
+          break;
+        default:
+          // code block
+          rows[idx] = {
+            [name]: value,
+            "name": rows[idx].name,
+            "quantity": rows[idx].quantity
+          };
+      }
+      // rows[idx] = {
+      //   [name]: value,
+      // };
       this.setState({
-        apiResponse
+        rows
       });
-      console.log(this.state.rows);
-      console.log("apiResponse data: ", this.state.apiResponse);
     };
     handleAddRow = () => {
-      const fieldName = "";
+      const item = {
+        name: "",
+        quantity: "",
+        typeSymbol: ""
+      };
       this.setState({
-        // rows: [...this.state.rows, item]
-        apiResponse: [...this.state.apiResponse, fieldName]
+        rows: [...this.state.rows, item],
+        editMode:{
+          status: true,
+          rowKey: this.state.rows.length
+        }
       });
     };
-    // handleRemoveRow = () => {
-    //   this.setState({
-    //     rows: this.state.rows.slice(0, -1)
-    //   });
-    // };
-    handleRemoveSpecificRow = (idx) => () => {
-      const apiResponse = [...this.state.apiResponse];
-      apiResponse.splice(idx, 1);
-      this.setState({ apiResponse });
+    handleRemoveRow = () => {
+      this.setState({
+        rows: this.state.rows.slice(0, -1)
+      });
     };
-
     handleEdit = (idx) => () => {
+      console.log(idx)
       this.setState({
         editMode:{
           status: true,
@@ -334,114 +355,141 @@ class TableManage extends React.Component {
         }
       });
     };
-
+    handleRemoveSpecificRow = (idx) => () => {
+      const rows = [...this.state.rows]
+      rows.splice(idx, 1)
+      this.setState({ rows })
+    }
     handleSave = () => {
       console.log("save");
       this.setState({
+        rows:[...this.state.rows],
         editMode:{
           status: false,
           rowKey: null
         }
       });
+      console.log(this.state.rows);
     };
 
+
     render() {
-      console.log(this.state.editMode.status);
       return (
-        <div>
-          <div className="container">
-            <div className="row clearfix">
-              <div className="col-md-12 column">
-                <table
-                  className="table table-bordered table-hover"
-                  id="tab_logic"
-                >
-                  <thead>
-                    <tr style={{backgroundColor: "#F2C035"}}>
-                      {/* <th className="text-center"> </th> */}
-                      <th colspan="2"> ข้อมูลโต๊ะอาหาร</th>
-                      {/* <th className="text-center">  </th> */}
-                    </tr>
-                  </thead>
-                  <tbody style={{backgroundColor: 'white'}}>
-                    {this.state.apiResponse.map((item, idx) => (
-                      <tr id="addr0" key={idx}>
-                        {/* <td>{idx}</td> */}
-                    
+        <div className="row clearfix">
+          
+            <div className="col-md-12 column">
+              <table
+                className="table table-bordered table-hover"
+                id="tab_logic"
+              >
+                <thead>
+                  <tr style={{backgroundColor: "#F2C035"}}>
+                    <th colspan="4">ข้อมูลโต๊ะ</th>
+                    {/* <th className="text-center">จำนวน</th>
+                    <th className="text-center">ประเภท</th>
+                    <th className="text-center"> จัดการ </th> */}
+                  </tr>
+                </thead>
+                <tbody style={{backgroundColor: 'white'}}>
+                  <tr style={{backgroundColor:"#CCC7BB"}}>
+                    <td className="text-center">ชื่อโต๊ะ</td>
+                    <td className="text-center">จำนวน</td>
+                    <td className="text-center">ประเภท</td>
+                    <td className="text-center" style={{width: "200px"}}> จัดการ </td>
+                  </tr>
+                  {this.state.rows.map((item, idx) => (
+                    <tr id="addr0" key={idx}>
+                      {/* <td>{idx}</td> */}
+                      
+                      <td>
+                        {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
+                          <div>
+                              <input
+                                type="text"
+                                name="name"
+                                value={this.state.rows[idx].name}
+                                onChange={this.handleChange(idx)}
+                                className="form-control"
+                              />
+                          </div>
+                        ):(
+                          this.state.rows[idx].name
+                        )}
+                        </td>
+
                         <td>
                           {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                            <input
-                            type="text"
-                            name="name"
-                            value={this.state.apiResponse[idx]}
-                            onChange={this.handleChange(idx)}
-                            className="form-control"
-                          />
+                            <div>
+                                <input
+                                  type="text"
+                                  name="quantity"
+                                  value={this.state.rows[idx].quantity}
+                                  onChange={this.handleChange(idx)}
+                                  className="form-control"
+                                />
+                            </div>
                           ):(
-                            this.state.apiResponse[idx]
+                            this.state.rows[idx].quantity
                           )}
                         </td>
-                        {/* <td>
-                          <input
-                            type="text"
-                            name="mobile"
-                            value={this.state.rows[idx].mobile}
-                            onChange={this.handleChange(idx)}
-                            className="form-control"
-                          />
-                        </td> */}
+
                         <td>
                           {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                            <button
-                              className={"btn btn-outline-success btn-sm"}
-                              onClick={this.handleSave}
+                            <div>
+                                <input
+                                  type="text"
+                                  name="typeSymbol"
+                                  value={this.state.rows[idx].typeSymbol}
+                                  onChange={this.handleChange(idx)}
+                                  className="form-control"
+                                />
+                            </div>
+                          ):(
+                            this.state.rows[idx].typeSymbol
+                          )}
+                        </td>
+                        
+                      <td className="text-center">
+                        {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
+                              <button
+                                className={"btn btn-outline-success btn-sm"}
+                                onClick={this.handleSave}
+                              >
+                                Save
+                              </button>
+
+                            ):(
+                              <div>
+                                <button
+                                style={{marginRight: "10px"}}
+                              className={"btn btn-warning btn-sm"}
+                              onClick={this.handleEdit(idx)}
                             >
-                              Save
+                              Edit
                             </button>
 
-                          ):(
-                            <div>
-                              <button
-                              style={{marginRight: "10px"}}
-                            className={"btn btn-warning btn-sm"}
-                            onClick={this.handleEdit(idx)}
-                           >
-                            Edit
-                          </button>
-
-                          <button
-                            className="btn btn-outline-danger btn-sm"
-                            onClick={this.handleRemoveSpecificRow(idx)}
-                          >
-                            Remove
-                          </button>
-                          </div>
-                          )}
-                        
-                        </td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td colSpan="2">
+                            <button
+                              className="btn btn-outline-danger btn-sm"
+                              onClick={this.handleRemoveSpecificRow(idx)}
+                            >
+                              Remove
+                            </button>
+                            </div>
+                            )}
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                      <td colSpan="4" className="text-center">
                       <button onClick={this.handleAddRow} className="btn btn-primary">
                           Add Row
                         </button>
                       </td>
                     </tr>
-                  </tbody>
-                  
-                </table>
-                
-                {/* <button
-                  onClick={this.handleRemoveRow}
-                  className="btn btn-danger float-right"
-                >
-                  Delete Last Row
-                </button> */}
-              </div>
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
       );
     }
   }

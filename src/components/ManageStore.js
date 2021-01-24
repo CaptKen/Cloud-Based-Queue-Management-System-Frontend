@@ -4,6 +4,8 @@ import { Container } from 'react-bootstrap';
 import FieldManage from './FieldManage';
 import businessService from '../services/business.service';
 import TableManage from './TableManage';
+import BusinessDetailManager from './BusinessDetailManage';
+import ConstraintManage from './ConstraintManage';
 
 
 class ManageStore extends Component {
@@ -47,7 +49,9 @@ class ManageStore extends Component {
             <Container>
                <h1 className="h1">Manage Store</h1>
                <FieldManage/>
-               {/* <TableManage/> */}
+               <TableManage/>
+               <BusinessDetailManager/>
+               <ConstraintManage/>
             </Container>
         );
     }
