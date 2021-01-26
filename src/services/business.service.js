@@ -25,6 +25,25 @@ class BusinessService {
   getBusinessDetail(businessName, branch){
     return axios.get(BUSINESS_URL_API + 'findBusinessDetail?name=' + businessName +"&branch=" + branch)
   }
+
+  //upload รูป
+  upLoadPromotionImg(file, onUploadProgress){
+    let formData = new FormData();
+
+    formData.append("file", file);
+    return axios.post(BUSINESS_URL_API + 'addPromo', formData, {
+      headers:{
+      "Content-Type": "multipart/form-data",
+    },onUploadProgress
+  });
+  }
+
+  //เอารูป
+  getPromotionImg(){
+    return axios.get(BUSINESS_URL_API+ "files");
+  }
+
+
 }
 
 export default new BusinessService();

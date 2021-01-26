@@ -6,6 +6,7 @@ import businessService from '../services/business.service';
 import TableManage from './TableManage';
 import BusinessDetailManager from './BusinessDetailManage';
 import ConstraintManage from './ConstraintManage';
+import PromoImgManage from './PromoImgManage';
 
 
 class ManageStore extends Component {
@@ -52,6 +53,7 @@ class ManageStore extends Component {
                <TableManage/>
                <BusinessDetailManager/>
                <ConstraintManage/>
+               <PromoImgManage/>
             </Container>
         );
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import businessService from '../services/business.service';
 
-class TableManage extends React.Component {
+class BusinessDetailManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -207,4 +207,4 @@ class TableManage extends React.Component {
 
 // =================================================================================================
 
-export default TableManage
+export default BusinessDetailManage
