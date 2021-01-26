@@ -288,9 +288,10 @@ render() {
                                 style={{width: `80%`, display:'inline', marginLeft:`10%`}}
                               /> */}
                               {/* {fileInfos[idx].name} */}
-                              <a href={item.url}>{item.name}</a>
+                              {/* <a href={item.url}>{item.name}</a>
                               <a src={this.state.ImgDir+"/"+fileInfos[idx].name}></a>
-                              <img src={item.url}/>
+                              <img src={item.url}/> */}
+                              {fileInfos[idx].name}
                           </div>
                         ):(
                             fileInfos[idx].name
