@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import businessService from '../services/business.service';
-// import businessService from './../../../../senior_project/Cloud-Based-Queue-Management-System-Backend-MongoDB/uploads/BurinLKB';
+// import businessService from '../../../../senior_project/Cloud-Based-Queue-Management-System-Backend-MongoDB/uploads/BurinLKB';
 
 class ConstraintManage extends React.Component {
     constructor(props) {

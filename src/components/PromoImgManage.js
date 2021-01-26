@@ -66,7 +66,7 @@ constructor(props) {
   // this.importAll = this.importAll.bind(this);
 
   this.state = {
-    ImgDir : 'D:/senior_project/Cloud-Based-Queue-Management-System-Backend-MongoDB/uploads/BurinLKB/',
+    ImgDir : '../../../Cloud-Based-Queue-Management-System-Backend-MongoDB/uploads/BurinLKB' + "BurinLKB",
     selectedFiles: undefined,
     currentFile: undefined,
     progress: 0,
@@ -259,8 +259,10 @@ render() {
                 </tr>
               </thead>
               <tbody style={{backgroundColor: 'white'}}>
-                  <tr style={{backgroundColor:"#CCC7BB"}}>
-                      <td  className="text-center" >ชื่อรูป</td>
+                <div style={{display:"block", height:"800px", overflowY:"scroll"}}>
+                <tr style={{backgroundColor:"#CCC7BB"}}>
+                      <td  className="text-center" style={{width: "200px"}}>ชื่อรูป</td>
+                      <td  className="text-center" >ตัวอย่าง</td>
                       <td className="text-center" style={{width: "200px"}}> จัดการ</td>
                   </tr>
                 {fileInfos.map((item, idx) => (
@@ -287,12 +289,16 @@ render() {
                               /> */}
                               {/* {fileInfos[idx].name} */}
                               <a href={item.url}>{item.name}</a>
-                              <img src={this.state.ImgDir+fileInfos[idx].name}/>
+                              <a src={this.state.ImgDir+"/"+fileInfos[idx].name}></a>
+                              <img src={item.url}/>
                           </div>
                         ):(
-                          
-                          fileInfos[idx].name
+                            fileInfos[idx].name
                         )}
+                        </td>
+
+                        <td>
+                        <img src={item.url}/>
                         </td>
 
                           
@@ -327,6 +333,8 @@ render() {
                     </td>
                   </tr>
                 ))}
+                
+                </div>
                 <tr>
                     <td colSpan="4" className="text-center">
                     {currentFile && (
@@ -365,15 +373,8 @@ render() {
             </table>
           </div>
         </div>
-      
-
-      
-
-      
-
-      
-
-      <div className="card">
+    
+      {/* <div className="card">
         <div className="card-header">List of Files</div>
         <ul className="list-group list-group-flush">
           {fileInfos &&
@@ -383,7 +384,7 @@ render() {
               </li>
             ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }
