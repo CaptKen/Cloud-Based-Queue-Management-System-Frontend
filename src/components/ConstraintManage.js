@@ -192,9 +192,14 @@ class ConstraintManage extends React.Component {
                     </tr>
                   ))}
                   <tr>
-                      <td colSpan="4" className="text-center">
-                      <button onClick={this.handleAddRow} className="btn btn-primary">
-                          Add Row
+                      <td colSpan="2" className="text-left">
+                      <button onClick={this.handleAddRow} className="btn btn-outline-primary btn-sm">
+                          เพิ่มข้อจำกัด
+                        </button>
+                      </td>
+                      <td  className="text-center">
+                      <button onClick={console.log("save")} className="btn btn-success btn-lg">
+                          บันทึก
                         </button>
                       </td>
                     </tr>

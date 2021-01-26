@@ -355,15 +355,15 @@ render() {
                     {/* <button onClick={this.handleAddRow} className="btn btn-primary">
                         Add Row
                       </button> */}
-                      <label className="btn btn-default">
-                      <input type="file" onChange={this.selectFile} />
+                      <label for="promoImg" className="btn btn-outline-primary" style={{marginRight:"15%"}}>เพิ่มรูปภาพโฆษณา โปรโมชั่น
+                      <input id="promoImg" type="file" onChange={this.selectFile} style={{display:"none"}}/>
                     </label>
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-success btn-lg"
                       disabled={!selectedFiles}
                       onClick={this.upload}
                     >
-                      Add Promo
+                      บันทึก
                     </button>
                     {/* <div className="alert alert-light" role="alert">
                       {message}

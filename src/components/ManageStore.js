@@ -47,13 +47,22 @@ class ManageStore extends Component {
     render() {
         const { currentUser} = this.state;
         return (
-            <Container>
-               <h1 className="h1">Manage Store</h1>
+            <Container >
+              <h1 className="h1">Manage Store</h1>
                <FieldManage/>
                <TableManage/>
                <BusinessDetailManager/>
                <ConstraintManage/>
                <PromoImgManage/>
+               <div style={{marginLeft:`43%`, padding:'20px'}}>
+                <button
+                  className={"btn btn-danger btn-lg"}
+                >
+                  ย้อนกลับ
+                </button>
+               </div>
+               
+              
             </Container>
         );
     }
