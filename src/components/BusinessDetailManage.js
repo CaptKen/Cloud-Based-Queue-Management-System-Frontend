@@ -6,6 +6,8 @@ class BusinessDetailManage extends React.Component {
         super(props);
         this.state = {
           apiResponse:[],
+          branch: '',
+          businessName: '',
           showModeratorBoard: false,
           showAdminBoard: false,
           currentUser: undefined,
@@ -23,7 +25,9 @@ class BusinessDetailManage extends React.Component {
               console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
                 this.setState({
                     apiResponse: res.data.BusinessDetail[0].businessDetailList,
-                    rows:res.data.BusinessDetail[0].businessDetailList
+                    rows:res.data.BusinessDetail[0].businessDetailList,
+                    branch: res.data.BusinessDetail[0].branch,
+                    businessName: res.data.BusinessDetail[0].name
                 })
             }
         )
@@ -102,6 +106,21 @@ class BusinessDetailManage extends React.Component {
       });
       console.log(this.state.rows);
     };
+
+    handleUpdateBusinessDetail = () => {
+      console.log("this.state.rows: ", this.state.rows);
+      const formData = {}
+      formData["businessDetailList"] = this.state.rows
+      console.log("formData: ", formData);
+
+      businessService.updateConstraint(this.state.businessName, this.state.branch, formData)
+        .then(() =>{
+          alert("update success")
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
 
 
     render() {
@@ -197,7 +216,7 @@ class BusinessDetailManage extends React.Component {
                         </button>
                       </td>
                       <td  className="text-center">
-                      <button onClick={console.log("save")} className="btn btn-success btn-lg">
+                      <button onClick={this.handleUpdateBusinessDetail} className="btn btn-success btn-lg">
                           บันทึก
                         </button>
                       </td>

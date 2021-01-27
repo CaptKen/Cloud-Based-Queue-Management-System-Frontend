@@ -43,6 +43,30 @@ class BusinessService {
     return axios.get(BUSINESS_URL_API+ "files");
   }
 
+  //update fields
+  updateFields(businessName, branch, fieldsList){
+    return axios.patch(BUSINESS_URL_API + 'updateFields/' + businessName + '/' + branch, fieldsList)
+  }
+
+  //update fields
+  updateTableDetail(businessName, branch, tableDetail){
+    return axios.patch(BUSINESS_URL_API + 'updateTableDetail/' + businessName + '/' + branch, tableDetail)
+  }
+
+  //update businessDetail
+  updateBusinessDetailList(businessName, branch, businessDetail){
+    return axios.patch(BUSINESS_URL_API + 'updatebusinessDetail/' + businessName + '/' + branch, businessDetail)
+  }
+
+  //update constraint
+  updateConstraint(businessName, branch, constraint){
+    return axios.patch(BUSINESS_URL_API + 'updateConstraint/' + businessName + '/' + branch, constraint)
+  }
+
+  //delete promotion
+  deletePromoImg(businessName, fileName){
+    return axios.delete(BUSINESS_URL_API + 'deletePromoImg/' + businessName + '/' + fileName);
+  }
 
 }
 

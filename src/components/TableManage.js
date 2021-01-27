@@ -264,6 +264,8 @@ class TableManage extends React.Component {
         super(props);
         this.state = {
           apiResponse:[],
+          businessName:'',
+          branch:'',
           showModeratorBoard: false,
           showAdminBoard: false,
           currentUser: undefined,
@@ -281,7 +283,9 @@ class TableManage extends React.Component {
               console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
                 this.setState({
                     apiResponse: res.data.BusinessDetail[0].tableDetail,
-                    rows:res.data.BusinessDetail[0].tableDetail
+                    rows:res.data.BusinessDetail[0].tableDetail,
+                    branch: res.data.BusinessDetail[0].branch,
+                    businessName: res.data.BusinessDetail[0].name
                 })
             }
         )
@@ -371,6 +375,21 @@ class TableManage extends React.Component {
       });
       console.log(this.state.rows);
     };
+
+    handleUpdateTable = () => {
+      console.log("this.state.rows: ", this.state.rows);
+      const formData = {}
+      formData["tableDetail"] = this.state.rows
+      console.log("formData: ", formData);
+
+      businessService.updateTableDetail(this.state.businessName, this.state.branch, formData)
+        .then(() =>{
+          alert("update success")
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
 
 
     render() {
@@ -486,7 +505,7 @@ class TableManage extends React.Component {
                         </button>
                       </td>
                       <td  className="text-center">
-                      <button onClick={console.log("save")} className="btn btn-success btn-lg">
+                      <button onClick={this.handleUpdateTable} className="btn btn-success btn-lg">
                           บันทึก
                         </button>
                       </td>

@@ -265,6 +265,8 @@ class FieldManage extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.state = {
           apiResponse:[],
+          branch:'',
+          businessName:'',
           showModeratorBoard: false,
           showAdminBoard: false,
           currentUser: undefined,
@@ -285,7 +287,9 @@ class FieldManage extends React.Component {
             res => {
               console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
                 this.setState({
-                    apiResponse: res.data.BusinessDetail[0].fields
+                    apiResponse: res.data.BusinessDetail[0].fields,
+                    branch: res.data.BusinessDetail[0].branch,
+                    businessName: res.data.BusinessDetail[0].name
                 })
             }
         )
@@ -347,6 +351,7 @@ class FieldManage extends React.Component {
 
     handleSave = () => {
       console.log("save");
+      this.handleUpdateField();
       this.setState({
         editMode:{
           status: false,
@@ -354,6 +359,26 @@ class FieldManage extends React.Component {
         }
       });
     };
+
+    handleUpdateField = () => {
+      console.log("this.state.apiResponse: ", this.state.apiResponse);
+
+      const formData = {}
+      formData["fields"] = this.state.apiResponse
+
+      // const formList = []
+      // Array.from(this.state.apiResponse).forEach(i => {
+      //   formList.append("fields", {})
+      // })
+      console.log("formData: ", formData);
+      businessService.updateFields(this.state.businessName, this.state.branch, formData)
+        .then(() =>{
+          alert("update success")
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
 
     render() {
       console.log(this.state.editMode.status);
@@ -440,7 +465,7 @@ class FieldManage extends React.Component {
                         </button>
                       </td>
                       <td  className="text-center">
-                      <button onClick={console.log("save")} className="btn btn-success btn-lg">
+                      <button onClick={this.handleUpdateField} className="btn btn-success btn-lg">
                           บันทึก
                         </button>
                       </td>

@@ -75,6 +75,8 @@ constructor(props) {
     fileInfos: [],
 
     apiResponse:[],
+    businessName: '',
+    branch:'',
     showModeratorBoard: false,
     showAdminBoard: false,
     currentUser: undefined,
@@ -89,10 +91,10 @@ constructor(props) {
 callAPI = () => {
   businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
       res => {
-        console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
+        // console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
           this.setState({
-              apiResponse: res.data.BusinessDetail[0].constraint,
-              rows:res.data.BusinessDetail[0].constraint
+              businessName: res.data.BusinessDetail[0].name,
+              branch:res.data.BusinessDetail[0].branch
           })
       }
   )
@@ -109,8 +111,8 @@ componentDidMount() {
   });
 
   this.callAPI();
-  console.log("row: ", this.state.rows)
-  console.log("apiResponse data: ", this.state.apiResponse);
+  // console.log("row: ", this.state.rows)
+  // console.log("apiResponse data: ", this.state.apiResponse);
 }
 
 selectFile(event) {
@@ -120,7 +122,9 @@ selectFile(event) {
 }
 
 upload() {
+  this.handleUploadInput()
   let currentFile = this.state.selectedFiles[0];
+  
 
   this.setState({
     progress: 0,
@@ -198,19 +202,29 @@ handleRemoveRow = () => {
     rows: this.state.rows.slice(0, -1)
   });
 };
-handleEdit = (idx) => () => {
-  console.log(idx)
+handleEdit = () => () => {
   this.setState({
+    progress: 0,
     editMode:{
       status: true,
-      rowKey: idx
     }
   });
 };
-handleRemoveSpecificRow = (idx) => () => {
-  const rows = [...this.state.rows]
-  rows.splice(idx, 1)
-  this.setState({ rows })
+handleRemoveSpecificRow = (fileName) => () => {
+  console.log(fileName);
+  businessService.deletePromoImg(this.state.businessName, fileName)
+    .then(() =>{
+      alert("update success")
+      businessService.getPromotionImg().then((response) => {
+
+        this.setState({
+          fileInfos: response.data,
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 handleSave = () => {
   console.log("save");
@@ -224,6 +238,16 @@ handleSave = () => {
   console.log(this.state.rows);
 };
 
+handleUploadInput = () => {
+    const actualBtn = document.getElementById('actual-btn');
+    const fileChosen = document.getElementById('file-chosen');
+  
+    actualBtn.addEventListener('change', function(){
+      fileChosen.textContent = this.files[0].name
+    })
+}
+
+
 // importAll(r) {
 //   let images = {};
 //   r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
@@ -231,7 +255,6 @@ handleSave = () => {
 // }
 
 render() {
-  
   const {
     selectedFiles,
     currentFile,
@@ -259,7 +282,6 @@ render() {
                 </tr>
               </thead>
               <tbody style={{backgroundColor: 'white'}}>
-                <div style={{display:"block", height:"800px", overflowY:"scroll"}}>
                 <tr style={{backgroundColor:"#CCC7BB"}}>
                       <td  className="text-center" style={{width: "200px"}}>ชื่อรูป</td>
                       <td  className="text-center" >ตัวอย่าง</td>
@@ -315,17 +337,9 @@ render() {
 
                           ):(
                             <div>
-                              <button
-                              style={{marginRight: "10px"}}
-                            className={"btn btn-warning btn-sm"}
-                            onClick={this.handleEdit(idx)}
-                          >
-                            Edit
-                          </button>
-
                           <button
                             className="btn btn-outline-danger btn-sm"
-                            onClick={this.handleRemoveSpecificRow(idx)}
+                            onClick={this.handleRemoveSpecificRow(fileInfos[idx].name)}
                           >
                             Remove
                           </button>
@@ -335,10 +349,11 @@ render() {
                   </tr>
                 ))}
                 
-                </div>
                 <tr>
                     <td colSpan="4" className="text-center">
-                    {currentFile && (
+                    {this.state.editMode.status ?(
+                      <div>
+                        {currentFile && (
                       <div className="progress">
                         <div
                           className="progress-bar progress-bar-info progress-bar-striped"
@@ -355,16 +370,38 @@ render() {
                     {/* <button onClick={this.handleAddRow} className="btn btn-primary">
                         Add Row
                       </button> */}
-                      <label for="promoImg" className="btn btn-outline-primary" style={{marginRight:"15%"}}>เพิ่มรูปภาพโฆษณา โปรโมชั่น
-                      <input id="promoImg" type="file" onChange={this.selectFile} style={{display:"none"}}/>
-                    </label>
+                      
+                      <label htmlFor="actual-btn" className="btn btn-outline-primary" >เพิ่มรูปภาพโฆษณา โปรโมชั่น</label>
+                      <input type="file" id="actual-btn" onChange={this.selectFile} hidden/>
+                      <span id="file-chosen" style={{marginRight:"15%", marginLeft:"0.5rem"}} >No file chosen</span>
+
+                    
                     <button
-                      className="btn btn-success btn-lg"
+                      className="btn btn-primary btn-lg"
                       disabled={!selectedFiles}
                       onClick={this.upload}
                     >
-                      บันทึก
+                      Upload
                     </button>
+
+                    <button
+                                style={{marginLeft: "10px"}}
+                              className={"btn btn-success btn-lg"}
+                              onClick={this.handleSave}
+                            >
+                              Save
+                            </button>
+                      </div>
+                  ):(
+                    <button
+                                style={{marginRight: "10px", float:"left"}}
+                              className={"btn btn-outline-primary btn-sm"}
+                              onClick={this.handleEdit()}
+                            >
+                              เพิ่มรูปภาพโปรโมชั่น
+                            </button>
+                  )}
+                    
                     {/* <div className="alert alert-light" role="alert">
                       {message}
                     </div> */}
