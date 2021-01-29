@@ -5,6 +5,7 @@ import UserService from "../services/user.service";
 import { Button } from "react-bootstrap";
 import businessService from '../services/business.service';
 import { render } from "react-dom";
+import { connect } from "react-redux";
 // import makeData from './makeData'
 
 // const Styles = styled.div`
@@ -277,22 +278,41 @@ class TableManage extends React.Component {
         };
     }
     
-    callAPI = () => {
-        businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-            res => {
-              console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
-                this.setState({
-                    apiResponse: res.data.BusinessDetail[0].tableDetail,
-                    rows:res.data.BusinessDetail[0].tableDetail,
-                    branch: res.data.BusinessDetail[0].branch,
-                    businessName: res.data.BusinessDetail[0].name
-                })
-            }
-        )
-    }
+    // callAPI = () => {
+    //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
+    //         res => {
+    //           console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+    //             this.setState({
+    //                 apiResponse: res.data.BusinessDetail[0].tableDetail,
+    //                 rows:res.data.BusinessDetail[0].tableDetail,
+    //                 branch: res.data.BusinessDetail[0].branch,
+    //                 businessName: res.data.BusinessDetail[0].name
+    //             })
+    //         }
+    //     )
+    // }
 
     componentDidMount = () =>{
-        this.callAPI();
+      const user = this.props.user;
+      const businessName = this.props.businessName;
+      console.log(" +++++++++++++++++++++++++++++++++++ businessName:",businessName, user.businessName);
+      if (user) {
+        this.setState({
+          currentUser: user,
+          branch: user.branch,
+          businessName: user.businessName,
+        });
+
+      businessService.getBusinessDetail(user.businessName, user.branch).then(
+        res => {
+          // console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+            this.setState({
+                rows:res.data.BusinessDetail[0].tableDetail,
+            })
+        }
+    )
+      }
+        // this.callAPI();
         console.log("row: ", this.state.rows)
         console.log("apiResponse data: ", this.state.apiResponse);
     }
@@ -516,8 +536,15 @@ class TableManage extends React.Component {
           </div>
       );
     }
-  }
 
+  }
 // =================================================================================================
 
-export default TableManage
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps)(TableManage)

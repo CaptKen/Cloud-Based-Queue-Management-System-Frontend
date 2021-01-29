@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import businessService from '../services/business.service';
+import { connect } from "react-redux";
 
 class BusinessDetailManage extends React.Component {
     constructor(props) {
@@ -19,22 +20,41 @@ class BusinessDetailManage extends React.Component {
         };
     }
     
-    callAPI = () => {
-        businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-            res => {
-              console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
-                this.setState({
-                    apiResponse: res.data.BusinessDetail[0].businessDetailList,
-                    rows:res.data.BusinessDetail[0].businessDetailList,
-                    branch: res.data.BusinessDetail[0].branch,
-                    businessName: res.data.BusinessDetail[0].name
-                })
-            }
-        )
-    }
+    // callAPI = () => {
+    //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
+    //         res => {
+    //           console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+    //             this.setState({
+    //                 apiResponse: res.data.BusinessDetail[0].businessDetailList,
+    //                 rows:res.data.BusinessDetail[0].businessDetailList,
+    //                 branch: res.data.BusinessDetail[0].branch,
+    //                 businessName: res.data.BusinessDetail[0].name
+    //             })
+    //         }
+    //     )
+    // }
 
     componentDidMount = () =>{
-        this.callAPI();
+      const user = this.props.user;
+      console.log(user.businessName);
+      if (user) {
+        this.setState({
+          currentUser: user,
+          showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+          showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+          businessName: user.businessName
+        });
+      }
+      businessService.getBusinessDetail(user.businessName, user.branch).then(
+        res => {
+          // console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+            this.setState({
+                // apiResponse: res.data.BusinessDetail[0].businessDetailList,
+                rows:res.data.BusinessDetail[0].businessDetailList,
+            })
+        }
+    )
+        // this.callAPI();
         console.log("row: ", this.state.rows)
         console.log("apiResponse data: ", this.state.apiResponse);
     }
@@ -230,5 +250,11 @@ class BusinessDetailManage extends React.Component {
   }
 
 // =================================================================================================
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
 
-export default BusinessDetailManage
+export default connect(mapStateToProps)(BusinessDetailManage)

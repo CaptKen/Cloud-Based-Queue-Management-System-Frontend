@@ -25,6 +25,7 @@ import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
+import CreateBusiness from './components/CreateBusiness';
 
 class App extends Component {
   constructor(props) {
@@ -183,7 +184,7 @@ showLogout = () => {
               <Route path="/store" component={StorePage} />
               <Route path="/ManageQueuetable" component={ManageQueuetable} />
               <Route path="/ManageStore" component={ManageStore} />
-              
+              <Route path="/CreateBusiness" component={CreateBusiness} />
             </Switch>
             
         </div>

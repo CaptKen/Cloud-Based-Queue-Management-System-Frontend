@@ -5,6 +5,7 @@ import UserService from "../services/user.service";
 import { Button } from "react-bootstrap";
 import businessService from '../services/business.service';
 import { render } from "react-dom";
+import { connect } from "react-redux";
 // import makeData from './makeData'
 
 // const Styles = styled.div`
@@ -266,7 +267,7 @@ class FieldManage extends React.Component {
         this.state = {
           apiResponse:[],
           branch:'',
-          businessName:'',
+          businessName: this.props.businessName,
           showModeratorBoard: false,
           showAdminBoard: false,
           currentUser: undefined,
@@ -282,21 +283,43 @@ class FieldManage extends React.Component {
     // };
     
 
-    callAPI = () => {
-        businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-            res => {
-              console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
-                this.setState({
-                    apiResponse: res.data.BusinessDetail[0].fields,
-                    branch: res.data.BusinessDetail[0].branch,
-                    businessName: res.data.BusinessDetail[0].name
-                })
-            }
-        )
-    }
+    // callAPI = () => {
+    //   console.log("this is buz name: ", this.state.businessName);
+    //     businessService.getBusinessDetail(this.state.businessName, "Ladkrabang").then(
+    //         res => {
+    //           // console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+    //             this.setState({
+    //                 apiResponse: res.data.BusinessDetail[0].fields,
+    //                 // branch: res.data.BusinessDetail[0].branch,
+    //                 // businessName: res.data.BusinessDetail[0].name
+    //             })
+    //         }
+    //     )
+    // }
 
     componentDidMount = () =>{
-        this.callAPI();
+      const user = this.props.user;
+      const businessName = this.props.businessName;
+      console.log(" +++++++++++++++++++++++++++++++++++ businessName:",businessName, user.businessName);
+      if (user) {
+        this.setState({
+          currentUser: user,
+          branch: user.branch,
+          businessName: user.businessName,
+        });
+        businessService.getBusinessDetail(user.businessName, user.branch).then(
+          res => {
+            // console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+              this.setState({
+                  apiResponse: res.data.BusinessDetail[0].fields,
+                  // branch: res.data.BusinessDetail[0].branch,
+                  // businessName: res.data.BusinessDetail[0].name
+              })
+          }
+        )
+      }
+      
+        // this.callAPI();
         console.log("row: ", this.state.rows)
         console.log("apiResponse data: ", this.state.apiResponse);
     }
@@ -489,4 +512,11 @@ class FieldManage extends React.Component {
 
 // =================================================================================================
 
-export default FieldManage
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps)(FieldManage)

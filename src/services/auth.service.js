@@ -27,6 +27,16 @@ class AuthService {
       telephone,
     });
   }
+
+  registerManager(username, email, password, businessName, branch) {
+    return axios.post(API_URL + "signupManager", {
+      username,
+      email,
+      password,
+      businessName,
+      branch
+    });
+  }
 }
 
 export default new AuthService();

@@ -236,7 +236,7 @@ class NavigationBar extends Component{
       this.setState({
         currentUser: user,
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        // showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
   }
@@ -263,7 +263,7 @@ class NavigationBar extends Component{
           
           
           {showModeratorBoard && (
-                <Nav.Link href="/mod">Moderator Board</Nav.Link>
+                <Nav.Link href="/manageStore">Manager Board</Nav.Link>
               )}
 
               {/* {showAdminBoard && (

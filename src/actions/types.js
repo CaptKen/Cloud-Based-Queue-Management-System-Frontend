@@ -14,3 +14,4 @@ export const LIST_USER_QUEUE = "LIST_USER_QUEUE";
 export const VIEW_QUEUE = "VIEW_QUEUE";
 
 export const BUSINESS_DETAIL = "BUSINESS_DETAIL"
+

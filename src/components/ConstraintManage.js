@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import businessService from '../services/business.service';
+import { connect } from "react-redux";
 // import businessService from '../../../../senior_project/Cloud-Based-Queue-Management-System-Backend-MongoDB/uploads/BurinLKB';
 
 class ConstraintManage extends React.Component {
@@ -20,22 +21,43 @@ class ConstraintManage extends React.Component {
         };
     }
     
-    callAPI = () => {
-        businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-            res => {
-              console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
-                this.setState({
-                    apiResponse: res.data.BusinessDetail[0].constraint,
-                    rows:res.data.BusinessDetail[0].constraint,
-                    businessName: res.data.BusinessDetail[0].name,
-                    branch: res.data.BusinessDetail[0].branch
-                })
-            }
-        )
-    }
+    // callAPI = () => {
+    //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
+    //         res => {
+    //           console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
+    //             this.setState({
+    //                 apiResponse: res.data.BusinessDetail[0].constraint,
+    //                 rows:res.data.BusinessDetail[0].constraint,
+    //                 businessName: res.data.BusinessDetail[0].name,
+    //                 branch: res.data.BusinessDetail[0].branch
+    //             })
+    //         }
+    //     )
+    // }
 
     componentDidMount = () =>{
-        this.callAPI();
+      const user = this.props.user;
+      console.log(user.businessName);
+      if (user) {
+        this.setState({
+          currentUser: user,
+          showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+          showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+          businessName: user.businessName
+        });
+        businessService.getBusinessDetail(user.businessName, user.branch).then(
+          res => {
+            // console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
+              this.setState({
+                  // apiResponse: res.data.BusinessDetail[0].constraint,
+                  rows:res.data.BusinessDetail[0].constraint,
+              })
+          }
+      )
+      }
+      
+    
+        // this.callAPI();
         console.log("row: ", this.state.rows)
         console.log("apiResponse data: ", this.state.apiResponse);
     }
@@ -232,4 +254,11 @@ class ConstraintManage extends React.Component {
 
 // =================================================================================================
 
-export default ConstraintManage
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps)(ConstraintManage)

@@ -14,6 +14,7 @@ class ManageStore extends Component {
         super(props);
         this.state = {
           apiResponse:[],
+          businessName:'',
           showModeratorBoard: false,
           showAdminBoard: false,
           currentUser: undefined,
@@ -25,7 +26,7 @@ class ManageStore extends Component {
     //         res => {
     //           console.log("apiResponse" + res.data.BusinessDetail[0].fixedField);
     //             this.setState({
-    //                 apiResponse: res.data.BusinessDetail[0].fixedField
+    //                 apiResponse: res.data.BusinessDetail[0],
     //             })
     //         }
     //     )
@@ -35,17 +36,20 @@ class ManageStore extends Component {
     componentDidMount() {
       // this.callAPI();
       const user = this.props.user;
-  
+      console.log(user.businessName);
       if (user) {
         this.setState({
           currentUser: user,
           showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
           showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+          businessName: user.businessName
         });
       }
     }
     render() {
-        const { currentUser} = this.state;
+
+        const { currentUser, businessName} = this.state;
+        console.log("currentUser.businessName: ",currentUser, businessName);
         return (
             <Container >
               <h1 className="h1">Manage Store</h1>
@@ -61,8 +65,6 @@ class ManageStore extends Component {
                   ย้อนกลับ
                 </button>
                </div>
-               
-              
             </Container>
         );
     }
