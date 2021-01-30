@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import businessService from '../services/business.service';
+import { connect } from "react-redux";
 
 class PromoImgManage extends React.Component {
 //   constructor() {
@@ -71,7 +72,7 @@ constructor(props) {
     currentFile: undefined,
     progress: 0,
     message: "",
-
+    fileNameforShow: 'No file chosen',
     fileInfos: [],
 
     apiResponse:[],
@@ -88,44 +89,55 @@ constructor(props) {
   };
 }
 
-callAPI = () => {
-  businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-      res => {
-        // console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
-          this.setState({
-              businessName: res.data.BusinessDetail[0].name,
-              branch:res.data.BusinessDetail[0].branch
-          })
-      }
-  )
-}
+// callAPI = () => {
+//   businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
+//       res => {
+//         // console.log("apiResponse: " + res.data.BusinessDetail[0].constraint);
+//           this.setState({
+//               businessName: res.data.BusinessDetail[0].name,
+//               branch:res.data.BusinessDetail[0].branch
+//           })
+//       }
+//   )
+// }
 
 
 
 componentDidMount() {
-  businessService.getPromotionImg().then((response) => {
+  const user = this.props.user;
+      console.log(user.businessName);
+      if (user) {
+        this.setState({
+          currentUser: user,
+          showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+          showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+          businessName: user.businessName,
+          branch :user.branch
+        });
+  
+  }
+  businessService.getPromotionImg(user.businessName).then((response) => {
 
     this.setState({
       fileInfos: response.data,
     });
   });
-
-  this.callAPI();
+  // this.callAPI();
   // console.log("row: ", this.state.rows)
   // console.log("apiResponse data: ", this.state.apiResponse);
 }
 
 selectFile(event) {
+  console.log("event.target.files", event.target.files[0].name);
   this.setState({
     selectedFiles: event.target.files,
+    fileNameforShow: event.target.files[0].name
   });
+
 }
 
 upload() {
-  this.handleUploadInput()
   let currentFile = this.state.selectedFiles[0];
-  
-
   this.setState({
     progress: 0,
     currentFile: currentFile,
@@ -135,12 +147,13 @@ upload() {
     this.setState({
       progress: Math.round((100 * event.loaded) / event.total),
     });
-  })
+  }, this.state.businessName)
     .then((response) => {
       this.setState({
         message: response.data.message,
+        fileNameforShow: 'No file chosen'
       });
-      return businessService.getPromotionImg();
+      return businessService.getPromotionImg(this.state.businessName);
     })
     .then((files) => {
       this.setState({
@@ -215,8 +228,7 @@ handleRemoveSpecificRow = (fileName) => () => {
   businessService.deletePromoImg(this.state.businessName, fileName)
     .then(() =>{
       alert("update success")
-      businessService.getPromotionImg().then((response) => {
-
+      businessService.getPromotionImg(this.state.businessName).then((response) => {
         this.setState({
           fileInfos: response.data,
         });
@@ -373,7 +385,7 @@ render() {
                       
                       <label htmlFor="actual-btn" className="btn btn-outline-primary" >เพิ่มรูปภาพโฆษณา โปรโมชั่น</label>
                       <input type="file" id="actual-btn" onChange={this.selectFile} hidden/>
-                      <span id="file-chosen" style={{marginRight:"15%", marginLeft:"0.5rem"}} >No file chosen</span>
+                      <span id="file-chosen" style={{marginRight:"15%", marginLeft:"0.5rem"}} >{this.state.fileNameforShow}</span>
 
                     
                     <button
@@ -428,4 +440,11 @@ render() {
 }
 }
 
-export default PromoImgManage
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps)(PromoImgManage)

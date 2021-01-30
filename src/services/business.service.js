@@ -27,11 +27,11 @@ class BusinessService {
   }
 
   //upload รูป
-  upLoadPromotionImg(file, onUploadProgress){
+  upLoadPromotionImg(file, onUploadProgress, businessName){
     let formData = new FormData();
 
     formData.append("file", file);
-    return axios.post(BUSINESS_URL_API + 'addPromo', formData, {
+    return axios.post(BUSINESS_URL_API + 'addPromo/' + businessName, formData, {
       headers:{
       "Content-Type": "multipart/form-data",
     },onUploadProgress
@@ -39,8 +39,8 @@ class BusinessService {
   }
 
   //เอารูป
-  getPromotionImg(){
-    return axios.get(BUSINESS_URL_API+ "files");
+  getPromotionImg(businessName){
+    return axios.get(BUSINESS_URL_API+ businessName +'/'+"files");
   }
 
   //update fields

@@ -43,7 +43,8 @@ class ConstraintManage extends React.Component {
           currentUser: user,
           showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
           showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-          businessName: user.businessName
+          businessName: user.businessName,
+          branch :user.branch
         });
         businessService.getBusinessDetail(user.businessName, user.branch).then(
           res => {

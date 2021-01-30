@@ -43,7 +43,7 @@ class Footer extends Component {
                          <h6 className="mt-55 mt-2 text-muted bold-text"><b>ศุภมิตร บัวศรีแก้ว</b></h6><small> <span><i className="fa fa-envelope" aria-hidden="true"></i></span> 60070100@it.kmitl.ac.th</small>
                      </div>
                      <div className="col-xl-2 col-md-4 col-sm-4 col-auto order-2 align-self-end mt-3 ">
-                         <h6 className="text-muted bold-text"><b>ไอศูรย์ ทิมศรี</b></h6><small><span><i class="fa fa-envelope" aria-hidden="true"></i></span> 60070121@it.kmitl.ac.th</small>
+                         <h6 className="text-muted bold-text"><b>ไอศูรย์ ทิมศรี</b></h6><small><span><i className="fa fa-envelope" aria-hidden="true"></i></span> 60070121@it.kmitl.ac.th</small>
                      </div>
                  </div>
              </div>

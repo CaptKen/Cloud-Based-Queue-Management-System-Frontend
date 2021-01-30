@@ -32,6 +32,7 @@ const email = (value) => {
 
 
 class CreateBusiness extends Component {
+  
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -49,7 +50,9 @@ class CreateBusiness extends Component {
     };
   }
 
-
+  componentDidMount() {
+    this.onChangePassword();
+  }
   onChangeUsername(e) {
     this.setState({
       username: e.target.value,
@@ -74,8 +77,7 @@ class CreateBusiness extends Component {
     });
   }
 
-  handleRegister(e) {
-    e.preventDefault();
+  onChangePassword(){
     const generator = require('generate-password');
     const passwordAutoGen = generator.generate({
         length: 10,
@@ -83,15 +85,20 @@ class CreateBusiness extends Component {
         lowercase: true,
         uppercase: true
     });
-
-    
-
     this.setState({
       password: passwordAutoGen,
-      successful: false,
     });
     console.log(this.state.password);
+  }
+
+  handleRegister(e) {
+    this.onChangePassword();
+    e.preventDefault();
+    this.setState({
+      successful: false,
+    });
     this.form.validateAll();
+    console.log(this.state.password);
 
     if (this.checkBtn.context._errors.length === 0) {
       this.props

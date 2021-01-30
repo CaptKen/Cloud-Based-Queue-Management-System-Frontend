@@ -97,7 +97,7 @@ class NavItem extends React.Component {
         return(
             <StyledNavItem active={active}>
                 <Link to={this.props.path} className={this.props.css} onClick={this.handleClick}>
-                    {/* <p class="h5">{this.props.name}</p> */}
+                    {/* <p className="h5">{this.props.name}</p> */}
                 
                     {/* <NavIcon></NavIcon> */}
                 </Link>
