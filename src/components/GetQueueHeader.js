@@ -17,6 +17,11 @@ class GetQueueHeader extends Component {
     redirectToGetQueue = () =>{
         this.props.history.push('/getqueue');
     }
+
+    redirectToBookQueue = () =>{
+        this.props.history.push('/bookqueue')
+    }
+
         // componentDidMount() {
     //     UserService.getRestaurantByName("burin").then(
     //       response => {
@@ -58,7 +63,7 @@ class GetQueueHeader extends Component {
                             <Button variant="success" style={{justifySelf:"center"}}>จองเวลา</Button><br/> */}
                         <p style={{display:"inline-flex"}}>เวลาเปิดบริการ :</p>
                         <p style={{display:"inline-flex"}}>17.00น.-23.00น</p>
-                        <Button variant="success">จองเวลา</Button><br/>
+                        <Button variant="success" onClick={this.redirectToBookQueue} >จองเวลา</Button><br/>
                         <p style={{display:"inline-flex"}}>คิวในระบบ : {this.state.waitingQueue}</p>
                         <p style={{display:"inline-flex"}}>ระยะเวลารอคิว : {this.state.waitingQueue} </p>
                             <Button variant="success" onClick={this.redirectToGetQueue} >ต่อคิว</Button>

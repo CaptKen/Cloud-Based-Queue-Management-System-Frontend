@@ -27,6 +27,10 @@ import { history } from './helpers/history';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 import CreateBusiness from './components/CreateBusiness';
 
+import BookQueue from './components/BookQueue';
+import LoginPageAdmin from './components/LoginPageAdmin'
+import LoginPageManager from './components/LoginPageManager'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -185,6 +189,9 @@ showLogout = () => {
               <Route path="/ManageQueuetable" component={ManageQueuetable} />
               <Route path="/ManageStore" component={ManageStore} />
               <Route path="/CreateBusiness" component={CreateBusiness} />
+              <Route path="/bookqueue" component={BookQueue} />
+              <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
+              <Route path="/LoginPageManager" component={LoginPageManager} />
             </Switch>
             
         </div>

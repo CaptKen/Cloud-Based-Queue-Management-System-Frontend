@@ -15,6 +15,36 @@ class AuthService {
       });
   }
 
+  loginAdmin(username, password) {
+    return axios
+      .post(API_URL + "signin", { username, password })
+      .then((response) => {
+        console.log(response.data.roles);
+        if (response.data.accessToken) {
+          if (response.data.roles[0] === "ROLE_ADMIN"){
+          localStorage.setItem("user", JSON.stringify(response.data));
+          }
+        }
+        
+        return response.data;
+      });
+  }
+
+  loginManager(username, password) {
+    return axios
+      .post(API_URL + "signin", { username, password })
+      .then((response) => {
+        console.log(response.data.roles);
+        if (response.data.accessToken) {
+          if (response.data.roles[0] === "ROLE_MANAGER"){
+          localStorage.setItem("user", JSON.stringify(response.data));
+          }
+        }
+        
+        return response.data;
+      });
+  }
+
   logout() {
     localStorage.removeItem("user");
   }
