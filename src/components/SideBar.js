@@ -27,18 +27,18 @@ class SideNav extends React.Component {
                 //   key: 1 /* Key is required, else console throws error. Does this please you Mr. Browser?! */
                 // },
                 {
-                  path: '/admin',
-                  name: 'Management',
-                  css: 'fas fa-tasks',
-                  key: 2
+                    path: '/admin',
+                    name: 'Management',
+                    css: 'fas fa-tasks',
+                    key: 2
                 },
                 {
-                  path: '/dashboard',
-                  name: 'dashboard',
-                  css: 'fas fa-chart-line',
-                  key: 3
+                    path: '/dashboard',
+                    name: 'dashboard',
+                    css: 'fas fa-chart-line',
+                    key: 3
                 },
-              ]
+            ]
         }
     }
 
@@ -48,7 +48,7 @@ class SideNav extends React.Component {
 
     render() {
         const { items, activePath } = this.state;
-        return(
+        return (
             <StyledSideNav>
                 {
                     items.map((item) => {
@@ -94,11 +94,11 @@ class NavItem extends React.Component {
 
     render() {
         const { active } = this.props;
-        return(
+        return (
             <StyledNavItem active={active}>
                 <Link to={this.props.path} className={this.props.css} onClick={this.handleClick}>
                     {/* <p className="h5">{this.props.name}</p> */}
-                
+
                     {/* <NavIcon></NavIcon> */}
                 </Link>
             </StyledNavItem>

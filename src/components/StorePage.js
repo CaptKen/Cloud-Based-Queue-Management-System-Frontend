@@ -19,49 +19,49 @@ class StorePage extends Component {
 
   render() {
     return (
-        <div>
-            <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3}/>
-            <Carousel style={{margin:50}} >
-                <Carousel.Item interval={1000} style={{borderRadius:"15px"}}>
-                    <img
-                      className="img-responsive"
-                      src={IMG1}
-                      alt="First slide"
-                      width="100%"
-                    />
-                    <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>Descriptions</p>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item interval={500}>
-                    <img
-                      className="img-responsive"
-                      src={IMG2}
-                      alt="First slide"
-                      width="100%"
-                    />
-                    <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Descriptions</p>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                      className="img-responsive"
-                      src={IMG3}
-                      alt="First slide"
-                      width="100%"
-                    />
-                    <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Descriptions</p>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                </Carousel>
+      <div>
+        <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3} />
+        <Carousel style={{ margin: 50 }} >
+          <Carousel.Item interval={1000} style={{ borderRadius: "15px" }}>
+            <img
+              className="img-responsive"
+              src={IMG1}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>First slide label</h3>
+              <p>Descriptions</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={500}>
+            <img
+              className="img-responsive"
+              src={IMG2}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>Second slide label</h3>
+              <p>Descriptions</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item>
+            <img
+              className="img-responsive"
+              src={IMG3}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>Third slide label</h3>
+              <p>Descriptions</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
 
-                {/* <AutoPlayCarousel typeName="ร้านอื่นๆ"/> */}
-        </div>
+        {/* <AutoPlayCarousel typeName="ร้านอื่นๆ"/> */}
+      </div>
     );
   }
 }

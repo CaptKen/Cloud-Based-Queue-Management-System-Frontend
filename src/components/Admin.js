@@ -4,21 +4,21 @@ import userService from '../services/user.service';
 import ManageQueueTable from './ManageQueueTable';
 
 class Admin extends Component {
-    constructor(props){
-    super(props);
-    this.state = {
-        apiResponse:[],
-        currentQueueDetailRes:[]
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            apiResponse: [],
+            currentQueueDetailRes: []
+        };
+    }
     callAPI = () => {
         userService.allQueueOfBusiness("BurinLKB").then(
             res => {
                 this.setState({
                     apiResponse: res.data
                 })
-                
-        
+
+
             }
         )
 
@@ -42,16 +42,16 @@ class Admin extends Component {
             <div className="container">
                 <div className="card text-center">
                     <div className="card-header h1">
-                       BurinLKB
+                        BurinLKB
                     </div>
                     <div className="card-body">
-                    <h1 className="card-title h3">คิวปัจจุบัน</h1>
-                        <div style={{textAlignLast: "justify", paddingLeft: "100px", paddingRight: "100px"}}>
-                        <h5 style={{borderBottomWidth: "3px"}} className="card-title">หมายเลขคิว {this.state.currentQueueDetailRes.queue_no}</h5>
-                        <p style={{borderBottomWidth: "3px"}} className="card-title">ชื่อผู้ใช้บริการ {this.state.currentQueueDetailRes.username}</p>
-                        <p style={{borderBottomWidth: "3px"}} className="card-title">รายละเอียดเพิ่มเติม {this.state.currentQueueDetailRes.user_detail}</p>
-                        <p style={{borderBottomWidth: "3px"}} className="card-title">สถานะ {this.state.currentQueueDetailRes.status}</p>
-                        <br/>
+                        <h1 className="card-title h3">คิวปัจจุบัน</h1>
+                        <div style={{ textAlignLast: "justify", paddingLeft: "100px", paddingRight: "100px" }}>
+                            <h5 style={{ borderBottomWidth: "3px" }} className="card-title">หมายเลขคิว {this.state.currentQueueDetailRes.queue_no}</h5>
+                            <p style={{ borderBottomWidth: "3px" }} className="card-title">ชื่อผู้ใช้บริการ {this.state.currentQueueDetailRes.username}</p>
+                            <p style={{ borderBottomWidth: "3px" }} className="card-title">รายละเอียดเพิ่มเติม {this.state.currentQueueDetailRes.user_detail}</p>
+                            <p style={{ borderBottomWidth: "3px" }} className="card-title">สถานะ {this.state.currentQueueDetailRes.status}</p>
+                            <br />
                         </div>
                         <div>
                             <button type="button" className="btn btn-success">รับคิว</button>

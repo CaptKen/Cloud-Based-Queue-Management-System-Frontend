@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import authHeader from './auth-header';
 const API_URL = "http://localhost:8080/api/auth/";
 
 class AuthService {
@@ -21,11 +21,11 @@ class AuthService {
       .then((response) => {
         console.log(response.data.roles);
         if (response.data.accessToken) {
-          if (response.data.roles[0] === "ROLE_ADMIN"){
-          localStorage.setItem("user", JSON.stringify(response.data));
+          if (response.data.roles[0] === "ROLE_ADMIN") {
+            localStorage.setItem("user", JSON.stringify(response.data));
           }
         }
-        
+
         return response.data;
       });
   }
@@ -36,11 +36,11 @@ class AuthService {
       .then((response) => {
         console.log(response.data.roles);
         if (response.data.accessToken) {
-          if (response.data.roles[0] === "ROLE_MANAGER"){
-          localStorage.setItem("user", JSON.stringify(response.data));
+          if (response.data.roles[0] === "ROLE_MANAGER") {
+            localStorage.setItem("user", JSON.stringify(response.data));
           }
         }
-        
+
         return response.data;
       });
   }
@@ -65,7 +65,7 @@ class AuthService {
       password,
       businessName,
       branch
-    });
+    }, { headers: authHeader() });
   }
 }
 

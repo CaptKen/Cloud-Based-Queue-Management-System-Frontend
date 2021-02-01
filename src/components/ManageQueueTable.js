@@ -57,13 +57,13 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <div className="justify-content-center" style={{display:"-webkit-inline-box"}}>
+      <div className="justify-content-center" style={{ display: "-webkit-inline-box" }}>
         {/* <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
         </div> */}
         {allColumns.map(column => (
-          <div key={column.id} style={{padding: "8px"}}>
+          <div key={column.id} style={{ padding: "8px" }}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{' '}
               {console.log(column)}
@@ -74,7 +74,7 @@ function Table({ columns, data }) {
         ))}
         <br />
       </div>
-      <table className="table table-striped" style={{backgroundColor:"snow", borderRadius: "10px"}} {...getTableProps()}>
+      <table className="table table-striped" style={{ backgroundColor: "snow", borderRadius: "10px" }} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -91,10 +91,10 @@ function Table({ columns, data }) {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                    console.log(cell.column.Header == "จัดการ" ?"THIS IS BUTTON":cell);
-                  return <td {...cell.getCellProps()}>{cell.column.Header == "จัดการ" ?<div><Button variant="success">รับคิว</Button>{'           '}<Button variant="outline-danger">ยกเลิกคิว</Button></div>:cell.render('Cell')}</td>
-                //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                // return <td {...cell.getCellProps()}>eiei</td>
+                  console.log(cell.column.Header == "จัดการ" ? "THIS IS BUTTON" : cell);
+                  return <td {...cell.getCellProps()}>{cell.column.Header == "จัดการ" ? <div><Button variant="success">รับคิว</Button>{'           '}<Button variant="outline-danger">ยกเลิกคิว</Button></div> : cell.render('Cell')}</td>
+                  //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  // return <td {...cell.getCellProps()}>eiei</td>
                 })}
               </tr>
             )
@@ -147,39 +147,39 @@ function ManageQueueTable(props) {
           },
         ],
       },
-    //   {
-    //     Header: 'Info',
-    //     columns: [
-    //       {
-    //         Header: 'Age',
-    //         accessor: 'age',
-    //       },
-    //       {
-    //         Header: 'Visits',
-    //         accessor: 'visits',
-    //       },
-    //       {
-    //         Header: 'Status',
-    //         accessor: 'status',
-    //       },
-    //       {
-    //         Header: 'Profile Progress',
-    //         accessor: 'progress',
-    //       },
-    //     ],
-    //   },
+      //   {
+      //     Header: 'Info',
+      //     columns: [
+      //       {
+      //         Header: 'Age',
+      //         accessor: 'age',
+      //       },
+      //       {
+      //         Header: 'Visits',
+      //         accessor: 'visits',
+      //       },
+      //       {
+      //         Header: 'Status',
+      //         accessor: 'status',
+      //       },
+      //       {
+      //         Header: 'Profile Progress',
+      //         accessor: 'progress',
+      //       },
+      //     ],
+      //   },
     ],
     []
   )
 
-//   const [queue_data, set_queue_data] = useState();
-//   useEffect(() => {
-//     UserService.allQueueOfBusiness("burinLKB")
-//       .then(({ data }) => {
-//         //   console.log(data);
-//           set_queue_data(data);
-//       });
-//   }, []);
+  //   const [queue_data, set_queue_data] = useState();
+  //   useEffect(() => {
+  //     UserService.allQueueOfBusiness("burinLKB")
+  //       .then(({ data }) => {
+  //         //   console.log(data);
+  //           set_queue_data(data);
+  //       });
+  //   }, []);
   return (
     <Styles className="container text-center">
       <Table columns={columns} data={props.data} />

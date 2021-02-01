@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
-import {addqueue} from "../actions/userQueue";
+import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage } from "../actions/message";
 class GetInQueue extends Component {
@@ -16,11 +16,11 @@ class GetInQueue extends Component {
       redirectFlag: false,
       successful: false,
       formElements: {
-        username:'',
-        user_email:'',
-        user_telephone:'',
-        user_detail:'',
-        queue_type:'normal',
+        username: '',
+        user_email: '',
+        user_telephone: '',
+        user_detail: '',
+        queue_type: 'normal',
         business_detail_id: 0,
         status: 'waiting',
         business_name: this.props.business_name,
@@ -42,8 +42,8 @@ class GetInQueue extends Component {
     updateForm[name] = value;
 
     this.setState({
-        ...this.state,
-        formElements: updateForm
+      ...this.state,
+      formElements: updateForm
     })
   }
 
@@ -52,30 +52,30 @@ class GetInQueue extends Component {
     this.setState({
       successful: false,
     });
-      const formData = {};
-      for (let name in this.state.formElements) {
-          if (name === 'formValid') {
-              console.log("formValidformValidformValid");
-              continue;
-          }
-          formData[name] = this.state.formElements[name];
+    const formData = {};
+    for (let name in this.state.formElements) {
+      if (name === 'formValid') {
+        console.log("formValidformValidformValid");
+        continue;
       }
-      console.log(formData);
+      formData[name] = this.state.formElements[name];
+    }
+    console.log(formData);
 
-    const {history } = this.props;
+    const { history } = this.props;
     this.props.dispatch(addqueue(formData))
-        .then(() => {
-          console.log("in dispatch");
-          this.setState({
-            successful: true,
-            redirectFlag: true
-          });
-        })
-        .catch(() => {
-          this.setState({
-            successful: false,
-          });
+      .then(() => {
+        console.log("in dispatch");
+        this.setState({
+          successful: true,
+          redirectFlag: true
         });
+      })
+      .catch(() => {
+        this.setState({
+          successful: false,
+        });
+      });
   }
 
   handleClose = (e) => {
@@ -96,18 +96,18 @@ class GetInQueue extends Component {
 
     if (this.state.redirectFlag) {
       return (<Redirect
-      to={{
-      pathname: "/currentQueue",
-      state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
-    }}
-  />)
+        to={{
+          pathname: "/currentQueue",
+          state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
+        }}
+      />)
     }
     return (
-      <div className="container" style={{paddingLeft:"0px", paddingRight:"0px"}}>
-        
-        <form id="contact-form" className="form" onSubmit={this.submit} style={{margin:"20px"}}>
+      <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+
+        <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
           <div className="form-inline">
-            <label className="col-3 form-label" style={{justifyContent:"left"}}>ชื่อผู้จอง
+            <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
             </label>
             <input
               type="text"
@@ -118,12 +118,12 @@ class GetInQueue extends Component {
               tabIndex="1"
               required
               onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
+              style={{ marginBottom: "10px" }}
             />
           </div>
 
           <div className="form-inline">
-            <label className="col-3 form-inline" style={{justifyContent:"left"}}>เบอร์โทรศัพท์
+            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>เบอร์โทรศัพท์
             </label>
             <input
               type="text"
@@ -134,12 +134,12 @@ class GetInQueue extends Component {
               tabIndex="1"
               required
               onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
+              style={{ marginBottom: "10px" }}
             />
           </div>
 
           <div className="form-inline">
-            <label className="form-inline col-3" style={{justifyContent:"left"}}>อีเมลล์
+            <label className="form-inline col-3" style={{ justifyContent: "left" }}>อีเมลล์
             </label>
             <input
               type="email"
@@ -150,12 +150,12 @@ class GetInQueue extends Component {
               tabIndex="2"
               required
               onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
+              style={{ marginBottom: "10px" }}
             />
           </div>
 
           <div className="form-inline">
-            <label className="form-label col-3" style={{justifyContent:"left"}}>รายละเอียดเพิ่มเติม
+            <label className="form-label col-3" style={{ justifyContent: "left" }}>รายละเอียดเพิ่มเติม
             </label>
             <textarea
               rows="5"
@@ -167,9 +167,9 @@ class GetInQueue extends Component {
               tabIndex="4"
               required
               onChange={this.onFormChange}
-              style={{marginBottom:"10px"}}
+              style={{ marginBottom: "10px" }}
             ></textarea>
-            
+
           </div>
 
           {/* <div className="form-inline">
@@ -186,8 +186,8 @@ class GetInQueue extends Component {
             />
           </div> */}
 
-          
-          <div className="text-center" style={{margin:"20px"}}>
+
+          <div className="text-center" style={{ margin: "20px" }}>
             <Button variant="primary" onClick={this.handleShow}>
               เข้าคิว/ต่อคิว
             </Button>
@@ -200,7 +200,7 @@ class GetInQueue extends Component {
             <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
             {message && (
               <div className="form-group">
-                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
                   {message}
                 </div>
               </div>

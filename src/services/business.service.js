@@ -22,49 +22,49 @@ class BusinessService {
   }
 
   //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
-  getBusinessDetail(businessName, branch){
-    return axios.get(BUSINESS_URL_API + 'findBusinessDetail?name=' + businessName +"&branch=" + branch)
+  getBusinessDetail(businessName, branch) {
+    return axios.get(BUSINESS_URL_API + 'findBusinessDetail?name=' + businessName + "&branch=" + branch)
   }
 
   //upload รูป
-  upLoadPromotionImg(file, onUploadProgress, businessName){
+  upLoadPromotionImg(file, onUploadProgress, businessName) {
     let formData = new FormData();
 
     formData.append("file", file);
     return axios.post(BUSINESS_URL_API + 'addPromo/' + businessName, formData, {
-      headers:{
-      "Content-Type": "multipart/form-data",
-    },onUploadProgress
-  });
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }, onUploadProgress
+    });
   }
 
   //เอารูป
-  getPromotionImg(businessName){
-    return axios.get(BUSINESS_URL_API+ businessName +'/'+"files");
+  getPromotionImg(businessName) {
+    return axios.get(BUSINESS_URL_API + businessName + '/' + "files");
   }
 
   //update fields
-  updateFields(businessName, branch, fieldsList){
+  updateFields(businessName, branch, fieldsList) {
     return axios.patch(BUSINESS_URL_API + 'updateFields/' + businessName + '/' + branch, fieldsList)
   }
 
   //update fields
-  updateTableDetail(businessName, branch, tableDetail){
+  updateTableDetail(businessName, branch, tableDetail) {
     return axios.patch(BUSINESS_URL_API + 'updateTableDetail/' + businessName + '/' + branch, tableDetail)
   }
 
   //update businessDetail
-  updateBusinessDetailList(businessName, branch, businessDetail){
+  updateBusinessDetailList(businessName, branch, businessDetail) {
     return axios.patch(BUSINESS_URL_API + 'updatebusinessDetail/' + businessName + '/' + branch, businessDetail)
   }
 
   //update constraint
-  updateConstraint(businessName, branch, constraint){
+  updateConstraint(businessName, branch, constraint) {
     return axios.patch(BUSINESS_URL_API + 'updateConstraint/' + businessName + '/' + branch, constraint)
   }
 
   //delete promotion
-  deletePromoImg(businessName, fileName){
+  deletePromoImg(businessName, fileName) {
     return axios.delete(BUSINESS_URL_API + 'deletePromoImg/' + businessName + '/' + fileName);
   }
 

@@ -6,62 +6,62 @@ import UserService from '../services/user.service';
 import { connect } from "react-redux";
 
 class CheckQueuePage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             currentUser: undefined,
-            listQueue:[],
-            username:''
-          };
+            listQueue: [],
+            username: ''
+        };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const user = this.props.user;
 
         if (user) {
-        this.setState({
-            currentUser: user.username,
-        });
-        // UserService.listQueue(user.username).then(
-        //     response => {
-        //         console.log("inpage");
-        //         console.log(response.data.listQueue);
-        //     },
-        //     error => {
-        //         this.setState({
-        //           content:
-        //             (error.response &&
-        //               error.response.data &&
-        //               error.response.data.message) ||
-        //             error.message ||
-        //             error.toString()
-        //         });
-        //       }
-        // );
+            this.setState({
+                currentUser: user.username,
+            });
+            // UserService.listQueue(user.username).then(
+            //     response => {
+            //         console.log("inpage");
+            //         console.log(response.data.listQueue);
+            //     },
+            //     error => {
+            //         this.setState({
+            //           content:
+            //             (error.response &&
+            //               error.response.data &&
+            //               error.response.data.message) ||
+            //             error.message ||
+            //             error.toString()
+            //         });
+            //       }
+            // );
         }
-        
+
     }
 
-    
-        
+
+
 
     render() {
         const { currentUser } = this.state;
         console.log("currentUser", currentUser);
         return (
-                <div className="container align-items-start">
-                    {
-                currentUser ? (
-                    <UserQueueList username={currentUser}/>
-                ):(
-                    <div>
-                        
-                <UserQueueList/>
-                    </div>
-                )
-            }
-                
-                </div>
+            <div className="container align-items-start">
+                {
+                    currentUser ? (
+                        <UserQueueList username={currentUser} />
+                    ) : (
+                            <div>
+
+                                <UserQueueList />
+                            </div>
+                        )
+                }
+
+            </div>
         );
     }
 }
@@ -69,8 +69,8 @@ class CheckQueuePage extends Component {
 function mapStateToProps(state) {
     const { user } = state.auth;
     return {
-      user,
+        user,
     };
-  }
-  
-  export default connect(mapStateToProps)(CheckQueuePage);
+}
+
+export default connect(mapStateToProps)(CheckQueuePage);

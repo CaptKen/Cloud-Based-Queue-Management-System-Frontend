@@ -41,55 +41,55 @@ export default class Home extends Component {
       //   {/* <header className="jumbotron">
       //     <h3>{this.state.content}</h3>
       //   </header> */}
-        
+
       // </div>
-    
-
-    <div>
-      <Carousel>
-      <Carousel.Item interval={1000}>
-        <img
-          className="img-responsive"
-          src={AD1}
-          alt="First slide"
-          width="100%"
-        />
-        <Carousel.Caption>
-          <h3>โฆษณา</h3>
-          <p>โปรโมชั่น</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item interval={500}>
-      <img
-          className="img-responsive"
-          src={AD2}
-          alt="First slide"
-          width="100%"
-        />
-        <Carousel.Caption>
-        <h3>โฆษณา</h3>
-          <p>โปรโมชั่น</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-      <img
-          className="img-responsive"
-          src={AD3}
-          alt="First slide"
-          width="100%"
-        />
-        <Carousel.Caption>
-        <h3>โฆษณา</h3>
-          <p>โปรโมชั่น</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
-    
-      <AutoPlayCarousel typeName="ร้านอาหาร"/>
 
 
+      <div>
+        <Carousel>
+          <Carousel.Item interval={1000}>
+            <img
+              className="img-responsive"
+              src={AD1}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>โฆษณา</h3>
+              <p>โปรโมชั่น</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={500}>
+            <img
+              className="img-responsive"
+              src={AD2}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>โฆษณา</h3>
+              <p>โปรโมชั่น</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item>
+            <img
+              className="img-responsive"
+              src={AD3}
+              alt="First slide"
+              width="100%"
+            />
+            <Carousel.Caption>
+              <h3>โฆษณา</h3>
+              <p>โปรโมชั่น</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
 
-    </div>
+        <AutoPlayCarousel typeName="ร้านอาหาร" />
+
+
+
+      </div>
 
     );
   }

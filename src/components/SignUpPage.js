@@ -238,7 +238,7 @@ const vpassword = (value) => {
 
 
 const vtelephone = (value) => {
-  if (value.length != 10 && !Number.isInteger(value) && !(value>0)) {
+  if (value.length != 10 && !Number.isInteger(value) && !(value > 0)) {
     return (
       <div className="alert alert-danger" role="alert">
         เบอร์โทรศัพท์ไม่ถูกต้อง !
@@ -263,7 +263,7 @@ class SignUpPage extends Component {
       email: "",
       password: "",
       checkPassword: "",
-      telephone:"",
+      telephone: "",
       successful: false,
     };
   }
@@ -396,7 +396,7 @@ class SignUpPage extends Component {
                     value={this.state.checkPassword}
                     onChange={this.onChangeCheckPassword}
                     validations={[required, this.vCheckPassword]}
-                    
+
                   />
                 </div>
 
@@ -414,14 +414,14 @@ class SignUpPage extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block" style={{backgroundColor: "#b38f2d", borderColor:"#b38f2d"}} >สมัครสมาชิก</button>
+                  <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} >สมัครสมาชิก</button>
                 </div>
               </div>
             )}
 
             {message && (
               <div className="form-group">
-                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
                   {message}
                 </div>
               </div>

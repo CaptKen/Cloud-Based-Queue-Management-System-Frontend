@@ -32,7 +32,7 @@ const email = (value) => {
 
 
 class CreateBusiness extends Component {
-  
+
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -44,8 +44,8 @@ class CreateBusiness extends Component {
       username: "",
       email: "",
       password: "",
-      businessName:"",
-      branch:"",
+      businessName: "",
+      branch: "",
       successful: false,
     };
   }
@@ -64,7 +64,7 @@ class CreateBusiness extends Component {
       email: e.target.value,
     });
   }
-  
+
   onChangebusinessName(e) {
     this.setState({
       businessName: e.target.value,
@@ -73,17 +73,17 @@ class CreateBusiness extends Component {
 
   onChangebranch(e) {
     this.setState({
-        branch: e.target.value,
+      branch: e.target.value,
     });
   }
 
-  onChangePassword(){
+  onChangePassword() {
     const generator = require('generate-password');
     const passwordAutoGen = generator.generate({
-        length: 10,
-        numbers: true,
-        lowercase: true,
-        uppercase: true
+      length: 10,
+      numbers: true,
+      lowercase: true,
+      uppercase: true
     });
     this.setState({
       password: passwordAutoGen,
@@ -103,7 +103,7 @@ class CreateBusiness extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       this.props
         .dispatch(
-            registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch)
+          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch)
         )
         .then(() => {
           this.setState({
@@ -122,45 +122,45 @@ class CreateBusiness extends Component {
     const { message } = this.props;
 
     return (
-        <Container className="d-flex" style={{justifyContent:"center", fontFamily:"'Kanit', sans-serif;"}}>
-            
-            <div className="col-md-5">
-        {/* <h1 className="text-center">Sign Up</h1> */}
-        <h1 className="h1 text-center">Create Business</h1>
-        <div>
-          <Form
-            onSubmit={this.handleRegister}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            {!this.state.successful && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    validations={[required]}
-                  />
-                </div>
+      <Container className="d-flex" style={{ justifyContent: "center", fontFamily: "'Kanit', sans-serif;" }}>
 
-                <div className="form-group">
-                  <label htmlFor="email">อีเมลล์*</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                    validations={[required, email]}
-                  />
-                </div>
+        <div className="col-md-5">
+          {/* <h1 className="text-center">Sign Up</h1> */}
+          <h1 className="h1 text-center">Create Business</h1>
+          <div>
+            <Form
+              onSubmit={this.handleRegister}
+              ref={(c) => {
+                this.form = c;
+              }}
+            >
+              {!this.state.successful && (
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="username"
+                      value={this.state.username}
+                      onChange={this.onChangeUsername}
+                      validations={[required]}
+                    />
+                  </div>
 
-                {/* <div className="form-group">
+                  <div className="form-group">
+                    <label htmlFor="email">อีเมลล์*</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="email"
+                      value={this.state.email}
+                      onChange={this.onChangeEmail}
+                      validations={[required, email]}
+                    />
+                  </div>
+
+                  {/* <div className="form-group">
                   <label htmlFor="password">รหัสผ่าน*</label>
                   <Input
                     type="password"
@@ -185,59 +185,59 @@ class CreateBusiness extends Component {
                   />
                 </div> */}
 
-                <div className="form-group">
-                  <label htmlFor="businessName">ชื่อร้าน</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="businessName"
-                    value={this.state.businessName}
-                    onChange={this.onChangebusinessName}
-                    validations={[required]}
-                    maxLength={10}
-                  />
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="businessName">ชื่อร้าน</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="businessName"
+                      value={this.state.businessName}
+                      onChange={this.onChangebusinessName}
+                      validations={[required]}
+                      maxLength={10}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="branch">สาขา</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="branch"
-                    value={this.state.branch}
-                    onChange={this.onChangebranch}
-                    validations={[required]}
-                    maxLength={10}
-                  />
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="branch">สาขา</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="branch"
+                      value={this.state.branch}
+                      onChange={this.onChangebranch}
+                      validations={[required]}
+                      maxLength={10}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <button className="btn btn-primary btn-block" style={{backgroundColor: "#b38f2d", borderColor:"#b38f2d"}} >สร้างร้าน</button>
+                  <div className="form-group">
+                    <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} >สร้างร้าน</button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {message && (
-              <div className="form-group">
-                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
-                  {message}
+              {message && (
+                <div className="form-group">
+                  <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                    {message}
+                  </div>
                 </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={(c) => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-          {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
+              )}
+              <CheckButton
+                style={{ display: "none" }}
+                ref={(c) => {
+                  this.checkBtn = c;
+                }}
+              />
+            </Form>
+            {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
                     Sign in
                   </Link></h5> */}
+          </div>
         </div>
-      </div>
-        </Container>
-      
+      </Container>
+
     );
   }
 }

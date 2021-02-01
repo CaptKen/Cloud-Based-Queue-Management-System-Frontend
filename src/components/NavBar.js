@@ -38,12 +38,12 @@
 //           showLogin : true
 //         });
 //       };
-    
+
 //       handleClose = (e) => {
 //         this.setState({
 //           show: false,
 //         });
-        
+
 //       };
 
 //       showRegister = () => {
@@ -51,7 +51,7 @@
 //             showLogin: !this.state.showLogin
 //           });
 //       }
-    
+
 //       toggleMenu() {
 //         this.setState({ menu: !this.state.menu })
 //     }
@@ -67,8 +67,8 @@
 //             <Link to={"/"} className="navbar-brand">
 //               QMS
 //             </Link>
-            
-            
+
+
 //             <div className={"collapse navbar-collapse " + show} >
 //             <div className="navbar-nav mr-auto">
 //               {/* <li className="nav-item">
@@ -178,7 +178,7 @@
 //             )}
 //           </nav>
 //             </div>
-            
+
 //         )
 //     }
 // }
@@ -193,7 +193,7 @@ import { connect } from "react-redux";
 import Login from "./LoginPage";
 
 import { logout } from "../actions/auth";
-import  SideNav  from './SideBar';
+import SideNav from './SideBar';
 
 const Styles = styled.div`
   .navbar { background-color: #222; }
@@ -213,7 +213,7 @@ const Styles = styled.div`
   }
 `;
 
-class NavigationBar extends Component{
+class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
@@ -223,11 +223,11 @@ class NavigationBar extends Component{
       showAdminBoard: false,
       currentUser: undefined,
       showLogin: true,
-      show:false,
+      show: false,
       showLogout: false,
       menu: false
     };
-}
+  }
 
   componentDidMount() {
     const user = this.props.user;
@@ -236,7 +236,7 @@ class NavigationBar extends Component{
       this.setState({
         currentUser: user,
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        // showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
   }
@@ -245,42 +245,61 @@ class NavigationBar extends Component{
     this.props.dispatch(logout());
     console.log("logout");
   }
-  
 
-  render(){
+  toggleMenu() {
+    this.setState({ menu: !this.state.menu })
+  }
+
+
+  render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
-    return(
+    return (
       <Styles>
         <Navbar expand="md" fixed="top">
-        <Navbar.Brand href="/">QMS</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{backgroundColor: '#3D9280'}} onClick={this.toggleMenu}/>
-          
-          
+          <Navbar.Brand href="/">QMS</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: '#3D9280' }} onClick={this.toggleMenu} />
+
+
           <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            
-          
-          
-          
-          {showModeratorBoard && (
-                <Nav.Link href="/manageStore">Manager Board</Nav.Link>
+            <Nav className="ml-auto">
+
+              {showModeratorBoard || showAdminBoard ? (
+                <></>
+              ) : (
+                  <>
+                    <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
+
+                    <NavDropdown title="ประเภทกิจการ" id="nav-dropdown">
+                      <NavDropdown.Item href="#/">ร้านอาหาร</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.2">อาคาร</NavDropdown.Item>
+                      <NavDropdown.Item href="#action/3.3">สำนักงาน</NavDropdown.Item>
+                    </NavDropdown>
+
+                    <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
+                  </>
+                )}
+
+              {showModeratorBoard && (
+                <Nav.Link href="/manageStore">Manager Store</Nav.Link>
               )}
 
-              {/* {showAdminBoard && (
-                <Nav.Link href="/admin">Admin Board</Nav.Link>
-              )} */}
+              {showAdminBoard && (
+                <>
+                  <Nav.Link href="/createManager">Create Manager and Store</Nav.Link>
+                </>
+              )}
 
               {/* {currentUser && (
                 <Nav.Link href="/user">User Board</Nav.Link>
               )} */}
-            
-            
-              
+
+
+
 
               {/* {currentUser && (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
               )} */}
-              
+
               {/* {currentUser ? (
                 <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
               ):(
@@ -291,53 +310,50 @@ class NavigationBar extends Component{
                 //     </Nav.Item>
               )} */}
 
-              
+
             </Nav>
-          
-          {showAdminBoard ? (
+
+            {/* {showAdminBoard ? (
                 <SideNav/>
               ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
               {showAdminBoard ? (
                 <div></div>
               ):(<div>
-                
                     <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
-              </div>)}
-              {showAdminBoard ? (
+              </div>)} */}
+            {/* {showAdminBoard ? (
                 <div></div>
               ):(<div>
-                <NavDropdown title="ประเภทกิจการ" id="nav-dropdown">
-                      <NavDropdown.Item href="#/">ร้านอาหาร</NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">อาคาร</NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.3">สำนักงาน</NavDropdown.Item>
-                    </NavDropdown>
-              </div>)}
-          {currentUser ? (
+                
+              </div>)} */}
+
+            {currentUser ? (
+              <div>
+
+                {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
+                <NavDropdown title={currentUser.username} id="nav-dropdown" style={{ float: "right" }}>
+                  <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
+                  <NavDropdown.Item href="/check">เช็คคิว</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>
+                </NavDropdown>
+              </div>
+            ) : (
                 <div>
-                  {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
-                    <NavDropdown title={currentUser.username} id="nav-dropdown" style={{float:"right"}}>
-                      <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
-                      <NavDropdown.Item href="/check">เช็คคิว</NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>
-                    </NavDropdown>
+                  <Login />
+                  {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
+                  {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
                 </div>
-                ):(
-                  <div>
-                    <Login/>
-                    {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
-                    {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
-                  </div>
-                )
-              }
-          
-          {/* <Form className="form-center">
+              )
+            }
+
+            {/* <Form className="form-center">
             <FormControl type="text" placeholder="Search" className="" />
           </Form> */}
           </Navbar.Collapse>
         </Navbar>
-       
+
       </Styles>
     )
   }

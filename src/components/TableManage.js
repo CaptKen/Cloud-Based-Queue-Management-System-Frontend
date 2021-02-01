@@ -261,283 +261,283 @@ import { connect } from "react-redux";
 // ===================================================================== แบบที่ 3====================
 
 class TableManage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          apiResponse:[],
-          businessName:'',
-          branch:'',
-          showModeratorBoard: false,
-          showAdminBoard: false,
-          currentUser: undefined,
-          rows: [{}],
-          editMode:{
-            status: false,
-            rowKey: null
-          }
-        };
-    }
-    
-    // callAPI = () => {
-    //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
-    //         res => {
-    //           console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
-    //             this.setState({
-    //                 apiResponse: res.data.BusinessDetail[0].tableDetail,
-    //                 rows:res.data.BusinessDetail[0].tableDetail,
-    //                 branch: res.data.BusinessDetail[0].branch,
-    //                 businessName: res.data.BusinessDetail[0].name
-    //             })
-    //         }
-    //     )
-    // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      apiResponse: [],
+      businessName: '',
+      branch: '',
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+      rows: [{}],
+      editMode: {
+        status: false,
+        rowKey: null
+      }
+    };
+  }
 
-    componentDidMount = () =>{
-      const user = this.props.user;
-      const businessName = this.props.businessName;
-      console.log(" +++++++++++++++++++++++++++++++++++ businessName:",businessName, user.businessName);
-      if (user) {
-        this.setState({
-          currentUser: user,
-          branch: user.branch,
-          businessName: user.businessName,
-        });
+  // callAPI = () => {
+  //     businessService.getBusinessDetail("BurinLKB", "Ladkrabang").then(
+  //         res => {
+  //           console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+  //             this.setState({
+  //                 apiResponse: res.data.BusinessDetail[0].tableDetail,
+  //                 rows:res.data.BusinessDetail[0].tableDetail,
+  //                 branch: res.data.BusinessDetail[0].branch,
+  //                 businessName: res.data.BusinessDetail[0].name
+  //             })
+  //         }
+  //     )
+  // }
+
+  componentDidMount = () => {
+    const user = this.props.user;
+    const businessName = this.props.businessName;
+    console.log(" +++++++++++++++++++++++++++++++++++ businessName:", businessName, user.businessName);
+    if (user) {
+      this.setState({
+        currentUser: user,
+        branch: user.branch,
+        businessName: user.businessName,
+      });
 
       businessService.getBusinessDetail(user.businessName, user.branch).then(
         res => {
           // console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
-            this.setState({
-                rows:res.data.BusinessDetail[0].tableDetail,
-            })
+          this.setState({
+            rows: res.data.BusinessDetail[0].tableDetail,
+          })
         }
-    )
+      )
+    }
+    // this.callAPI();
+    console.log("row: ", this.state.rows)
+    console.log("apiResponse data: ", this.state.apiResponse);
+  }
+
+  handleChange = idx => e => {
+    const { name, value } = e.target;
+    const rows = [...this.state.rows];
+    switch (name) {
+      case "name":
+        rows[idx] = {
+          [name]: value,
+          "quantity": rows[idx].quantity,
+          "typeSymbol": rows[idx].typeSymbol
+        };
+        break;
+      case "quantity":
+        // code block
+        rows[idx] = {
+          [name]: value,
+          "name": rows[idx].name,
+          "typeSymbol": rows[idx].typeSymbol
+        };
+        break;
+      default:
+        // code block
+        rows[idx] = {
+          [name]: value,
+          "name": rows[idx].name,
+          "quantity": rows[idx].quantity
+        };
+    }
+    // rows[idx] = {
+    //   [name]: value,
+    // };
+    this.setState({
+      rows
+    });
+  };
+  handleAddRow = () => {
+    const item = {
+      name: "",
+      quantity: "",
+      typeSymbol: ""
+    };
+    this.setState({
+      rows: [...this.state.rows, item],
+      editMode: {
+        status: true,
+        rowKey: this.state.rows.length
       }
-        // this.callAPI();
-        console.log("row: ", this.state.rows)
-        console.log("apiResponse data: ", this.state.apiResponse);
-    }
-
-    handleChange = idx => e => {
-      const { name, value } = e.target;
-      const rows = [...this.state.rows];
-      switch(name) {
-        case "name":
-          rows[idx] = {
-            [name]: value,
-            "quantity": rows[idx].quantity,
-            "typeSymbol": rows[idx].typeSymbol
-          };
-          break;
-        case "quantity":
-          // code block
-          rows[idx] = {
-            [name]: value,
-            "name": rows[idx].name,
-            "typeSymbol": rows[idx].typeSymbol
-          };
-          break;
-        default:
-          // code block
-          rows[idx] = {
-            [name]: value,
-            "name": rows[idx].name,
-            "quantity": rows[idx].quantity
-          };
+    });
+  };
+  handleRemoveRow = () => {
+    this.setState({
+      rows: this.state.rows.slice(0, -1)
+    });
+  };
+  handleEdit = (idx) => () => {
+    console.log(idx)
+    this.setState({
+      editMode: {
+        status: true,
+        rowKey: idx
       }
-      // rows[idx] = {
-      //   [name]: value,
-      // };
-      this.setState({
-        rows
-      });
-    };
-    handleAddRow = () => {
-      const item = {
-        name: "",
-        quantity: "",
-        typeSymbol: ""
-      };
-      this.setState({
-        rows: [...this.state.rows, item],
-        editMode:{
-          status: true,
-          rowKey: this.state.rows.length
-        }
-      });
-    };
-    handleRemoveRow = () => {
-      this.setState({
-        rows: this.state.rows.slice(0, -1)
-      });
-    };
-    handleEdit = (idx) => () => {
-      console.log(idx)
-      this.setState({
-        editMode:{
-          status: true,
-          rowKey: idx
-        }
-      });
-    };
-    handleRemoveSpecificRow = (idx) => () => {
-      const rows = [...this.state.rows]
-      rows.splice(idx, 1)
-      this.setState({ rows })
-    }
-    handleSave = () => {
-      console.log("save");
-      this.setState({
-        rows:[...this.state.rows],
-        editMode:{
-          status: false,
-          rowKey: null
-        }
-      });
-      console.log(this.state.rows);
-    };
+    });
+  };
+  handleRemoveSpecificRow = (idx) => () => {
+    const rows = [...this.state.rows]
+    rows.splice(idx, 1)
+    this.setState({ rows })
+  }
+  handleSave = () => {
+    console.log("save");
+    this.setState({
+      rows: [...this.state.rows],
+      editMode: {
+        status: false,
+        rowKey: null
+      }
+    });
+    console.log(this.state.rows);
+  };
 
-    handleUpdateTable = () => {
-      console.log("this.state.rows: ", this.state.rows);
-      const formData = {}
-      formData["tableDetail"] = this.state.rows
-      console.log("formData: ", formData);
+  handleUpdateTable = () => {
+    console.log("this.state.rows: ", this.state.rows);
+    const formData = {}
+    formData["tableDetail"] = this.state.rows
+    console.log("formData: ", formData);
 
-      businessService.updateTableDetail(this.state.businessName, this.state.branch, formData)
-        .then(() =>{
-          alert("update success")
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    businessService.updateTableDetail(this.state.businessName, this.state.branch, formData)
+      .then(() => {
+        alert("update success")
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
 
-    render() {
-      return (
-        <div className="row clearfix">
-          
-            <div className="col-md-12 column">
-              <table
-                className="table table-bordered table-hover"
-                id="tab_logic"
-              >
-                <thead>
-                  <tr style={{backgroundColor: "#F2C035"}}>
-                    <th colspan="4">ข้อมูลโต๊ะ</th>
-                    {/* <th className="text-center">จำนวน</th>
+  render() {
+    return (
+      <div className="row clearfix">
+
+        <div className="col-md-12 column">
+          <table
+            className="table table-bordered table-hover"
+            id="tab_logic"
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#F2C035" }}>
+                <th colspan="4">ข้อมูลโต๊ะ</th>
+                {/* <th className="text-center">จำนวน</th>
                     <th className="text-center">ประเภท</th>
                     <th className="text-center"> จัดการ </th> */}
-                  </tr>
-                </thead>
-                <tbody style={{backgroundColor: 'white'}}>
-                  <tr style={{backgroundColor:"#CCC7BB"}}>
-                    <td className="text-center">ชื่อโต๊ะ</td>
-                    <td className="text-center">จำนวน</td>
-                    <td className="text-center">ประเภท</td>
-                    <td className="text-center" style={{width: "200px"}}> จัดการ </td>
-                  </tr>
-                  {this.state.rows.map((item, idx) => (
-                    <tr id="addr0" key={idx}>
-                      {/* <td>{idx}</td> */}
-                      
-                      <td>
-                        {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                          <div>
-                              <input
-                                type="text"
-                                name="name"
-                                value={this.state.rows[idx].name}
-                                onChange={this.handleChange(idx)}
-                                className="form-control"
-                              />
-                          </div>
-                        ):(
-                          this.state.rows[idx].name
-                        )}
-                        </td>
+              </tr>
+            </thead>
+            <tbody style={{ backgroundColor: 'white' }}>
+              <tr style={{ backgroundColor: "#CCC7BB" }}>
+                <td className="text-center">ชื่อโต๊ะ</td>
+                <td className="text-center">จำนวน</td>
+                <td className="text-center">ประเภท</td>
+                <td className="text-center" style={{ width: "200px" }}> จัดการ </td>
+              </tr>
+              {this.state.rows.map((item, idx) => (
+                <tr id="addr0" key={idx}>
+                  {/* <td>{idx}</td> */}
 
-                        <td>
-                          {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                            <div>
-                                <input
-                                  type="text"
-                                  name="quantity"
-                                  value={this.state.rows[idx].quantity}
-                                  onChange={this.handleChange(idx)}
-                                  className="form-control"
-                                />
-                            </div>
-                          ):(
-                            this.state.rows[idx].quantity
-                          )}
-                        </td>
+                  <td>
+                    {this.state.editMode.status && this.state.editMode.rowKey === idx ? (
+                      <div>
+                        <input
+                          type="text"
+                          name="name"
+                          value={this.state.rows[idx].name}
+                          onChange={this.handleChange(idx)}
+                          className="form-control"
+                        />
+                      </div>
+                    ) : (
+                        this.state.rows[idx].name
+                      )}
+                  </td>
 
-                        <td>
-                          {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                            <div>
-                                <input
-                                  type="text"
-                                  name="typeSymbol"
-                                  value={this.state.rows[idx].typeSymbol}
-                                  onChange={this.handleChange(idx)}
-                                  className="form-control"
-                                />
-                            </div>
-                          ):(
-                            this.state.rows[idx].typeSymbol
-                          )}
-                        </td>
-                        
-                      <td className="text-center">
-                        {this.state.editMode.status && this.state.editMode.rowKey === idx ?(
-                              <button
-                                className={"btn btn-outline-success btn-sm"}
-                                onClick={this.handleSave}
-                              >
-                                Save
-                              </button>
+                  <td>
+                    {this.state.editMode.status && this.state.editMode.rowKey === idx ? (
+                      <div>
+                        <input
+                          type="text"
+                          name="quantity"
+                          value={this.state.rows[idx].quantity}
+                          onChange={this.handleChange(idx)}
+                          className="form-control"
+                        />
+                      </div>
+                    ) : (
+                        this.state.rows[idx].quantity
+                      )}
+                  </td>
 
-                            ):(
-                              <div>
-                                <button
-                                style={{marginRight: "10px"}}
-                              className={"btn btn-warning btn-sm"}
-                              onClick={this.handleEdit(idx)}
-                            >
-                              Edit
+                  <td>
+                    {this.state.editMode.status && this.state.editMode.rowKey === idx ? (
+                      <div>
+                        <input
+                          type="text"
+                          name="typeSymbol"
+                          value={this.state.rows[idx].typeSymbol}
+                          onChange={this.handleChange(idx)}
+                          className="form-control"
+                        />
+                      </div>
+                    ) : (
+                        this.state.rows[idx].typeSymbol
+                      )}
+                  </td>
+
+                  <td className="text-center">
+                    {this.state.editMode.status && this.state.editMode.rowKey === idx ? (
+                      <button
+                        className={"btn btn-outline-success btn-sm"}
+                        onClick={this.handleSave}
+                      >
+                        Save
+                      </button>
+
+                    ) : (
+                        <div>
+                          <button
+                            style={{ marginRight: "10px" }}
+                            className={"btn btn-warning btn-sm"}
+                            onClick={this.handleEdit(idx)}
+                          >
+                            Edit
                             </button>
 
-                            <button
-                              className="btn btn-outline-danger btn-sm"
-                              onClick={this.handleRemoveSpecificRow(idx)}
-                            >
-                              Remove
+                          <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={this.handleRemoveSpecificRow(idx)}
+                          >
+                            Remove
                             </button>
-                            </div>
-                            )}
-                      </td>
-                    </tr>
-                  ))}
-                  <tr>
-                      <td colSpan="3" className="text-left">
-                      <button onClick={this.handleAddRow} className="btn btn-outline-primary btn-sm">
-                          เพิ่มประเภทโต๊ะ
+                        </div>
+                      )}
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan="3" className="text-left">
+                  <button onClick={this.handleAddRow} className="btn btn-outline-primary btn-sm">
+                    เพิ่มประเภทโต๊ะ
                         </button>
-                      </td>
-                      <td  className="text-center">
-                      <button onClick={this.handleUpdateTable} className="btn btn-success btn-lg">
-                          บันทึก
+                </td>
+                <td className="text-center">
+                  <button onClick={this.handleUpdateTable} className="btn btn-success btn-lg">
+                    บันทึก
                         </button>
-                      </td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-      );
-    }
-
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   }
+
+}
 // =================================================================================================
 
 function mapStateToProps(state) {

@@ -41,7 +41,7 @@ class App extends Component {
       showAdminBoard: false,
       currentUser: undefined,
       showLogin: true,
-      show:false,
+      show: false,
       showLogout: false,
     };
 
@@ -70,39 +70,39 @@ class App extends Component {
     console.log("show");
     this.setState({
       show: true,
-      showLogin : true
+      showLogin: true
     });
   };
 
   handleClose = (e) => {
     this.setState({
       show: false,
-      showLogout : false
+      showLogout: false
     });
-    
+
   };
 
   showRegister = () => {
     this.setState({
-        showLogin: !this.state.showLogin
-      });
+      showLogin: !this.state.showLogin
+    });
   }
 
   toggleMenu() {
     this.setState({ menu: !this.state.menu })
-}
-showLogout = () => {
-  this.setState({
-    showLogout : true
-  });
-};
+  }
+  showLogout = () => {
+    this.setState({
+      showLogout: true
+    });
+  };
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <div >
         <div className="myapp">
           <Router history={history}>
-          {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
+            {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
               QMS
             </Link>
@@ -168,37 +168,37 @@ showLogout = () => {
             )}
           </nav> */}
 
-          <NavigationBar/>
-          {/* {showAdminBoard && (
+            <NavigationBar />
+            {/* {showAdminBoard && (
               <SideNav/>
               )} */}
 
-          <div className="container">
-            <Switch>
-              <Route exact path={["/", "/home"]} component={Home} />
-              {/* <Route exact path="/login" component={Login} /> */}
-              {/* <Route exact path="/register" component={SignUpPage} /> */}
-              <Route exact path="/profile" component={Profile} />
-              <Route path="/check" component={UserQueueList} />
-              <Route path="/user" component={BoardUser} />
-              <Route path="/mod" component={BoardModerator} />
-              <Route path="/admin" component={Admin} />
-              <Route path="/getqueue" component={GetQueue} />
-              <Route path="/currentQueue" render={(props) => <CurrentQueue{...props}/>} />
-              <Route path="/store" component={StorePage} />
-              <Route path="/ManageQueuetable" component={ManageQueuetable} />
-              <Route path="/ManageStore" component={ManageStore} />
-              <Route path="/CreateBusiness" component={CreateBusiness} />
-              <Route path="/bookqueue" component={BookQueue} />
-              <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
-              <Route path="/LoginPageManager" component={LoginPageManager} />
-            </Switch>
-            
+            <div className="container">
+              <Switch>
+                <Route exact path={["/", "/home"]} component={Home} />
+                {/* <Route exact path="/login" component={Login} /> */}
+                {/* <Route exact path="/register" component={SignUpPage} /> */}
+                <Route exact path="/profile" component={Profile} />
+                <Route path="/check" component={UserQueueList} />
+                <Route path="/user" component={BoardUser} />
+                <Route path="/mod" component={BoardModerator} />
+                <Route path="/admin" component={Admin} />
+                <Route path="/getqueue" component={GetQueue} />
+                <Route path="/currentQueue" render={(props) => <CurrentQueue{...props} />} />
+                <Route path="/store" component={StorePage} />
+                <Route path="/ManageQueuetable" component={ManageQueuetable} />
+                <Route path="/ManageStore" component={ManageStore} />
+                <Route path="/CreateBusiness" component={CreateBusiness} />
+                <Route path="/bookqueue" component={BookQueue} />
+                <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
+                <Route path="/LoginPageManager" component={LoginPageManager} />
+              </Switch>
+
+            </div>
+
+          </Router>
         </div>
-            
-        </Router>
-        </div>
-        <Footer/>
+        <Footer />
       </div>
     );
   }
