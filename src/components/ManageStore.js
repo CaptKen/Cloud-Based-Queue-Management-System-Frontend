@@ -7,6 +7,7 @@ import TableManage from './TableManage';
 import BusinessDetailManager from './BusinessDetailManage';
 import ConstraintManage from './ConstraintManage';
 import PromoImgManage from './PromoImgManage';
+import { Redirect } from 'react-router-dom';
 
 
 class ManageStore extends Component {
@@ -47,9 +48,11 @@ class ManageStore extends Component {
     }
   }
   render() {
-
-    const { currentUser, businessName } = this.state;
+    const { currentUser, businessName, showModeratorBoard } = this.state;
     console.log("currentUser.businessName: ", currentUser, businessName);
+    // if(!showModeratorBoard){
+    //   return <Redirect to="/" />;
+    // }
     return (
       <Container >
         <h1 className="h1">Manage Store</h1>

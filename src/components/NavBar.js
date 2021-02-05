@@ -285,7 +285,7 @@ class NavigationBar extends Component {
 
               {showAdminBoard && (
                 <>
-                  <Nav.Link href="/createManager">Create Manager and Store</Nav.Link>
+                  <Nav.Link href="/CreateBusiness">Create Manager and Store</Nav.Link>
                 </>
               )}
 
@@ -332,7 +332,7 @@ class NavigationBar extends Component {
 
                 {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
                 <NavDropdown title={currentUser.username} id="nav-dropdown" style={{ float: "right" }}>
-                  <NavDropdown.Item href="#/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
                   <NavDropdown.Item href="/check">เช็คคิว</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                   <NavDropdown.Divider />

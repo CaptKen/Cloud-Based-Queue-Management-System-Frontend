@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Link, Switch, Route, BrowserRouter, Router } from 'react-router-dom';
+import { Link, Switch, Route, BrowserRouter, Router, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import GetQueue from "./components/GetQueue";
@@ -30,6 +30,8 @@ import CreateBusiness from './components/CreateBusiness';
 import BookQueue from './components/BookQueue';
 import LoginPageAdmin from './components/LoginPageAdmin'
 import LoginPageManager from './components/LoginPageManager'
+
+import SetPW from './components/SetPw'
 
 class App extends Component {
   constructor(props) {
@@ -176,6 +178,7 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route exact path={["/", "/home"]} component={Home} />
+                <Route exact path='/setPassword/:username' render={(props) => <SetPW{...props} />} />
                 {/* <Route exact path="/login" component={Login} /> */}
                 {/* <Route exact path="/register" component={SignUpPage} /> */}
                 <Route exact path="/profile" component={Profile} />
@@ -187,16 +190,16 @@ class App extends Component {
                 <Route path="/currentQueue" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store" component={StorePage} />
                 <Route path="/ManageQueuetable" component={ManageQueuetable} />
-                {showModeratorBoard && (
-                  <Route path="/ManageStore" component={ManageStore} />
-                )}
-                
-                {showAdminBoard &&(
+                <Route path="/ManageStore" component={ManageStore} />
+
+
                   <Route path="/CreateBusiness" component={CreateBusiness} />
-                )}
+
                 <Route path="/bookqueue" component={BookQueue} />
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
                 <Route path="/LoginPageManager" component={LoginPageManager} />
+
+
               </Switch>
 
             </div>

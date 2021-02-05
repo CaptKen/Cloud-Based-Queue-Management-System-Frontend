@@ -67,6 +67,18 @@ class AuthService {
       branch
     }, { headers: authHeader() });
   }
+
+  updateProfile(username, userProfile) {
+    return axios.patch(API_URL + 'updateProfile/' + username, userProfile)
+  }
+
+  getProfile(username){
+    return axios.get(API_URL + 'profile/' + username)
+  }
+
+  changePassword(username, password) {
+    return axios.patch(API_URL + 'changePassword/' + username, password)
+  }
 }
 
 export default new AuthService();
