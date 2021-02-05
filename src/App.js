@@ -28,8 +28,10 @@ import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 import CreateBusiness from './components/CreateBusiness';
 
 import BookQueue from './components/BookQueue';
-import LoginPageAdmin from './components/LoginPageAdmin'
-import LoginPageManager from './components/LoginPageManager'
+import LoginPageAdmin from './components/LoginPageAdmin';
+import LoginPageManager from './components/LoginPageManager';
+import LoginPageEmployee from './components/LoginPageEmployee';
+import SignUpEmployee from './components/SignUpEmployee';
 
 import SetPW from './components/SetPw'
 
@@ -198,6 +200,8 @@ class App extends Component {
                 <Route path="/bookqueue" component={BookQueue} />
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
                 <Route path="/LoginPageManager" component={LoginPageManager} />
+                <Route path="/SignUpEmployee" component={SignUpEmployee} />
+                <Route path="/LoginPageEmployee" component={LoginPageEmployee} />
 
 
               </Switch>

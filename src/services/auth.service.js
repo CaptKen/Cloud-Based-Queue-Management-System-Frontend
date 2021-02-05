@@ -79,6 +79,34 @@ class AuthService {
   changePassword(username, password) {
     return axios.patch(API_URL + 'changePassword/' + username, password)
   }
+
+  loginEmployee(username, password) {
+    return axios
+      .post(API_URL + "signin", { username, password })
+      .then((response) => {
+        console.log(response.data.roles);
+        if (response.data.accessToken) {
+          if (response.data.roles[0] === "ROLE_EMPLOYEE") {
+            localStorage.setItem("user", JSON.stringify(response.data));
+          }
+        }
+  
+        return response.data;
+      });
+  }
+  
+  registerEmployee(username, email, password, telephone, businessName, branch) {
+    return axios.post(API_URL + "signupEmployee", {
+      username,
+      email,
+      password,
+      telephone,
+      businessName,
+      branch
+    }, { headers: authHeader() });
+  }
 }
+
+
 
 export default new AuthService();
