@@ -68,6 +68,16 @@ class BusinessService {
     return axios.delete(BUSINESS_URL_API + 'deletePromoImg/' + businessName + '/' + fileName);
   }
 
+  //listCatagories
+  listCatagories(){
+    return axios.get(BUSINESS_URL_API + 'listCatagories')
+  }
+
+  //list By Category Name
+  findByCategoryName(categoryName){
+    return axios.get(BUSINESS_URL_API + 'findByCategoryName?categoryNmae=' + categoryName)
+  }
+
 }
 
 export default new BusinessService();

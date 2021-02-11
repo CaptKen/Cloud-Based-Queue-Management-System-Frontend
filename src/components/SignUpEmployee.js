@@ -171,7 +171,7 @@ class SignUpPage extends Component {
       <div className="col-md-12">
         {/* <h1 className="text-center">Sign Up</h1> */}
         <h1>
-        currentUser.email
+        {currentUser}
         </h1>
         <div>
           <Form
@@ -276,8 +276,10 @@ class SignUpPage extends Component {
 
 function mapStateToProps(state) {
   const { message } = state.message;
+  const { user } = state.auth;
   return {
     message,
+    user
   };
 }
 

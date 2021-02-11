@@ -299,8 +299,8 @@ class FieldManage extends React.Component {
 
   componentDidMount = () => {
     const user = this.props.user;
-    const businessName = this.props.businessName;
-    console.log(" +++++++++++++++++++++++++++++++++++ businessName:", businessName, user.businessName);
+    // const businessName = this.props.businessName;
+    // console.log(" +++++++++++++++++++++++++++++++++++ businessName:", businessName, user.businessName);
     if (user) {
       this.setState({
         currentUser: user,
@@ -309,7 +309,7 @@ class FieldManage extends React.Component {
       });
       businessService.getBusinessDetail(user.businessName, user.branch).then(
         res => {
-          // console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+          console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
           this.setState({
             apiResponse: res.data.BusinessDetail[0].fields,
             // branch: res.data.BusinessDetail[0].branch,

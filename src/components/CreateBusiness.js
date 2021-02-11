@@ -7,6 +7,7 @@ import { isEmail } from "validator";
 import { connect } from "react-redux";
 import { registerManager } from "../actions/auth";
 import { Container } from "react-bootstrap";
+import businessService from "../services/business.service";
 
 const required = (value) => {
   if (!value) {
@@ -40,6 +41,7 @@ class CreateBusiness extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangebranch = this.onChangebranch.bind(this);
     this.onChangebusinessName = this.onChangebusinessName.bind(this);
+    this.onChangeCatagory = this.onChangeCatagory.bind(this);
     this.state = {
       username: "",
       email: "",
@@ -47,11 +49,26 @@ class CreateBusiness extends Component {
       businessName: "",
       branch: "",
       successful: false,
+      listCatagoriesDropdown: [''],
+      catagory: ''
     };
   }
 
+  dropdown = () => {
+    businessService.listCatagories()
+      .then((res) => {
+        console.log(res.data.listCatagories);
+        this.setState({
+          listCatagoriesDropdown: res.data.listCatagories,
+        })
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  }
   componentDidMount() {
     this.onChangePassword();
+    this.dropdown();
   }
   onChangeUsername(e) {
     this.setState({
@@ -76,7 +93,11 @@ class CreateBusiness extends Component {
       branch: e.target.value,
     });
   }
-
+  onChangeCatagory(e) {
+    this.setState({
+      catagory: e.target.value,
+    });
+  }
   onChangePassword() {
     const generator = require('generate-password');
     const passwordAutoGen = generator.generate({
@@ -99,11 +120,14 @@ class CreateBusiness extends Component {
     });
     this.form.validateAll();
     console.log(this.state.password);
-
-    if (this.checkBtn.context._errors.length === 0) {
+    console.log(this.state.catagory === "");
+    if(this.state.catagory === ""){
+      alert("กรุณาเลือกประเภทสถานที่");
+    }
+    else if(this.checkBtn.context._errors.length === 0) {
       this.props
         .dispatch(
-          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch)
+          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
         )
         .then(() => {
           this.setState({
@@ -120,6 +144,8 @@ class CreateBusiness extends Component {
 
   render() {
     const { message } = this.props;
+    const { listCatagoriesDropdown } = this.state;
+    console.log(listCatagoriesDropdown);
 
     return (
       <Container className="d-flex" style={{ justifyContent: "center", fontFamily: "'Kanit', sans-serif;" }}>
@@ -209,6 +235,20 @@ class CreateBusiness extends Component {
                       validations={[required]}
                       maxLength={10}
                     />
+                  </div>
+
+                  <div className="form-group" name="branch">
+                    <label htmlFor="catagory">ประเภทร้าน</label>
+                    <select  onChange={this.onChangeCatagory} className="form-control">
+                    <option selected value="กรุณาเลือกประเภทสถานที่">กรุณาเลือกประเภทสถานที่</option>
+                      {listCatagoriesDropdown.map((item) => (
+                        <option  value={item.categories_name} >{item.categories_name}</option>
+                      ))}
+                      {/* <option selected value="grapefruit">{"ร้านอาหาร"}</option>
+                      <option value="lime">Lime</option>
+                      <option value="coconut">Coconut</option>
+                      <option value="mango">Mango</option> */}
+                    </select>
                   </div>
 
                   <div className="form-group">

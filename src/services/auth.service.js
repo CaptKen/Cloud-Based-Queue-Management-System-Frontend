@@ -58,13 +58,14 @@ class AuthService {
     });
   }
 
-  registerManager(username, email, password, businessName, branch) {
+  registerManager(username, email, password, businessName, branch, category) {
     return axios.post(API_URL + "signupManager", {
       username,
       email,
       password,
       businessName,
-      branch
+      branch,
+      category
     }, { headers: authHeader() });
   }
 

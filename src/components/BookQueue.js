@@ -23,7 +23,7 @@ class BookQueue extends Component {
         queue_type: 'bookQueue',
         business_detail_id: 0,
         status: 'waiting',
-        business_name: 'this.props.business_name',
+        business_name: this.props.business_name,
         book_time: '',
       }
     };

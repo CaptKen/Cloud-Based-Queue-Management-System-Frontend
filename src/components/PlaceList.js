@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import ItemsCarousel from 'react-items-carousel';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+
 
 import LOGO1 from '../statics/business logo/a.jpg'
 import LOGO2 from '../statics/business logo/b.jpg'
 import LOGO3 from '../statics/business logo/c.jpg'
 import LOGO4 from '../statics/business logo/d.jpg'
 import LOGO5 from '../statics/business logo/e.jpg'
+import businessService from '../services/business.service';
 
 // const noOfItems = 12;
 // const noOfCards = 3;
@@ -39,11 +41,27 @@ class AutoPlayCarousel extends React.Component {
     autoPlayDelay: 2000,
     chevronWidth: 40,
     setActiveItemIndex: 0,
-    typeName: this.props.typeName
+    typeName: this.props.typeName,
+    storeName: "store",
+    listByCategory: this.props.data,
   };
 
   componentDidMount() {
-    this.interval = setInterval(this.tick, this.state.autoPlayDelay);
+    // this.interval = setInterval(this.tick, this.state.autoPlayDelay);
+    this.callAPI();
+  }
+
+  callAPI() {
+    businessService.findByCategoryName(this.state.typeName)
+      .then((res) => {
+        console.log(res.data.listByCategory);
+        this.setState({
+          listByCategory: res.data.listByCategory
+        })
+      })
+      .catch((err) => {
+        console.error(err);
+      })
   }
 
   componentWillUnmount() {
@@ -61,6 +79,8 @@ class AutoPlayCarousel extends React.Component {
   }
 
   render() {
+    const { listByCategory } = this.state;
+    console.log("listByCategory : ", listByCategory);
     return (
       <div>
         <div style={{ marginTop: "30px" }}>
@@ -76,7 +96,18 @@ class AutoPlayCarousel extends React.Component {
             outsideChevron
             chevronWidth={this.state.chevronWidth}
           >
-            <SlideItem >
+            {listByCategory.map((item) =>(
+              <SlideItem>
+                <Link to={"/store/" + item.name} style={{ width: "100%", height:"100%"}}>
+                  <img
+                    className="img-responsive w-100 h-100"
+                    src={LOGO1}
+                    alt={item.name + "'s icon"}
+                  />
+                </Link>
+              </SlideItem>
+            ))}
+            {/* <SlideItem >
               <img
                 className="img-responsive w-100 h-100"
                 src={LOGO1}
@@ -91,12 +122,14 @@ class AutoPlayCarousel extends React.Component {
                 width="100%"
               /></SlideItem>
             <SlideItem>
-              <img
-                className="img-responsive w-100 h-100"
-                src={LOGO2}
-                alt="First slide"
-                width="100%"
-              /></SlideItem>
+              <Link to={"/" + this.state.storeName} style={{ width: "100%" }}>
+                <img
+                  className="img-responsive w-100 h-100"
+                  src={LOGO1}
+                  alt="First slide"
+                />
+              </Link>
+            </SlideItem>
             <SlideItem>
               <img
                 className="img-responsive w-100 h-100"
@@ -110,7 +143,7 @@ class AutoPlayCarousel extends React.Component {
                 src={LOGO4}
                 alt="First slide"
                 width="100%"
-              /></SlideItem>
+              /></SlideItem> */}
             {/* <div style={{ height: 200, background: '#EEE' }}>3</div>
             <div style={{ height: 200, background: '#EEE' }}>4</div>
             <div style={{ height: 200, background: '#EEE' }}>5</div>

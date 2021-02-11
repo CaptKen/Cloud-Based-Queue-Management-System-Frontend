@@ -181,8 +181,8 @@ import {
     );
   };
 
-  export const registerManager = (username, email, password, businessName, branch) => (dispatch) => {
-    return AuthService.registerManager(username, email, password, businessName, branch).then(
+  export const registerManager = (username, email, password, businessName, branch, category) => (dispatch) => {
+    return AuthService.registerManager(username, email, password, businessName, branch, category).then(
       (response) => {
         dispatch({
           type: REGISTER_SUCCESS,

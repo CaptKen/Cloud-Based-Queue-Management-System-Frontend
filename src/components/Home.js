@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import businessService from '../services/business.service';
 import UserService from "../services/user.service";
 import Carousel from 'react-bootstrap/Carousel'
 import AutoPlayCarousel from './PlaceList';
@@ -13,7 +13,8 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      listByCategory: []
     };
   }
 
@@ -33,6 +34,21 @@ export default class Home extends Component {
         });
       }
     );
+
+    this.callAPI();
+  }
+
+  callAPI() {
+    businessService.findByCategoryName("ร้านอาหาร")
+      .then((res) => {
+        console.log(res.data.listByCategory);
+        this.setState({
+          listByCategory: res.data.listByCategory
+        })
+      })
+      .catch((err) => {
+        console.error(err);
+      })
   }
 
   render() {
@@ -85,7 +101,7 @@ export default class Home extends Component {
           </Carousel.Item>
         </Carousel>
 
-        <AutoPlayCarousel typeName="ร้านอาหาร" />
+        <AutoPlayCarousel typeName="ร้านอาหาร" data={this.state.listByCategory}/>
 
 
 
