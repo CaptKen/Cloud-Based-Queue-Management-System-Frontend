@@ -376,7 +376,7 @@ class PromoImgManage extends React.Component {
                               style={{ width: progress + "%" }}
                             >
                               {progress}%
-                        </div>
+                            </div>
                           </div>
                         )}
                         {/* <button onClick={this.handleAddRow} className="btn btn-primary">

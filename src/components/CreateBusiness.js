@@ -42,6 +42,10 @@ class CreateBusiness extends Component {
     this.onChangebranch = this.onChangebranch.bind(this);
     this.onChangebusinessName = this.onChangebusinessName.bind(this);
     this.onChangeCatagory = this.onChangeCatagory.bind(this);
+
+    this.selectFile = this.selectFile.bind(this);
+    // this.upload = this.upload.bind(this);
+
     this.state = {
       username: "",
       email: "",
@@ -50,8 +54,43 @@ class CreateBusiness extends Component {
       branch: "",
       successful: false,
       listCatagoriesDropdown: [''],
-      catagory: ''
+      catagory: '',
+
+      selectedFiles: undefined,
+      currentFile: undefined,
+      progress: 0,
+      message: "",
+      fileNameforShow: 'No file chosen',
+      fileInfos: []
     };
+  }
+
+  selectFile(event) {
+    console.log("event.target.files", event.target.files[0].name);
+    this.setState({
+      selectedFiles: event.target.files,
+      fileNameforShow: event.target.files[0].name
+    });
+
+  }
+
+  // upload() {
+  //   let currentFile = this.state.selectedFiles[0];
+  //   this.setState({
+  //     progress: 0,
+  //     currentFile: currentFile,
+  //   });
+
+    
+  // }
+
+  handleUploadInput = () => {
+    const actualBtn = document.getElementById('actual-btn');
+    const fileChosen = document.getElementById('file-chosen');
+
+    actualBtn.addEventListener('change', function () {
+      fileChosen.textContent = this.files[0].name
+    })
   }
 
   dropdown = () => {
@@ -113,6 +152,13 @@ class CreateBusiness extends Component {
   }
 
   handleRegister(e) {
+    let currentFile = this.state.selectedFiles[0];
+
+    this.setState({
+      progress: 0,
+      currentFile: currentFile,
+    });
+
     this.onChangePassword();
     e.preventDefault();
     this.setState({
@@ -121,10 +167,10 @@ class CreateBusiness extends Component {
     this.form.validateAll();
     console.log(this.state.password);
     console.log(this.state.catagory === "");
-    if(this.state.catagory === ""){
+    if (this.state.catagory === "") {
       alert("กรุณาเลือกประเภทสถานที่");
     }
-    else if(this.checkBtn.context._errors.length === 0) {
+    else if (this.checkBtn.context._errors.length === 0) {
       this.props
         .dispatch(
           registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
@@ -140,11 +186,42 @@ class CreateBusiness extends Component {
           });
         });
     }
+    businessService.upLoadIconImg(currentFile, (event) => {
+      this.setState({
+        progress: Math.round((100 * event.loaded) / event.total),
+      });
+    }, this.state.businessName)
+      .then((response) => {
+        this.setState({
+          message: response.data.message,
+          fileNameforShow: 'No file chosen'
+        });
+      })
+      .then((files) => {
+        this.setState({
+          fileInfos: files.data,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          progress: 0,
+          message: "Could not upload the file!",
+          currentFile: undefined,
+        });
+      });
+
+    this.setState({
+      selectedFiles: undefined,
+    });
   }
 
   render() {
     const { message } = this.props;
-    const { listCatagoriesDropdown } = this.state;
+    const { listCatagoriesDropdown,
+      selectedFiles,
+      currentFile,
+      progress,
+      fileInfos } = this.state;
     console.log(listCatagoriesDropdown);
 
     return (
@@ -162,6 +239,20 @@ class CreateBusiness extends Component {
             >
               {!this.state.successful && (
                 <div>
+                  <div className="form-group">
+                  
+                    <label htmlFor="actual-btn" className="btn btn-outline-primary" >เพิ่มรูปร้าน</label>
+                    <input type="file" id="actual-btn" onChange={this.selectFile} hidden />
+                    <span id="file-chosen" style={{ marginRight: "15%", marginLeft: "0.5rem" }} >{this.state.fileNameforShow}</span>
+
+                    {/* <button
+                      className="btn btn-primary btn-md"
+                      disabled={!selectedFiles}
+                      onClick={this.upload}>
+                      Upload
+                    </button> */}
+
+                  </div>
                   <div className="form-group">
                     <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
                     <Input
@@ -239,10 +330,10 @@ class CreateBusiness extends Component {
 
                   <div className="form-group" name="branch">
                     <label htmlFor="catagory">ประเภทร้าน</label>
-                    <select  onChange={this.onChangeCatagory} className="form-control">
-                    <option selected value="กรุณาเลือกประเภทสถานที่">กรุณาเลือกประเภทสถานที่</option>
+                    <select onChange={this.onChangeCatagory} className="form-control">
+                      <option selected value="กรุณาเลือกประเภทสถานที่">กรุณาเลือกประเภทสถานที่</option>
                       {listCatagoriesDropdown.map((item) => (
-                        <option  value={item.categories_name} >{item.categories_name}</option>
+                        <option value={item.categories_name} >{item.categories_name}</option>
                       ))}
                       {/* <option selected value="grapefruit">{"ร้านอาหาร"}</option>
                       <option value="lime">Lime</option>

@@ -78,6 +78,18 @@ class BusinessService {
     return axios.get(BUSINESS_URL_API + 'findByCategoryName?categoryNmae=' + categoryName)
   }
 
+  //upload รูป
+  upLoadIconImg(file, onUploadProgress, businessName) {
+    let formData = new FormData();
+
+    formData.append("file", file);
+    return axios.post(BUSINESS_URL_API + 'addIcon/' + businessName, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }, onUploadProgress
+    });
+  }
+
 }
 
 export default new BusinessService();
