@@ -73,6 +73,7 @@ const vbranch = (value) => {
 class SignUpPage extends Component {
   constructor(props) {
     super(props);
+    const {user: currentUser} = this.props;
     this.handleRegister = this.handleRegister.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -86,8 +87,8 @@ class SignUpPage extends Component {
       password: "",
       checkPassword: "",
       telephone: "",
-      businessName: "burinLKB",
-      branch: "LKB",
+      businessName: currentUser.businessName,
+      branch: currentUser.branch,
       successful: false,
     };
 
@@ -165,14 +166,11 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const { message, user: currentUser } = this.props;
+    const { message } = this.props;
 
     return (
       <div className="col-md-12">
         {/* <h1 className="text-center">Sign Up</h1> */}
-        <h1>
-        {currentUser}
-        </h1>
         <div>
           <Form
             onSubmit={this.handleRegister}
