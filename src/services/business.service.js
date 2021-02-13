@@ -38,7 +38,7 @@ class BusinessService {
     });
   }
 
-  //เอารูป
+  //เอารูป Promotion
   getPromotionImg(businessName) {
     return axios.get(BUSINESS_URL_API + businessName + '/' + "files");
   }
@@ -78,7 +78,7 @@ class BusinessService {
     return axios.get(BUSINESS_URL_API + 'findByCategoryName?categoryNmae=' + categoryName)
   }
 
-  //upload รูป
+  //upload รูป Icon
   upLoadIconImg(file, onUploadProgress, businessName) {
     let formData = new FormData();
 
@@ -88,6 +88,11 @@ class BusinessService {
         "Content-Type": "multipart/form-data",
       }, onUploadProgress
     });
+  }
+
+  //เอารูป Icon
+  getIconImg(businessName) {
+    return axios.get(BUSINESS_URL_API + businessName + '/' + "icons");
   }
 
 }

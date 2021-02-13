@@ -43,29 +43,77 @@ class AutoPlayCarousel extends React.Component {
     setActiveItemIndex: 0,
     typeName: this.props.typeName,
     storeName: "store",
-    listByCategory: this.props.data,
+    listByCategory: [],
+    fileInfos: {},
   };
 
   componentDidMount() {
     // this.interval = setInterval(this.tick, this.state.autoPlayDelay);
     this.callAPI();
+    // this.getIconsImg();
+    // this.forceUpdate()
   }
 
   callAPI() {
+    console.log("CallApi()");
     businessService.findByCategoryName(this.state.typeName)
       .then((res) => {
-        console.log(res.data.listByCategory);
         this.setState({
+          ...this.state,
           listByCategory: res.data.listByCategory
+
         })
+        res.data.listByCategory.map((item) => (
+          businessService.getIconImg(item.name)
+            .then((res) => {
+              // return res.data[0].url;
+              this.setState({
+                ...this.state,
+                fileInfos: {
+                  ...this.state.fileInfos,
+                  [item.name]: res.data[0].url
+                },
+              })
+
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        ))
       })
       .catch((err) => {
         console.error(err);
       })
   }
 
+  // getIconsImg() {
+  //   const { listByCategory } = this.state
+  //   console.log("getIcon", listByCategory);
+  //   listByCategory.map((item) => (
+  //     businessService.getIconImg(item.name)
+  //       .then((res) => {
+  //         console.log(res.data[0])
+  //         // return res.data[0].url;
+  //         this.setState({
+  //           ...this.state,
+  //           fileInfos: {
+  //             ...this.state.fileInfos,
+  //             [item.name]: res.data[0].url
+  //           },
+  //         })
+
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       })
+  //   ))
+
+  // }
+
+
+
   componentWillUnmount() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   }
 
   tick = () => this.setState(prevState => ({
@@ -79,8 +127,10 @@ class AutoPlayCarousel extends React.Component {
   }
 
   render() {
-    const { listByCategory } = this.state;
-    console.log("listByCategory : ", listByCategory);
+    const { listByCategory, fileInfos } = this.state;
+    // console.log("listByCategory : ", listByCategory);
+    // console.log("fileInfos : ", fileInfos);
+
     return (
       <div>
         <div style={{ marginTop: "30px" }}>
@@ -96,12 +146,13 @@ class AutoPlayCarousel extends React.Component {
             outsideChevron
             chevronWidth={this.state.chevronWidth}
           >
-            {listByCategory.map((item) =>(
-              <SlideItem>
-                <Link to={"/store/" + item.name} style={{ width: "100%", height:"100%"}}>
+            {listByCategory.map((item) => (
+              <SlideItem key={item.name}>
+                <Link to={"/store/" + item.name} style={{ width: "100%", height: "100%" }}>
                   <img
                     className="img-responsive w-100 h-100"
-                    src={LOGO1}
+                    // src={LOGO1}
+                    src={fileInfos.[item.name]}
                     alt={item.name + "'s icon"}
                   />
                 </Link>

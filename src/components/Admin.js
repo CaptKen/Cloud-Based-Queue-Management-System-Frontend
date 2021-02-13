@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import axios from 'axios';
+import React, { Component } from 'react';
 import userService from '../services/user.service';
 import ManageQueueTable from './ManageQueueTable';
 

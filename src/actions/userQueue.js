@@ -56,12 +56,12 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        // const message =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //   error.message ||
+        //   error.toString();
           
         return Promise.reject();
       }
@@ -79,12 +79,12 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        // const message =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //   error.message ||
+        //   error.toString();
           
         return Promise.reject();
       }
@@ -106,12 +106,12 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        // const message =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //   error.message ||
+        //   error.toString();
           
         return Promise.reject();
       }

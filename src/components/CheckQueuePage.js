@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Form, Col, Row, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import UserQueueList from './UserQueueList'
-import UserService from '../services/user.service';
 import { connect } from "react-redux";
 
 class CheckQueuePage extends Component {

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Modal, Button, Container, Row, Col } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from 'axios';
-import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
@@ -63,7 +61,7 @@ class BookQueue extends Component {
     }
     console.log(formData);
 
-    const { history } = this.props;
+    // const { history } = this.props;
     this.props.dispatch(addqueue(formData))
       .then(() => {
         console.log("in dispatch");

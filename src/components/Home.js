@@ -14,7 +14,8 @@ export default class Home extends Component {
 
     this.state = {
       content: "",
-      listByCategory: []
+      listByCategory: [],
+      fileInfos: {}
     };
   }
 

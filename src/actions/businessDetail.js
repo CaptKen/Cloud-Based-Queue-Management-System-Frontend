@@ -15,12 +15,12 @@ export const businessDetail = (businessName, branch) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        // const message =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //   error.message ||
+        //   error.toString();
           
         return Promise.reject();
       }

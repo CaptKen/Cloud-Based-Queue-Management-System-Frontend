@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Link, Switch, Route, BrowserRouter, Router, useParams } from 'react-router-dom';
+import { Switch, Route, Router } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import GetQueue from "./components/GetQueue";
@@ -12,7 +12,6 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import StorePage from "./components/StorePage"
-import CheckQueuePage from "./components/CheckQueuePage";
 import Footer from './components/Footer';
 import './footer.css';
 import UserQueueList from './components/UserQueueList';
@@ -101,7 +100,7 @@ class App extends Component {
     });
   };
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    // const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <div >
         <div className="myapp">

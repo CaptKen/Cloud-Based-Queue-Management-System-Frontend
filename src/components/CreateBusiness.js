@@ -311,7 +311,7 @@ class CreateBusiness extends Component {
                       value={this.state.businessName}
                       onChange={this.onChangebusinessName}
                       validations={[required]}
-                      maxLength={10}
+                      maxLength={100}
                     />
                   </div>
 
