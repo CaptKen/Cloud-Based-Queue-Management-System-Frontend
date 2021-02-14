@@ -4,9 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
-import { addqueue } from "../actions/userQueue";
+import { addQueueWithDynamicFields } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage } from "../actions/message";
+import businessService from '../services/business.service';
+
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
@@ -15,36 +17,61 @@ class GetInQueue extends Component {
       show: false,
       redirectFlag: false,
       successful: false,
+      storeName: this.props.storeName,
+      branch: this.props.branch,
+      apiResponse:[],
       formElements: {
-        username: '',
-        user_email: '',
-        user_telephone: '',
-        user_detail: '',
         queue_type: 'normal',
-        business_detail_id: 0,
         status: 'waiting',
-        business_name: this.props.business_name,
+        business_name: this.props.storeName,
+        username: '',
+        queueDetail:{}
       }
     };
   }
 
   componentDidMount() {
+    
     this.setState({
       redirectFlag: false
     });
+    console.log("storeName", this.state.storeName);
+    console.log("branch", this.state.branch);
+    businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
+      res => {
+        console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+        this.setState({
+          apiResponse: res.data.BusinessDetail[0].fields,
+        })
+      }
+    )
   }
 
   onFormChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
-    let updateForm = { ...this.state.formElements };
-    updateForm[name] = value;
-
-    this.setState({
-      ...this.state,
-      formElements: updateForm
-    })
+    console.log("name, value : ", name, value);
+    let updateForm = { ...this.state.formElements.queueDetail };
+      updateForm[name] = value;
+    if (name=="ชื่อ-นามสกุล") {
+      this.setState({
+        ...this.state,
+        formElements:{
+          ...this.state.formElements,
+          username: value,
+          queueDetail : updateForm
+        }
+      })
+      
+    }else{
+      this.setState({
+        ...this.state,
+        formElements: {
+          ...this.state.formElements,
+          queueDetail : updateForm
+        }
+      })
+    }
   }
 
   handleAddqueue(e) {
@@ -54,21 +81,19 @@ class GetInQueue extends Component {
     });
     const formData = {};
     for (let name in this.state.formElements) {
-      if (name === 'formValid') {
-        console.log("formValidformValidformValid");
-        continue;
-      }
       formData[name] = this.state.formElements[name];
     }
+
     console.log(formData);
 
     const { history } = this.props;
-    this.props.dispatch(addqueue(formData))
+
+    this.props.dispatch(addQueueWithDynamicFields(formData))
       .then(() => {
         console.log("in dispatch");
         this.setState({
           successful: true,
-          redirectFlag: true
+          // redirectFlag: true
         });
       })
       .catch(() => {
@@ -93,6 +118,7 @@ class GetInQueue extends Component {
   };
   render() {
     const { message } = this.props;
+    const { apiResponse } = this.state;
 
     if (this.state.redirectFlag) {
       return (<Redirect
@@ -104,9 +130,25 @@ class GetInQueue extends Component {
     }
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-
         <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
-          <div className="form-inline">
+          {apiResponse.map((item, i) => (
+            <div className="form-inline">
+            <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
+            </label>
+            <input
+              type="text"
+              className=" col-9 form-control"
+              id={item}
+              name={item}
+              placeholder={item}
+              tabIndex={i+=1}
+              required
+              onChange={this.onFormChange}
+              style={{ marginBottom: "10px" }}
+            />
+          </div>
+          ))}
+          {/* <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
             </label>
             <input
@@ -170,7 +212,7 @@ class GetInQueue extends Component {
               style={{ marginBottom: "10px" }}
             ></textarea>
 
-          </div>
+          </div> */}
 
           {/* <div className="form-inline">
             <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>

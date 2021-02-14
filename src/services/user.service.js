@@ -55,6 +55,10 @@ class UserService {
   currentQueueDetail(business_name) {
     return axios.get(QUEUE_URL_API + 'findCurrentQueueDetail?business_name=' + business_name)
   }
+
+  addQueueWithDynamicFields(formDate) {
+    return axios.post(QUEUE_URL_API + 'addQueueWithDynamicFields', formDate);
+  }
 }
 
 export default new UserService();

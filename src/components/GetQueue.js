@@ -40,7 +40,7 @@ class GetQueue extends Component {
           </div>
         ) : (
             <div>
-              <GetInQueue business_name={storeName} />
+              <GetInQueue storeName={storeName} branch={branch} />
             </div>
           )}
 
