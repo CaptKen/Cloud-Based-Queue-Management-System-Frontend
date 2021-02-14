@@ -324,7 +324,7 @@ class CreateBusiness extends Component {
                       value={this.state.branch}
                       onChange={this.onChangebranch}
                       validations={[required]}
-                      maxLength={10}
+                      maxLength={100}
                     />
                   </div>
 

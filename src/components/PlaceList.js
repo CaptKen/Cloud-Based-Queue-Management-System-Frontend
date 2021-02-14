@@ -25,6 +25,7 @@ const SlideItem = styled.div`
   justify-content: center;
   font-size: 20px;
   font-weight: bold;
+  border-radius: 10px;
 `;
 
 class AutoPlayCarousel extends React.Component {

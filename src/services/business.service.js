@@ -100,6 +100,11 @@ class BusinessService {
     return axios.delete(BUSINESS_URL_API + 'deleteIconImg/' + businessName);
   }
 
+  //get findQuantityDetail
+  findQuantityDetail(businessName){
+    return axios.get(BUSINESS_URL_API + 'findQuantityDetail?business_name=' + businessName)
+  }
+
 }
 
 export default new BusinessService();

@@ -28,17 +28,19 @@ class GetQueue extends Component {
     }
   }
   render() {
+    const storeName = this.props.match.params.businessName;
+    const branch = this.props.match.params.branch;
     const { currentUser } = this.state;
     return (
       <Container>
-        <GetQueueHeader storeName="BurinLKB" waitingQueue={3} />
+        <GetQueueHeader storeName={storeName} branch={branch} />
         {currentUser ? (
           <div>
-            <GetInQueueWithLogin business_name="BurinLKB" currentUser={currentUser} />
+            <GetInQueueWithLogin business_name={storeName} currentUser={currentUser} />
           </div>
         ) : (
             <div>
-              <GetInQueue business_name="BurinLKB" />
+              <GetInQueue business_name={storeName} />
             </div>
           )}
 

@@ -187,14 +187,14 @@ class App extends Component {
                 <Route path="/user" component={BoardUser} />
                 <Route path="/mod" component={BoardModerator} />
                 <Route path="/admin" component={Admin} />
-                <Route path="/getqueue" component={GetQueue} />
+                <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
                 <Route path="/currentQueue" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store/:businessName/:branch" component={StorePage} />
                 <Route path="/ManageQueuetable" component={ManageQueuetable} />
                 <Route path="/ManageStore" component={ManageStore} />
 
 
-                  <Route path="/CreateBusiness" component={CreateBusiness} />
+                <Route path="/CreateBusiness" component={CreateBusiness} />
 
                 <Route path="/bookqueue" component={BookQueue} />
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
