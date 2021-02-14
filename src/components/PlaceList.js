@@ -3,12 +3,6 @@ import styled from 'styled-components';
 import ItemsCarousel from 'react-items-carousel';
 import { withRouter, Link } from 'react-router-dom';
 
-
-import LOGO1 from '../statics/business logo/a.jpg'
-import LOGO2 from '../statics/business logo/b.jpg'
-import LOGO3 from '../statics/business logo/c.jpg'
-import LOGO4 from '../statics/business logo/d.jpg'
-import LOGO5 from '../statics/business logo/e.jpg'
 import businessService from '../services/business.service';
 
 // const noOfItems = 12;
@@ -128,8 +122,8 @@ class AutoPlayCarousel extends React.Component {
 
   render() {
     const { listByCategory, fileInfos } = this.state;
-    // console.log("listByCategory : ", listByCategory);
-    // console.log("fileInfos : ", fileInfos);
+    console.log("listByCategory : ", listByCategory);
+    console.log("fileInfos : ", fileInfos);
 
     return (
       <div>
@@ -148,7 +142,7 @@ class AutoPlayCarousel extends React.Component {
           >
             {listByCategory.map((item) => (
               <SlideItem key={item.name}>
-                <Link to={"/store/" + item.name} style={{ width: "100%", height: "100%" }}>
+                <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
                   <img
                     className="img-responsive w-100 h-100"
                     // src={LOGO1}

@@ -18,9 +18,11 @@ class StorePage extends Component {
   }
 
   render() {
+    const storeName = this.props.match.params.businessName;
+    const branch = this.props.match.params.branch;
     return (
       <div>
-        <GetQueueHeader storeName="Burin Ladkrabang" waitingQueue={3} />
+        <GetQueueHeader storeName={storeName} branch={branch} waitingQueue={3} />
         <Carousel style={{ margin: 50 }} >
           <Carousel.Item interval={1000} style={{ borderRadius: "15px" }}>
             <img

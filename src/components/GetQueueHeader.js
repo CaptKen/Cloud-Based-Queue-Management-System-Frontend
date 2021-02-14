@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import { withRouter } from 'react-router-dom';
-
+import businessService from '../services/business.service';
 import { Container, Row, Col, Media } from 'react-bootstrap'
 
 class GetQueueHeader extends Component {
@@ -10,7 +10,11 @@ class GetQueueHeader extends Component {
         super(props);
         this.state = {
             storeName: this.props.storeName,
-            waitingQueue: this.props.waitingQueue
+            waitingQueue: this.props.waitingQueue,
+            branch: this.props.branch,
+            BusinessDetail: '',
+            openTime:'',
+            businessInfo:{}
         };
     }
 
@@ -22,27 +26,49 @@ class GetQueueHeader extends Component {
         this.props.history.push('/bookqueue')
     }
 
-    // componentDidMount() {
-    //     UserService.getRestaurantByName("burin").then(
-    //       response => {
-    //         this.setState({
-    //           content: response.data
-    //         });
-    //       },
-    //       error => {
-    //         this.setState({
-    //           content:
-    //             (error.response &&
-    //               error.response.data &&
-    //               error.response.data.message) ||
-    //             error.message ||
-    //             error.toString()
-    //         });
-    //       }
-    //     );
-    //   }
+    componentDidMount() {
+        businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
+            res => {
+              console.log(res.data.BusinessDetail[0]);
+              console.log(res.data.BusinessDetail[0].businessDetailList);
+              res.data.BusinessDetail[0].businessDetailList.map(item => (
+                  this.setState({
+                      ...this.state,
+                      businessInfo : {
+                        ...this.state.businessInfo,
+                        [item.name] : item.text
+                      }
+                  })
+              ))
+              this.setState({
+                // apiResponse: res.data.BusinessDetail[0].businessDetailList,
+                BusinessDetail: res.data.BusinessDetail[0],
+              })
+            }
+          )
+        // UserService.getRestaurantByName("burin").then(
+        //   response => {
+        //     this.setState({
+        //       content: response.data
+        //     });
+        //   },
+        //   error => {
+        //     this.setState({
+        //       content:
+        //         (error.response &&
+        //           error.response.data &&
+        //           error.response.data.message) ||
+        //         error.message ||
+        //         error.toString()
+        //     });
+        //   }
+        // );
+
+      }
 
     render() {
+        const {businessInfo} = this.state;
+        console.log("businessInfo: ", businessInfo);
         return (
             <div>
                 <Container>
@@ -55,14 +81,14 @@ class GetQueueHeader extends Component {
                             />
                             <div>
                                 <h1>{this.state.storeName}</h1>
-                                <p>สาขา : ลาดกระบัง</p>
+                                <p>สาขา : {this.state.branch}</p>
                             </div>
                         </Col>
                         <Col xs={7} sm={3} style={{ display: "inline-grid" }}>
                             {/* <p style={{display:"inline-flex"}}>เวลาเปิดบริการ : 10.00น.-10.05น </p>
                             <Button variant="success" style={{justifySelf:"center"}}>จองเวลา</Button><br/> */}
                             <p style={{ display: "inline-flex" }}>เวลาเปิดบริการ :</p>
-                            <p style={{ display: "inline-flex" }}>17.00น.-23.00น</p>
+                            <p style={{ display: "inline-flex" }}>{businessInfo.เวลาทำการ}</p>
                             <Button variant="success" onClick={this.redirectToBookQueue} >จองเวลา</Button><br />
                             <p style={{ display: "inline-flex" }}>คิวในระบบ : {this.state.waitingQueue}</p>
                             <p style={{ display: "inline-flex" }}>ระยะเวลารอคิว : {this.state.waitingQueue} </p>

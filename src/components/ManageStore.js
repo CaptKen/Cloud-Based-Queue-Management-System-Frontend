@@ -7,6 +7,7 @@ import TableManage from './TableManage';
 import BusinessDetailManager from './BusinessDetailManage';
 import ConstraintManage from './ConstraintManage';
 import PromoImgManage from './PromoImgManage';
+import IconChange from './IconChange'
 import { Redirect } from 'react-router-dom';
 
 
@@ -19,6 +20,7 @@ class ManageStore extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
+      // fileInfos: {}
     };
   }
 
@@ -33,6 +35,13 @@ class ManageStore extends Component {
   //     )
   // }
 
+  // getImageIcon() {
+  //   businessService.getIconImg()
+  //     .then((res) => {
+  //       console.log(res.data[0]);
+  //     })
+  // }
+
 
   componentDidMount() {
     // this.callAPI();
@@ -45,6 +54,13 @@ class ManageStore extends Component {
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
         businessName: user.businessName
       });
+      businessService.getIconImg(user.businessName)
+        .then((res) => {
+          console.log(res.data[0]);
+          this.setState({
+            fileInfos: res.data[0]
+          })
+        })
     }
   }
   render() {
@@ -54,8 +70,21 @@ class ManageStore extends Component {
     //   return <Redirect to="/" />;
     // }
     return (
-      <Container >
+      <Container>
         <h1 className="h1">Manage Store</h1>
+        {/* <div>
+          <img
+            className="img-responsive"
+            src={this.state.fileInfos.url}
+            alt={this.state.fileInfos.name + "'s icon"}
+            style={{
+              height: "200px", width: "200px", display: "block",
+              marginLeft: "auto", marginRight: "auto"
+            }}
+          />
+        </div> */}
+
+        <IconChange/>
         <FieldManage />
         <TableManage />
         <BusinessDetailManager />

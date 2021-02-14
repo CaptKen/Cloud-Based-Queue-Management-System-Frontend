@@ -40,6 +40,7 @@ class BusinessDetailManage extends React.Component {
     if (user) {
       this.setState({
         currentUser: user,
+        branch: user.branch,
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
         businessName: user.businessName
@@ -133,7 +134,7 @@ class BusinessDetailManage extends React.Component {
     formData["businessDetailList"] = this.state.rows
     console.log("formData: ", formData);
 
-    businessService.updateConstraint(this.state.businessName, this.state.branch, formData)
+    businessService.updateBusinessDetailList(this.state.businessName, this.state.branch, formData)
       .then(() => {
         alert("update success")
       })

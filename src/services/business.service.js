@@ -95,6 +95,11 @@ class BusinessService {
     return axios.get(BUSINESS_URL_API + businessName + '/' + "icons");
   }
 
+  //delete Icon
+  deleteIconImg(businessName, fileName) {
+    return axios.delete(BUSINESS_URL_API + 'deleteIconImg/' + businessName);
+  }
+
 }
 
 export default new BusinessService();

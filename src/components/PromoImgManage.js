@@ -117,7 +117,7 @@ class PromoImgManage extends React.Component {
 
     }
     businessService.getPromotionImg(user.businessName).then((response) => {
-
+      console.log(response.data);
       this.setState({
         fileInfos: response.data,
       });
@@ -289,7 +289,7 @@ class PromoImgManage extends React.Component {
             >
               <thead>
                 <tr style={{ backgroundColor: "#F2C035" }}>
-                  <th colspan="3">ข้อจำกัด/รายละเอียดอื่นๆ</th>
+                  <th colspan="3">รูปภาพโปรโมชั่น</th>
                   {/* <th className="text-center"> จัดการ </th> */}
                 </tr>
               </thead>
