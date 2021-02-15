@@ -36,7 +36,7 @@ class GetQueue extends Component {
         <GetQueueHeader storeName={storeName} branch={branch} />
         {currentUser ? (
           <div>
-            <GetInQueueWithLogin business_name={storeName} currentUser={currentUser} />
+            <GetInQueueWithLogin storeName={storeName} branch={branch} currentUser={currentUser} />
           </div>
         ) : (
             <div>
