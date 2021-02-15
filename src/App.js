@@ -32,6 +32,9 @@ import LoginPageManager from './components/LoginPageManager';
 import LoginPageEmployee from './components/LoginPageEmployee';
 import SignUpEmployee from './components/SignUpEmployee';
 
+import ListEmployee from './components/ListEmployee'
+import ListEmployees from './components/ListEmployees'
+
 import SetPW from './components/SetPw'
 
 class App extends Component {
@@ -201,6 +204,9 @@ class App extends Component {
                 <Route path="/LoginPageManager" component={LoginPageManager} />
                 <Route path="/SignUpEmployee" component={SignUpEmployee} />
                 <Route path="/LoginPageEmployee" component={LoginPageEmployee} />
+
+                <Route path="/ListEmployee" component={ListEmployee} />
+                <Route path="/ListEmployees" component={ListEmployees} />
 
 
               </Switch>

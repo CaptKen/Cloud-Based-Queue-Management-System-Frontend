@@ -213,7 +213,7 @@ function mapStateToProps(state) {
   const { message } = state.message;
   return {
     isLoggedIn,
-    message
+    message,
   };
 }
 

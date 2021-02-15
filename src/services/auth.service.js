@@ -106,7 +106,25 @@ class AuthService {
       branch
     }, { headers: authHeader() });
   }
+
+
+  listEmployee(businessName, branch) {
+    console.log("testURL________________________________"+ API_URL + 'findEmployeeByBusiness/' + '?businessName=' + 'burinLKB' + "&branch=" + 'LKB');
+    return axios.get(API_URL + 'findEmployeeByBusiness/' + '?businessName=' + businessName + "&branch=" + branch)
+    
+  }
+
+  deleteUser(id) {
+    return axios.get(API_URL + 'delete/' + id)
+  }
+
+
+  
 }
+
+
+
+
 
 
 
