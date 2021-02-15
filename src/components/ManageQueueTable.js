@@ -108,10 +108,12 @@ function Table({ columns, data }) {
 
 
 function ManageQueueTable(props) {
+  // const storeName = this.props.match.params.businessName;
+  console.log("prop +++++++++", props);
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Burin',
+        Header: props.storeName,
         columns: [
           {
             Header: 'หมายเลขคิว',

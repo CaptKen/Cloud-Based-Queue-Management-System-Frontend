@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
-import { addQueueWithDynamicFields } from "../actions/userQueue";
+import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage } from "../actions/message";
 import businessService from '../services/business.service';
@@ -88,12 +88,12 @@ class GetInQueue extends Component {
 
     const { history } = this.props;
 
-    this.props.dispatch(addQueueWithDynamicFields(formData))
+    this.props.dispatch(addqueue(formData))
       .then(() => {
         console.log("in dispatch");
         this.setState({
           successful: true,
-          // redirectFlag: true
+          redirectFlag: true
         });
       })
       .catch(() => {

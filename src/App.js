@@ -189,7 +189,7 @@ class App extends Component {
                 <Route path="/check" component={UserQueueList} />
                 <Route path="/user" component={BoardUser} />
                 <Route path="/mod" component={BoardModerator} />
-                <Route path="/admin" component={Admin} />
+                <Route path="/queue/:businessName/:branch" component={Admin} />
                 <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
                 <Route path="/currentQueue" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store/:businessName/:branch" component={StorePage} />
