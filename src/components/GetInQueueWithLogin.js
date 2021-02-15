@@ -24,7 +24,7 @@ class GetInQueueWithLogin extends Component {
       apiResponse: [],
       formElements: {
         username: '',
-        queue_type: 'normal',
+        queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
         queueDetail: {}
@@ -155,7 +155,7 @@ class GetInQueueWithLogin extends Component {
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue",
+          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)

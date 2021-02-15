@@ -21,7 +21,7 @@ class GetInQueue extends Component {
       branch: this.props.branch,
       apiResponse:[],
       formElements: {
-        queue_type: 'normal',
+        queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
         username: '',
@@ -123,7 +123,7 @@ class GetInQueue extends Component {
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue",
+          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)

@@ -19,29 +19,48 @@ class CurrentQueue extends Component {
       username: '',
       cancelSuccessful: false,
       redirect: false,
+      time: new Date(),
+      timer :''
     };
   }
 
   componentDidMount() {
+    const { time } = this.state;
+    
     const { history } = this.props;
     console.log(this.state.redirect == false);
-    if (this.props.location.state == undefined || this.props.location.state == null || this.props.location.state == '') {
+    const storeName = this.props.match.params.businessName;
+    // const username = this.props.match.params.username;
+    if (this.props.location.state == undefined || this.props.location.state == null || this.props.location.state == '' || this.props.match.params.businessName == undefined || this.props.match.params.username == undefined) {
       history.push("/home");
     } else {
       const username = this.props.location.state.username;
       const business_name = this.props.location.state.business_name;
 
-      UserService.getQueueDetail(business_name, username).then(
+      UserService.getQueueDetail(storeName, username).then(
         response => {
-          console.log("response.data.QueueDetail", response.data.QueueDetail);
+          
+          console.log("response.data.QueueDetail", response.data.QueueDetail.userQueueDetail[0].book_time);
+          const timer = this.diffTimeCal(new Date(response.data.QueueDetail.userQueueDetail[0].book_time));
           this.setState({
             queueDetail: response.data.QueueDetail.userQueueDetail[0],
             business_name: business_name,
             username: username,
             allQueueWait: response.data.QueueDetail.allQueueWait,
-            waitngTime: response.data.QueueDetail.wait_time
+            waitngTime: response.data.QueueDetail.wait_time,
+            time: new Date(response.data.QueueDetail.userQueueDetail[0].book_time)
           })
-
+          this.interval = setInterval(() => {
+            const diffTime = Math.abs(new Date(response.data.QueueDetail.userQueueDetail[0].book_time) - new Date());
+          const days = Math.floor(diffTime/(1000 * 60 * 60 * 24))%30;
+          const mins = Math.floor(diffTime/(1000 * 60))%60;
+          const hours = Math.floor(diffTime/(1000 * 60 * 60))%24;
+            const str = (days + " วัน " + hours + " ชั่วโมง " + mins + " นาที");
+            console.log(str);
+          this.setState({
+            timer: str
+          })
+          }, 30000)
         },
         error => {
           this.setState({
@@ -55,7 +74,10 @@ class CurrentQueue extends Component {
         }
       );
     }
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handleShow = () => {
@@ -93,8 +115,42 @@ class CurrentQueue extends Component {
     window.history.back();
   }
 
+  diffTimeCal = (a) => {
+    const diffTime = Math.abs(a - new Date());
+    const days = Math.floor(diffTime/(1000 * 60 * 60 * 24))%30;
+    const mins = Math.floor(diffTime/(1000 * 60))%60;
+    const hours = Math.floor(diffTime/(1000 * 60 * 60))%24;
+    const str = (days + " วัน " + hours + " ชั่วโมง " + mins + " นาที");
+
+    this.setState({
+      timer: str
+    })
+  }
+
   render() {
     const { message } = this.props;
+    const storeName = this.props.match.params.businessName;
+    const nowDateTime = new Date();
+    const {timer} = this.state;
+
+
+    console.log("nowDateTime ", nowDateTime);
+    const bookTimeDate = new Date(this.state.queueDetail.book_time).toLocaleDateString('th-TH', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const bookTime = new Date(this.state.queueDetail.book_time).toLocaleTimeString('th-TH');
+
+    // const time = new Date(this.state.queueDetail.book_time);
+    // const timeLeft = setInterval(this.diffTimeCal(time), 1000);
+
+    // console.log(this.diffTimeCal(time));
+    // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    // const diffhours = Math.ceil(diffTime / (1000 * 60 * 60));
+    // console.log(diffhours + " hours", diffDays + " days");
+
+    console.log("this.props.match.params", this.props.match.params.eiei);
 
     return (
       <div className="container">
@@ -105,8 +161,20 @@ class CurrentQueue extends Component {
           </div>
           <div className="card-body">
             <h5 className="card-title">หมายเลขคิวของท่าน : {this.state.queueDetail.queue_no}</h5>
-            <h5 className="card-title">เหลืออีก : {this.state.allQueueWait} คิว</h5>
-            <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5>
+            {this.state.queueDetail.queue_type === "NOR" ? (
+              <>
+                <h5 className="card-title">เหลืออีก : {this.state.allQueueWait} คิว</h5>
+
+              </>
+            ) : (
+                <>
+                  <h5 className="card-title">วันที่จอง : {bookTimeDate}</h5>
+                  <h5 className="card-title">เวลาที่จอง : {bookTime}</h5>
+                  {/* <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5> */}
+                </>
+
+              )}
+            <h5 className="card-title">เหลือเวลาอีก : {timer}</h5>
             {/* <p className="card-text">คิวของคุณ</p> */}
 
           </div>

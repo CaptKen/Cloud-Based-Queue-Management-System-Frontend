@@ -36,6 +36,7 @@ import ListEmployee from './components/ListEmployee'
 import ListEmployees from './components/ListEmployees'
 
 import SetPW from './components/SetPw'
+import BookQueueMain from './components/BookQueueMain';
 
 class App extends Component {
   constructor(props) {
@@ -191,7 +192,7 @@ class App extends Component {
                 <Route path="/mod" component={BoardModerator} />
                 <Route path="/queue/:businessName/:branch" component={Admin} />
                 <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
-                <Route path="/currentQueue" render={(props) => <CurrentQueue{...props} />} />
+                <Route path="/currentQueue/:businessName/:username" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store/:businessName/:branch" component={StorePage} />
                 <Route path="/ManageQueuetable" component={ManageQueuetable} />
                 <Route path="/ManageStore" component={ManageStore} />
@@ -199,7 +200,7 @@ class App extends Component {
 
                 <Route path="/CreateBusiness" component={CreateBusiness} />
 
-                <Route path="/bookqueue" component={BookQueue} />
+                <Route path="/bookqueue/:businessName/:branch" component={BookQueueMain} />
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
                 <Route path="/LoginPageManager" component={LoginPageManager} />
                 <Route path="/SignUpEmployee" component={SignUpEmployee} />

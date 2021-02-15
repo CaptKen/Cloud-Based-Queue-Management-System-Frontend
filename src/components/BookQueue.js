@@ -5,6 +5,8 @@ import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage } from "../actions/message";
+import businessService from '../services/business.service';
+
 class BookQueue extends Component {
   constructor(props) {
     super(props);
@@ -13,16 +15,16 @@ class BookQueue extends Component {
       show: false,
       redirectFlag: false,
       successful: false,
+      storeName: this.props.storeName,
+      branch: this.props.branch,
+      apiResponse:[],
       formElements: {
         username: '',
-        user_email: '',
-        user_telephone: '',
-        user_detail: '',
-        queue_type: 'bookQueue',
-        business_detail_id: 0,
+        queue_type: 'BOO',
         status: 'waiting',
-        business_name: this.props.business_name,
+        business_name: this.props.storeName,
         book_time: '',
+        queueDetail:{}
       }
     };
   }
@@ -31,19 +33,53 @@ class BookQueue extends Component {
     this.setState({
       redirectFlag: false
     });
+    console.log("storeName", this.state.storeName);
+    console.log("branch", this.state.branch);
+    businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
+      res => {
+        console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+        this.setState({
+          apiResponse: res.data.BusinessDetail[0].fields,
+        })
+      }
+    )
   }
 
   onFormChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
+    console.log("name, value : ", name, value);
     let updateForm = { ...this.state.formElements };
     updateForm[name] = value;
 
-    this.setState({
-      ...this.state,
-      formElements: updateForm
-    })
+    if (name=="ชื่อ-นามสกุล") {
+      this.setState({
+        ...this.state,
+        formElements:{
+          ...this.state.formElements,
+          username: value,
+          queueDetail : updateForm
+        }
+      })
+      
+    }else if(name=="book_time"){
+      this.setState({
+        ...this.state,
+        formElements:{
+          ...this.state.formElements,
+          book_time: value,
+          queueDetail : updateForm
+        }
+      })
+    }else{
+      this.setState({
+        ...this.state,
+        formElements: {
+          ...this.state.formElements,
+          queueDetail : updateForm
+        }
+      })
+    }
   }
 
   handleAddqueue(e) {
@@ -53,10 +89,6 @@ class BookQueue extends Component {
     });
     const formData = {};
     for (let name in this.state.formElements) {
-      if (name === 'formValid') {
-        console.log("formValidformValidformValid");
-        continue;
-      }
       formData[name] = this.state.formElements[name];
     }
     console.log(formData);
@@ -92,11 +124,12 @@ class BookQueue extends Component {
   };
   render() {
     const { message } = this.props;
+    const { apiResponse } = this.state;
 
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue",
+          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)
@@ -105,7 +138,24 @@ class BookQueue extends Component {
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
 
         <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
-          <div className="form-inline">
+        {apiResponse.map((item, i) => (
+            <div className="form-inline">
+            <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
+            </label>
+            <input
+              type="text"
+              className=" col-9 form-control"
+              id={item}
+              name={item}
+              placeholder={item}
+              tabIndex={i+=1}
+              required
+              onChange={this.onFormChange}
+              style={{ marginBottom: "10px" }}
+            />
+          </div>
+          ))}
+          {/* <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
             </label>
             <input
@@ -154,22 +204,6 @@ class BookQueue extends Component {
           </div>
 
           <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง
-            </label>
-            <input
-              type="datetime-local"
-              className="form-control  col-9"
-              id="book_time"
-              name="book_time"
-              placeholder="จองเวลา"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
             <label className="form-label col-3" style={{ justifyContent: "left" }}>รายละเอียดเพิ่มเติม
             </label>
             <textarea
@@ -184,7 +218,21 @@ class BookQueue extends Component {
               onChange={this.onFormChange}
               style={{ marginBottom: "10px" }}
             ></textarea>
+          </div> */}
 
+          <div className="form-inline">
+            <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง
+            </label>
+            <input
+              type="datetime-local"
+              className="form-control  col-9"
+              id="book_time"
+              name="book_time"
+              // placeholder="จองเวลา"
+              required
+              onChange={this.onFormChange}
+              style={{ marginBottom: "10px" }}
+            />
           </div>
 
           {/* <div className="form-inline">
