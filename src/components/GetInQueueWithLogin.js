@@ -23,7 +23,7 @@ class GetInQueueWithLogin extends Component {
       branch: this.props.branch,
       apiResponse: [],
       formElements: {
-        username: '',
+        username: this.props.currentUser.username,
         queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
@@ -41,8 +41,13 @@ class GetInQueueWithLogin extends Component {
         ...this.state.formElements,
         username: this.props.currentUser.username,
         business_name: this.props.storeName,
-        queue_type: 'normal',
+        queue_type: 'NOR',
         status: 'waiting',
+        queueDetail:{
+          ["ชื่อ-นามสกุล"]:this.props.currentUser.username,
+          ["เบอร์โทรศัพท์"] :this.props.currentUser.telephone,
+          ["Email"]:this.props.currentUser.email
+        }
       }
     });
     console.log("storeName", this.state.storeName);
@@ -71,15 +76,27 @@ class GetInQueueWithLogin extends Component {
     const name = e.target.name;
     const value = e.target.value;
     console.log("name, value : ", name, value);
-    let updateForm = { ...this.state.formElements };
+    let updateForm = { ...this.state.formElements.queueDetail };
     updateForm[name] = value;
-    this.setState({
-      ...this.state,
-      formElements: {
-        ...this.state.formElements,
-        queueDetail: updateForm
-      }
-    })
+    if (name=="ชื่อ-นามสกุล") {
+      this.setState({
+        ...this.state,
+        formElements:{
+          ...this.state.formElements,
+          username: value,
+          queueDetail : updateForm
+        }
+      })
+      
+    }else{
+      this.setState({
+        ...this.state,
+        formElements: {
+          ...this.state.formElements,
+          queueDetail : updateForm
+        }
+      })
+    }
 
   }
   handleAddqueue(e) {
@@ -190,11 +207,10 @@ class GetInQueueWithLogin extends Component {
               className="form-control col-9"
               id={item}
               name={item}
-              placeholder={item}
+              placeholder={this.handleValue(item)}
               tabIndex={i += 1}
               required
               onChange={this.onFormChange}
-              value={this.handleValue(item)}
               readOnly={item == "เบอร์โทรศัพท์" || item == "Email"? true : false}
               style={{ marginBottom: "10px" }}
             />

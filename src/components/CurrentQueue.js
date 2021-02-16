@@ -164,17 +164,17 @@ class CurrentQueue extends Component {
             {this.state.queueDetail.queue_type === "NOR" ? (
               <>
                 <h5 className="card-title">เหลืออีก : {this.state.allQueueWait} คิว</h5>
-
+                <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5>
               </>
             ) : (
                 <>
                   <h5 className="card-title">วันที่จอง : {bookTimeDate}</h5>
                   <h5 className="card-title">เวลาที่จอง : {bookTime}</h5>
-                  {/* <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5> */}
+                  <h5 className="card-title">เหลือเวลาอีก : {timer}</h5>
                 </>
 
               )}
-            <h5 className="card-title">เหลือเวลาอีก : {timer}</h5>
+            
             {/* <p className="card-text">คิวของคุณ</p> */}
 
           </div>

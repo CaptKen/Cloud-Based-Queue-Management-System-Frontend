@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import GetQueueHeader from './GetQueueHeader';
 import BookQueue from './BookQueue';
 import GetInQueueWithLogin from './GetInQueueWithLogin';
+import BookQueueWithLogin from './BookQueueWithLogin';
 
 class BookQueueMain extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class BookQueueMain extends Component {
         <GetQueueHeader storeName={storeName} branch={branch} />
         {currentUser ? (
           <div>
-            <GetInQueueWithLogin storeName={storeName} branch={branch} currentUser={currentUser} />
+            <BookQueueWithLogin storeName={storeName} branch={branch} currentUser={currentUser} />
           </div>
         ) : (
             <div>
