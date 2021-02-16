@@ -17,21 +17,23 @@ class BookQueue extends Component {
       successful: false,
       storeName: this.props.storeName,
       branch: this.props.branch,
-      apiResponse:[],
+      apiResponse: [],
+      now: '',
       formElements: {
         username: '',
         queue_type: 'BOO',
         status: 'waiting',
         business_name: this.props.storeName,
         book_time: '',
-        queueDetail:{}
-      }
+        queueDetail: {},
+      },
     };
   }
 
   componentDidMount() {
     this.setState({
-      redirectFlag: false
+      redirectFlag: false,
+      now: this.timeStringConverter(new Date())
     });
     console.log("storeName", this.state.storeName);
     console.log("branch", this.state.branch);
@@ -43,40 +45,43 @@ class BookQueue extends Component {
         })
       }
     )
+
   }
 
   onFormChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     console.log("name, value : ", name, value);
-    let updateForm = { ...this.state.formElements };
+    let updateForm = { ...this.state.formElements.queueDetail };
     updateForm[name] = value;
-
-    if (name=="ชื่อ-นามสกุล") {
+    console.log(updateForm);
+    if (name == "ชื่อ-นามสกุล") {
       this.setState({
-        ...this.state,
-        formElements:{
+        formElements: {
           ...this.state.formElements,
           username: value,
-          queueDetail : updateForm
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
         }
+
       })
-      
-    }else if(name=="book_time"){
+
+    } else if (name == "book_time") {
+      console.log('name == "book_time"');
       this.setState({
-        ...this.state,
-        formElements:{
+        formElements: {
           ...this.state.formElements,
           book_time: value,
-          queueDetail : updateForm
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
         }
       })
     }else{
       this.setState({
-        ...this.state,
         formElements: {
           ...this.state.formElements,
-          queueDetail : updateForm
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
         }
       })
     }
@@ -88,6 +93,7 @@ class BookQueue extends Component {
       successful: false,
     });
     const formData = {};
+
     for (let name in this.state.formElements) {
       formData[name] = this.state.formElements[name];
     }
@@ -122,14 +128,36 @@ class BookQueue extends Component {
       show: true,
     });
   };
+
+  timeStringConverter = (datetime) => {
+    var d = new Date(datetime),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate() + 1),
+      year = d.getFullYear(),
+      hour = '' + (d.getHours()),
+      min = '' + d.getMinutes();
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    if (hour.length < 2)
+      hour = '0' + hour;
+    if (min.length < 2)
+      min = '0' + min;
+    const nowDateTimeStr = [year, month, day].join('-') + "T" + hour + ":" + min;
+    console.log(nowDateTimeStr);
+    return nowDateTimeStr;
+  }
+
   render() {
     const { message } = this.props;
-    const { apiResponse } = this.state;
+    const { apiResponse, now } = this.state;
+
 
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
+          pathname: "/currentQueue/" + this.state.formElements.business_name + "/" + this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)
@@ -138,22 +166,22 @@ class BookQueue extends Component {
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
 
         <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
-        {apiResponse.map((item, i) => (
+          {apiResponse.map((item, i) => (
             <div className="form-inline">
-            <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
-            </label>
-            <input
-              type="text"
-              className=" col-9 form-control"
-              id={item}
-              name={item}
-              placeholder={item}
-              tabIndex={i+=1}
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
+              <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
+              </label>
+              <input
+                type="text"
+                className=" col-9 form-control"
+                id={item}
+                name={item}
+                placeholder={item}
+                tabIndex={i += 1}
+                required
+                onChange={this.onFormChange}
+                style={{ marginBottom: "10px" }}
+              />
+            </div>
           ))}
           {/* <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
@@ -232,6 +260,7 @@ class BookQueue extends Component {
               required
               onChange={this.onFormChange}
               style={{ marginBottom: "10px" }}
+              min={now}
             />
           </div>
 
