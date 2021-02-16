@@ -20,7 +20,8 @@ class UserQueueList extends Component {
       redirect: false,
       username: '',
       businessName: '',
-      fileInfos: {}
+      fileInfos: {},
+      timer :''
     };
   }
 
@@ -38,21 +39,22 @@ class UserQueueList extends Component {
           console.log(response.data.listQueue)
           response.data.listQueue.map((item) => (
             console.log("item.business_name ", item),
+            
             businessService.getIconImg(item.business_name)
-            .then((res) => {
-              this.setState({
-                ...this.state,
-                listQueue: response.data.listQueue,
-                fileInfos: {
-                  ...this.state.fileInfos,
-                  [item.business_name]: res.data[0].url
-                },
-              })
+              .then((res) => {
+                this.setState({
+                  ...this.state,
+                  listQueue: response.data.listQueue,
+                  fileInfos: {
+                    ...this.state.fileInfos,
+                    [item.business_name]: res.data[0].url
+                  },
+                })
 
-            })
-            .catch((err) => {
-              console.error(err);
-            })
+              })
+              .catch((err) => {
+                console.error(err);
+              })
           ))
         },
         error => {
@@ -69,10 +71,6 @@ class UserQueueList extends Component {
     }
   }
 
-  testLog() {
-    console.log("test");
-  }
-
   handelSearch() {
     console.log(this.state.username);
     UserService.listQueue(this.state.username).then(
@@ -81,21 +79,22 @@ class UserQueueList extends Component {
         console.log(response.data.listQueue);
         response.data.listQueue.map((item) => (
           console.log("item.business_name ", item),
+          
           businessService.getIconImg(item.business_name)
-          .then((res) => {
-            this.setState({
-              ...this.state,
-              listQueue: response.data.listQueue,
-              fileInfos: {
-                ...this.state.fileInfos,
-                [item.business_name]: res.data[0].url
-              },
-            })
+            .then((res) => {
+              this.setState({
+                ...this.state,
+                listQueue: response.data.listQueue,
+                fileInfos: {
+                  ...this.state.fileInfos,
+                  [item.business_name]: res.data[0].url
+                },
+              })
 
-          })
-          .catch((err) => {
-            console.error(err);
-          })
+            })
+            .catch((err) => {
+              console.error(err);
+            })
         ))
 
       },
@@ -130,14 +129,41 @@ class UserQueueList extends Component {
       businessName: businessName
     })
   }
+  convertDate = (book_time) => {
+    const date = new Date(book_time).toLocaleDateString().split('/');
+    // const date = new Date(book_time).toLocaleDateString('th-TH', {
+    //   year: 'numeric',
+    //   month: 'long',
+    //   day: 'numeric',
+    // });
+    const time = new Date(book_time).toLocaleTimeString('th-TH');
+    return <p>{date[1]+"/"+date[0]+"/"+date[2]} <br/>{time} น.</p>
+  }
+
+  diffTimeCal = (a) => {
+    console.log(a);
+    const diffTime = Math.abs(new Date(a) - new Date());
+    const days = Math.floor(diffTime/(1000 * 60 * 60 * 24))%30;
+    const mins = Math.floor(diffTime/(1000 * 60))%60;
+    const hours = Math.floor(diffTime/(1000 * 60 * 60))%24;
+    const str = (days + " ว. " + hours + " ชม. " + mins + " น.");
+
+    // this.setState({
+    //   timer: str
+    // })
+    return str;
+  }
+
+
 
 
   render() {
-    const { listQueue, fileInfos } = this.state;
+    const { listQueue, fileInfos, timer } = this.state;
+    console.log(timer);
     if (this.state.redirect) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue/"+ this.state.businessName + "/" +this.state.username,
+          pathname: "/currentQueue/" + this.state.businessName + "/" + this.state.username,
           state: { business_name: this.state.businessName, username: this.state.username }
         }}
       />)
@@ -159,7 +185,7 @@ class UserQueueList extends Component {
     console.log("listQueue====================", this.state.listQueue)
 
     return (
-      
+
       <div className="container align-items-start" >
         {listQueue.length > 0 ? (
           <div>
@@ -167,12 +193,13 @@ class UserQueueList extends Component {
             <Container style={border2} className="text-center">
               {listQueue.map((item, i) => {
                 return (
-                  <Row sm md className="text-center" style={{ padding: "10px", }, border} key={i}>
+                  <Row sm md lg className="text-center" style={{ padding: "10px", }, border} key={i}>
                     <Col sm md style={{ marginLeft: "5%" }}>
                       <img
-                        style={{ display: "initial" }}
+                        // className="img-responsive w-100"
+                        style={{ display: "initial" ,height:"150px", width:"auto"}}
                         src={fileInfos.[item.business_name]}
-                        alt="First slide"
+                        alt={item.business_name+"'s Icon"}
                       />
                     </Col>
 
@@ -185,11 +212,26 @@ class UserQueueList extends Component {
                       <h2>หมายเลขคิว</h2>
                       <p>{item.queue_no}</p>
                     </Col>
+                    {item.queue_type === "NOR" ? (
+                      <>
+                        <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
+                          <h2>คิวที่เหลือ</h2>
+                          <p>{item.wait_left}</p>
+                        </Col>
+                      </>
+                    ) : (
+                        <>
+                          <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
+                            <h2>วันและเวลาที่จอง</h2>
+                            <p>{this.convertDate(item.book_time)}</p>
+                          </Col>
+                          <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
+                          <h2>เหลือเวลา</h2>
+                          <p>{this.diffTimeCal(item.book_time)}</p>
+                        </Col>
+                        </>
+                      )}
 
-                    <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
-                      <h2>คิวที่เหลือ</h2>
-                      <p>{item.wait_left}</p>
-                    </Col>
 
                     <Col sm md style={{ padding: "15px" }}>
                       <button type="button" className="btn btn-info btn-lg" onClick={() => this.handleRedirect(item.username, item.business_name)} >รายละเอียด</button>
