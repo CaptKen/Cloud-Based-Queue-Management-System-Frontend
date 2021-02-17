@@ -7,6 +7,11 @@ import UserService from "../services/user.service";
 import businessService from '../services/business.service';
 import { connect } from "react-redux";
 import { addqueue } from "../actions/userQueue"
+import DatePicker from 'react-datepicker';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+import { addDays, subDays } from "date-fns";
+import userService from "../services/user.service";
 
 import { clearMessage } from "../actions/message";
 
@@ -23,11 +28,16 @@ class BookQueueWithLogin extends Component {
             branch: this.props.branch,
             apiResponse: [],
             now: '',
+            booked: [],
+            listWithFilterByDate: [],
+            iiii: 0,
+            startDate: null,
             formElements: {
                 username: this.props.currentUser.username,
                 queue_type: 'BOO',
                 status: 'waiting',
                 business_name: this.props.storeName,
+                book_time: '',
                 queueDetail: {}
             }
         };
@@ -62,6 +72,24 @@ class BookQueueWithLogin extends Component {
                 })
             }
         )
+
+        const bookedLists = [];
+        userService.listBookedTimeQueue(this.state.storeName)
+            .then((response) => {
+                console.log(response.data.bookedTime);
+                const bookedListsWithKey = response.data.bookedTime.filter((booked) => {
+                    return booked.book_time !== null;
+                })
+
+                bookedListsWithKey.forEach((bookedlist) => {
+                    bookedLists.push(new Date(bookedlist.book_time))
+                })
+                this.setState({
+                    booked: bookedLists,
+                    listWithFilterByDate: this.filterByDate(new Date())
+                })
+            })
+
         // if (user) {
         //   this.setState({
         //     currentUser: user,
@@ -72,6 +100,35 @@ class BookQueueWithLogin extends Component {
         //     }
         //   });
         // }
+    }
+
+    filterByDate = allListBook => {
+        let result = this.state.booked.filter((lst) => {
+            console.log(lst.getDate() === new Date(allListBook).getDate());
+            return lst.getDate() === new Date(allListBook).getDate();
+        })
+        return result
+    }
+
+    setBook_time = (e) => {
+        console.log("datepick(e) ", e);
+        console.log('name == "book_time"');
+
+        let updateForm = { ...this.state.formElements.queueDetail };
+        updateForm["book_time"] = e;
+
+        let lst = this.filterByDate(e);
+        console.log("lst ", lst);
+        this.setState({
+            startDate: new Date(e),
+            listWithFilterByDate: lst,
+            formElements: {
+                ...this.state.formElements,
+                book_time: e,
+                ...this.state.formElements.queueDetail,
+                queueDetail: updateForm
+            }
+        })
     }
 
     onFormChange = (e) => {
@@ -96,6 +153,7 @@ class BookQueueWithLogin extends Component {
                 formElements: {
                     ...this.state.formElements,
                     book_time: value,
+                    ...this.state.formElements.queueDetail,
                     queueDetail: updateForm
                 }
             })
@@ -104,6 +162,7 @@ class BookQueueWithLogin extends Component {
                 ...this.state,
                 formElements: {
                     ...this.state.formElements,
+                    ...this.state.formElements.queueDetail,
                     queueDetail: updateForm
                 }
             })
@@ -148,8 +207,8 @@ class BookQueueWithLogin extends Component {
             show: false,
             redirectFlag: false
         });
-
     };
+
     handleShow = () => {
         console.log("show");
         this.props.dispatch(clearMessage());
@@ -157,6 +216,17 @@ class BookQueueWithLogin extends Component {
             show: true,
         });
     };
+
+    isPassDate = (date) => {
+        return subDays(new Date(), 1) < date;
+    }
+
+    filterPassedTime = time => {
+        const currentDate = new Date();
+        const selectedDate = new Date(time);
+
+        return currentDate.getTime() < selectedDate.getTime();
+    }
 
     handleValue = (key) => {
         let value;
@@ -176,28 +246,57 @@ class BookQueueWithLogin extends Component {
 
     timeStringConverter = (datetime) => {
         var d = new Date(datetime),
-          month = '' + (d.getMonth() + 1),
-          day = '' + (d.getDate() + 1),
-          year = d.getFullYear(),
-          hour = '' + (d.getHours()),
-          min = '' + d.getMinutes();
+            month = '' + (d.getMonth() + 1),
+            day = '' + (d.getDate() + 1),
+            year = d.getFullYear(),
+            hour = '' + (d.getHours()),
+            min = '' + d.getMinutes();
         if (month.length < 2)
-          month = '0' + month;
+            month = '0' + month;
         if (day.length < 2)
-          day = '0' + day;
+            day = '0' + day;
         if (hour.length < 2)
-          hour = '0' + hour;
+            hour = '0' + hour;
         if (min.length < 2)
-          min = '0' + min;
+            min = '0' + min;
         const nowDateTimeStr = [year, month, day].join('-') + "T" + hour + ":" + min;
         console.log(nowDateTimeStr);
         return nowDateTimeStr;
-      }
+    }
 
     render() {
         const { message } = this.props;
         const { currentUser } = this.state;
-        const { apiResponse , now} = this.state;
+        const { apiResponse, now ,booked ,listWithFilterByDate} = this.state;
+
+        const initialFilterByDate = this.filterByDate(new Date());
+        const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
+        setHours(setMinutes(new Date(), 30), 22),
+        setHours(setMinutes(new Date(), 0), 23),
+        setHours(setMinutes(new Date(), 30), 23),
+        setHours(setMinutes(new Date(), 0), 0),
+        setHours(setMinutes(new Date(), 30), 0),
+        setHours(setMinutes(new Date(), 0), 1),
+        setHours(setMinutes(new Date(), 30), 1),
+        setHours(setMinutes(new Date(), 0), 2),
+        setHours(setMinutes(new Date(), 30), 2),
+        setHours(setMinutes(new Date(), 0), 3),
+        setHours(setMinutes(new Date(), 30), 3),
+        setHours(setMinutes(new Date(), 0), 4),
+        setHours(setMinutes(new Date(), 30), 4),
+        setHours(setMinutes(new Date(), 0), 5),
+        setHours(setMinutes(new Date(), 30), 5),
+        setHours(setMinutes(new Date(), 0), 6),
+        setHours(setMinutes(new Date(), 30), 6),
+        setHours(setMinutes(new Date(), 0), 7),
+        setHours(setMinutes(new Date(), 30), 7),
+        setHours(setMinutes(new Date(), 0), 8),
+        setHours(setMinutes(new Date(), 30), 8),
+        ]
+
+        console.log("booked ", booked);
+        console.log("listWithFilterByDate ", listWithFilterByDate);
+        console.log("initialFilterByDate", initialFilterByDate);
 
         console.log("currentUser", this.props.currentUser);
         console.log("business_name", this.props.storeName);
@@ -222,7 +321,7 @@ class BookQueueWithLogin extends Component {
                                 className="form-control col-9"
                                 id={item}
                                 name={item}
-                                placeholder={this.handleValue(item) === "" ? item: this.handleValue(item)}
+                                placeholder={this.handleValue(item) === "" ? item : this.handleValue(item)}
                                 tabIndex={i += 1}
                                 required
                                 onChange={this.onFormChange}
@@ -234,17 +333,24 @@ class BookQueueWithLogin extends Component {
 
                     <div className="form-inline">
                         <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
-                        <input
-                            type="datetime-local"
-                            className="form-control  col-9"
-                            id="book_time"
-                            name="book_time"
-                            // placeholder="จองเวลา"
-                            required
-                            onChange={this.onFormChange}
-                            style={{ marginBottom: "10px" }}
-                            min={now}
-                        />
+                        <div className="customDatePickerWidth">
+                            <DatePicker
+                                className="form-control  col-9"
+                                id="book_time"
+                                name="book_time"
+                                selected={this.state.startDate}
+                                placeholderText="เลือกวันเวลาที่ต้องการจอง"
+                                onChange={date => this.setBook_time(date)}
+                                style={{ marginBottom: "10px" }}
+                                showTimeSelect
+                                filterDate={this.isPassDate}
+                                excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                                dateFormat="yyyy-MM-dd hh:mm aa"
+                                filterTime={this.filterPassedTime}
+                                includeDates={[new Date(), addDays(new Date(), 1)]}
+                            // highlightDates={[new Date(), addDays(new Date(), 1)]}
+                            />
+                        </div>
                     </div>
 
                     <div className="text-center" style={{ margin: "20px" }}>

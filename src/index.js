@@ -46,6 +46,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import "react-datepicker/dist/react-datepicker.css"
 
 
 import './index.css';

@@ -6,6 +6,12 @@ import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage } from "../actions/message";
 import businessService from '../services/business.service';
+import DatePicker from 'react-datepicker';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+import {addDays, subDays}  from "date-fns";
+
+import userService from "../services/user.service";
 
 class BookQueue extends Component {
   constructor(props) {
@@ -19,6 +25,10 @@ class BookQueue extends Component {
       branch: this.props.branch,
       apiResponse: [],
       now: '',
+      booked: [],
+      listWithFilterByDate:[],
+      iiii:0,
+      startDate: null,
       formElements: {
         username: '',
         queue_type: 'BOO',
@@ -45,7 +55,58 @@ class BookQueue extends Component {
         })
       }
     )
+    const bookedLists = [];
+    userService.listBookedTimeQueue(this.state.storeName)
+    .then((response) => {
+      console.log(response.data.bookedTime);
+      const bookedListsWithKey = response.data.bookedTime.filter((booked) => {
+        return booked.book_time !== null;
+      })
+      
+      bookedListsWithKey.forEach((bookedlist) => {
+        bookedLists.push(new Date(bookedlist.book_time))
+      })
+      this.setState({
+        booked: bookedLists,
+        listWithFilterByDate :this.filterByDate(new Date())
+      })
+    })
+    
+  }
+  filterByDate = allListBook => {
+    let result =this.state.booked.filter((lst) => {
+      console.log(lst.getDate() === new Date(allListBook).getDate());
+      // lst.getDate()
+      return lst.getDate() === new Date(allListBook).getDate();
+    })
+    return result
+  }
 
+  setBook_time = (e) => {
+    console.log("datepick(e) ", e);
+    console.log('name == "book_time"');
+
+    let updateForm = { ...this.state.formElements.queueDetail };
+    updateForm["book_time"] = e;
+
+    // let lst = this.state.booked.filter((lst) => {
+    //   console.log(lst.getDate() === new Date(e).getDate());
+    //   // lst.getDate()
+    //   return lst.getDate() === new Date(e).getDate();
+    // })
+
+    let lst = this.filterByDate(e);
+    console.log("lst ", lst);
+    this.setState({
+      startDate: new Date(e),
+      listWithFilterByDate: lst,
+      formElements: {
+        ...this.state.formElements,
+        book_time: e,
+        ...this.state.formElements.queueDetail,
+        queueDetail: updateForm
+      }
+    })
   }
 
   onFormChange = (e) => {
@@ -76,7 +137,7 @@ class BookQueue extends Component {
           queueDetail: updateForm
         }
       })
-    }else{
+    } else {
       this.setState({
         formElements: {
           ...this.state.formElements,
@@ -97,7 +158,7 @@ class BookQueue extends Component {
     for (let name in this.state.formElements) {
       formData[name] = this.state.formElements[name];
     }
-    console.log(formData);
+    console.log("formData", formData);
 
     // const { history } = this.props;
     this.props.dispatch(addqueue(formData))
@@ -148,10 +209,75 @@ class BookQueue extends Component {
     console.log(nowDateTimeStr);
     return nowDateTimeStr;
   }
+  isPassDate = (date) => {
+    return subDays(new Date(), 1) < date ;
+  }
+  
+  filterPassedTime = time => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+    
+    // console.log("time", time);
+    // console.log(this.state.iiii++);
+    // console.log("currentDate.getTime() < selectedDate.getTime() ",currentDate.getTime() < selectedDate.getTime());
+    return currentDate.getTime() < selectedDate.getTime();
+  }
+  // const listWithFilterByDate = []
+  // filterByDate = (date) => {
+    
+    
+  // }
 
   render() {
     const { message } = this.props;
-    const { apiResponse, now } = this.state;
+    const { apiResponse, now, booked ,listWithFilterByDate} = this.state;
+    const initialFilterByDate = this.filterByDate(new Date());
+    const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
+      setHours(setMinutes(new Date(), 30), 22),
+      setHours(setMinutes(new Date(), 0), 23),
+      setHours(setMinutes(new Date(), 30), 23),
+      setHours(setMinutes(new Date(), 0), 0),
+      setHours(setMinutes(new Date(), 30), 0),
+      setHours(setMinutes(new Date(), 0), 1),
+      setHours(setMinutes(new Date(), 30), 1),
+      setHours(setMinutes(new Date(), 0), 2),
+      setHours(setMinutes(new Date(), 30), 2),
+      setHours(setMinutes(new Date(), 0), 3),
+      setHours(setMinutes(new Date(), 30), 3),
+      setHours(setMinutes(new Date(), 0), 4),
+      setHours(setMinutes(new Date(), 30), 4),
+      setHours(setMinutes(new Date(), 0), 5),
+      setHours(setMinutes(new Date(), 30), 5),
+      setHours(setMinutes(new Date(), 0), 6),
+      setHours(setMinutes(new Date(), 30), 6),
+      setHours(setMinutes(new Date(), 0), 7),
+      setHours(setMinutes(new Date(), 30), 7),
+      setHours(setMinutes(new Date(), 0), 8),
+      setHours(setMinutes(new Date(), 30), 8),
+    ]
+    console.log("booked ",booked);
+    console.log("listWithFilterByDate ", listWithFilterByDate);
+    console.log("initialFilterByDate", initialFilterByDate);
+
+    
+    // const bookedListsWithKey = booked.filter((booked) => {
+      
+    //   // console.log("booked", booked.book_time);
+    //   // console.log("Object.values(booked) ", (Object.values(booked) === null ? "nullTime" : Object.values(booked)));
+    //   return booked.book_time !== null;
+    // })
+    // console.log("bookedListsWithKey ", bookedListsWithKey);
+
+    // const bookedLists = [];
+    // bookedListsWithKey.forEach((bookedlist) => {
+    //   bookedLists.push(new Date(bookedlist.book_time))
+    //   console.log("getDate()", new Date(bookedlist.book_time).getDate());
+    // })
+    // console.log("bookedLists ", bookedLists);
+
+
+    // this.filterByDate(17);
+    
 
 
     if (this.state.redirectFlag) {
@@ -248,7 +374,7 @@ class BookQueue extends Component {
             ></textarea>
           </div> */}
 
-          <div className="form-inline">
+          {/* <div className="form-inline">
             <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง
             </label>
             <input
@@ -262,7 +388,7 @@ class BookQueue extends Component {
               style={{ marginBottom: "10px" }}
               min={now}
             />
-          </div>
+          </div> */}
 
           {/* <div className="form-inline">
             <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>
@@ -277,6 +403,29 @@ class BookQueue extends Component {
               onChange={this.onFormChange}
             />
           </div> */}
+          <div className="form-inline">
+          <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
+            <div className="customDatePickerWidth">
+            <DatePicker
+              className="form-control  col-9"
+              id="book_time"
+              name="book_time"
+              selected={this.state.startDate}
+              placeholderText="เลือกวันเวลาที่ต้องการจอง"
+              onChange={date => this.setBook_time(date)}
+              style={{ marginBottom: "10px" }}
+              showTimeSelect
+              filterDate={this.isPassDate}
+              excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList): listWithFilterByDate.concat(closeTimeList)}
+              dateFormat="yyyy-MM-dd hh:mm aa"
+              filterTime={this.filterPassedTime}
+              includeDates={[new Date(), addDays(new Date(), 1)]}
+              // highlightDates={[new Date(), addDays(new Date(), 1)]}
+            />
+            </div> 
+          </div>
+
+
 
 
           <div className="text-center" style={{ margin: "20px" }}>

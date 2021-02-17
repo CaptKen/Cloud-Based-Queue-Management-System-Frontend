@@ -136,3 +136,10 @@ label {
   overflow: hidden;
   border-radius: 15px;
 }
+
+.customDatePickerWidth, 
+.customDatePickerWidth > div.react-datepicker-wrapper, 
+.customDatePickerWidth > div > div.react-datepicker__input-container
+.customDatePickerWidth > div > div.react-datepicker__input-container input {
+   width: 300px;
+}

@@ -59,6 +59,12 @@ class UserService {
   addQueueWithDynamicFields(formDate) {
     return axios.post(QUEUE_URL_API + 'addQueueWithDynamicFields', formDate);
   }
+
+  //เวลาที่มีคนจองแล้ว
+  listBookedTimeQueue(business_name) {
+    return axios.get(QUEUE_URL_API + 'listBookedTimeQueue?business_name=' + business_name)
+  }
+
 }
 
 export default new UserService();
