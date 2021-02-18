@@ -280,6 +280,7 @@ class PromoImgManage extends React.Component {
 
     return (
       <div>
+        <h1 className="h1 text-center">โปรโมชั่น</h1>
         <div className="row clearfix">
 
           <div className="col-md-12 column">

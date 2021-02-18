@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Container } from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 
 import { connect } from "react-redux";
-import { loginEmployee } from "../actions/auth";
+import { login } from "../actions/auth";
 import SignUpPage from "./SignUpPage"
 import { getRoles } from "@testing-library/react";
 
@@ -89,10 +89,11 @@ class Login extends Component {
     const { dispatch, history } = this.props;
 
     if (this.checkBtn.context._errors.length === 0) {
-      dispatch(loginEmployee(this.state.username, this.state.password))
+      dispatch(login(this.state.username, this.state.password))
         .then(() => {
+          history.push("/profile");
           window.location.reload();
-          history.push("/ManageStore");
+          
         })
         .catch(() => {
           this.setState({
@@ -113,83 +114,85 @@ class Login extends Component {
     // }
 
     return (
-      <div>
-        {this.state.showLogin ? (
-          <div>
+      <Container className="d-flex " style={{ justifyContent: "center", marginTop: "10%" }}>
+        <div className="col-md-5">
+          {this.state.showLogin ? (
+            <div>
 
-            <Form
-              onSubmit={this.handleLogin}
-              ref={(c) => {
-                this.form = c;
-              }}
-            >
-              <h3>Sign In Employee</h3>
-              <div className="form-group">
-                <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="username"
-                  value={this.state.username}
-                  onChange={this.onChangeUsername}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">รหัสผ่าน*</label>
-                <Input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.onChangePassword}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <button
-                  className="btn btn-block"
-                  disabled={this.state.loading}
-                  style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d", color: "white" }}
-                >
-                  {this.state.loading && (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  )}
-                  <span>เข้าสู่ระบบ</span>
-                </button>
-              </div>
-
-              {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {message}
-                  </div>
-                </div>
-              )}
-              <CheckButton
-                style={{
-                  display: "none",
-                }}
+              <Form
+                onSubmit={this.handleLogin}
                 ref={(c) => {
-                  this.checkBtn = c;
+                  this.form = c;
                 }}
-              />
-            </Form>
+              >
+                <h3>Sign In Employee</h3>
+                <div className="form-group">
+                  <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">รหัสผ่าน*</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChangePassword}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button
+                    className="btn btn-block"
+                    disabled={this.state.loading}
+                    style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d", color: "white" }}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>เข้าสู่ระบบ</span>
+                  </button>
+                </div>
+
+                {message && (
+                  <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                      {message}
+                    </div>
+                  </div>
+                )}
+                <CheckButton
+                  style={{
+                    display: "none",
+                  }}
+                  ref={(c) => {
+                    this.checkBtn = c;
+                  }}
+                />
+              </Form>
 
 
 
-            {/* <h5 className="text-right">No Account ? <Link to={"/register"}>
+              {/* <h5 className="text-right">No Account ? <Link to={"/register"}>
                         Sign Up
                       </Link></h5> */}
-            {/* <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
+              {/* <Button style={{backgroundColor: "#255", float:"right"}} onClick={this.showRegister}>
                   สมัครสมาชิก
               </Button> */}
-          </div>
-        ) : true}
+            </div>
+          ) : true}
 
-      </div>
+        </div>
+      </Container>
     );
   }
 }

@@ -239,7 +239,7 @@ class GetInQueue extends Component {
 
 
           <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="primary" onClick={this.handleShow}>
+            <Button variant="primary" onClick={this.handleShow} disabled={this.props.demo === true ? true : false}>
               เข้าคิว/ต่อคิว
             </Button>
           </div>

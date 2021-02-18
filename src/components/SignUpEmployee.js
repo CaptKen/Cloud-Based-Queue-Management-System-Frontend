@@ -3,9 +3,11 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-
+import { Modal, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { registerEmployee } from "../actions/auth";
+import { clearMessage } from "../actions/message";
+import { Container } from "react-bootstrap";
 
 
 const required = (value) => {
@@ -70,10 +72,10 @@ const vbranch = (value) => {
 };
 
 
-class SignUpPage extends Component {
+class SignUpEmployee extends Component {
   constructor(props) {
     super(props);
-    const {user: currentUser} = this.props;
+    const { user: currentUser } = this.props;
     this.handleRegister = this.handleRegister.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -87,13 +89,33 @@ class SignUpPage extends Component {
       password: "",
       checkPassword: "",
       telephone: "",
-      businessName: currentUser.businessName,
-      branch: currentUser.branch,
+      businessName: '',
+      branch: '',
       successful: false,
     };
 
     console.log(this.state);
   }
+
+  componentDidMount() {
+    const user = this.props.user;
+    if (user) {
+      
+    // console.log(user.businessName);
+      this.setState({
+        currentUser: user,
+        isManager: user.roles.includes("ROLE_MODERATOR"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        businessName: user.businessName,
+        branch: user.branch
+      });
+
+    }
+    // this.callAPI();
+    // console.log("row: ", this.state.rows)
+    // console.log("apiResponse data: ", this.state.apiResponse);
+  }
+
   vCheckPassword = (value) => {
     console.log("value: ", value);
     if (value != this.state.password) {
@@ -103,7 +125,7 @@ class SignUpPage extends Component {
         </div>
       );
     }
-  };
+  }; 
 
   onChangeUsername(e) {
     this.setState({
@@ -161,113 +183,164 @@ class SignUpPage extends Component {
             successful: false,
           });
         });
-        console.log(this.state);
+        window.location.reload();
+      console.log(this.state);
     }
   }
 
+  handleShow = () => {
+    console.log("show");
+    this.props.dispatch(clearMessage()); // clear message when changing location
+    this.setState({
+      show: true,
+      showLogin: true
+    });
+  };
+
+  handleClose = (e) => {
+    this.setState({
+      show: false,
+    });
+
+  };
+
   render() {
     const { message } = this.props;
-
+    // const { isManager } = this.s
+    // if (!isManager) {
+    //   return (<Redirect to="/loginPageManager" />);
+    // }
     return (
-      <div className="col-md-12">
-        {/* <h1 className="text-center">Sign Up</h1> */}
-        <div>
-          <Form
-            onSubmit={this.handleRegister}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            {!this.state.successful && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    validations={[required, vusername]}
-                  />
-                </div>
+      <>
+        <Container className="d-flex" style={{ justifyContent: "center", fontFamily: "'Kanit', sans-serif;" }}>
+          <div className="col-md-5">
 
-                <div className="form-group">
-                  <label htmlFor="email">อีเมลล์*</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                    validations={[required, email]}
-                  />
-                </div>
+            <div>
 
-                <div className="form-group">
-                  <label htmlFor="password">รหัสผ่าน*</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                    validations={[required, vpassword]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="checkPassword">ยืนยันรหัสผ่าน*</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="checkPassword"
-                    value={this.state.checkPassword}
-                    onChange={this.onChangeCheckPassword}
-                    validations={[required, this.vCheckPassword]}
-
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="telephone">เบอร์โทรศัพท์</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="telephone"
-                    value={this.state.telephone}
-                    onChange={this.onChangeTelephone}
-                    validations={[vtelephone]}
-                    maxLength={10}
-                  />
-                </div>
-
-
-                <div className="form-group">
-                  <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} >สมัครสมาชิก</button>
-                </div>
-              </div>
-            )}
-
-            {message && (
-              <div className="form-group">
-                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                  {message}
-                </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={(c) => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-          {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
+              {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
                     Sign in
                   </Link></h5> */}
-        </div>
-      </div>
+            </div>
+          </div>
+        </Container>
+
+
+        <button className="btn btn-outline-primary btn-sm" onClick={this.handleShow}>
+          เพิ่มพนักงาน
+      </button>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <h1 className="h1 text-center">เพิ่มข้อมูลพนักงาน</h1>
+            {/* <h1 className="text-center">เข้าสู่ระบบ</h1> */}
+          </Modal.Header>
+          <Modal.Body>
+              <div>
+
+                <Form
+                  onSubmit={this.handleRegister}
+                  ref={(c) => {
+                    this.form = c;
+                  }}
+                >
+                  {!this.state.successful && (
+                    <div>
+                      <div className="form-group">
+                        <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
+                        <Input
+                          type="text"
+                          className="form-control"
+                          name="username"
+                          value={this.state.username}
+                          onChange={this.onChangeUsername}
+                          validations={[required, vusername]}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="email">อีเมลล์*</label>
+                        <Input
+                          type="text"
+                          className="form-control"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.onChangeEmail}
+                          validations={[required, email]}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="password">รหัสผ่าน*</label>
+                        <Input
+                          type="password"
+                          className="form-control"
+                          name="password"
+                          value={this.state.password}
+                          onChange={this.onChangePassword}
+                          validations={[required, vpassword]}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="checkPassword">ยืนยันรหัสผ่าน*</label>
+                        <Input
+                          type="password"
+                          className="form-control"
+                          name="checkPassword"
+                          value={this.state.checkPassword}
+                          onChange={this.onChangeCheckPassword}
+                          validations={[required, this.vCheckPassword]}
+
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="telephone">เบอร์โทรศัพท์</label>
+                        <Input
+                          type="text"
+                          className="form-control"
+                          name="telephone"
+                          value={this.state.telephone}
+                          onChange={this.onChangeTelephone}
+                          validations={[vtelephone]}
+                          maxLength={10}
+                        />
+                      </div>
+
+
+                      <div className="form-group">
+                        <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} >เพิ่มพนักงาน</button>
+                      </div>
+                    </div>
+                  )}
+
+                  {message && (
+                    <div className="form-group">
+                      <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                  <CheckButton
+                    style={{ display: "none" }}
+                    ref={(c) => {
+                      this.checkBtn = c;
+                    }}
+                  />
+                </Form>
+
+              </div>
+
+          </Modal.Body>
+          {/* <Modal.Footer>
+            <p className="text-right" >
+              {this.state.showLogin ? "ต้องการสร้างบัญชีใหม่ ?" : ""}
+            </p>
+            <Button style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d", float: "right" }} onClick={this.showRegister}>
+              {this.state.showLogin ? "สมัครสมาชิก" : "เข้าสู่ระบบ"}
+            </Button>
+          </Modal.Footer> */}
+        </Modal>
+      </>
     );
   }
 }
@@ -281,4 +354,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SignUpPage);
+export default connect(mapStateToProps)(SignUpEmployee);

@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import businessService from '../services/business.service';
 import { render } from "react-dom";
 import { connect } from "react-redux";
+import GetInQueue from './GetInQueue'
 // import makeData from './makeData'
 
 // const Styles = styled.div`
@@ -381,6 +382,7 @@ class FieldManage extends React.Component {
         rowKey: null
       }
     });
+    window.location.reload()
   };
 
   handleUpdateField = () => {
@@ -407,6 +409,7 @@ class FieldManage extends React.Component {
     console.log(this.state.editMode.status);
     return (
       <div>
+        <h1 className="h1 text-center">ข้อมูลการเข้าใช้บริการ</h1>
         <div className="row clearfix">
           <div className="col-md-12 column">
             <table
@@ -504,6 +507,11 @@ class FieldManage extends React.Component {
                   Delete Last Row
                 </button> */}
           </div>
+        </div>
+        <br/>
+        <h1 className="h1 text-center">ตัวอย่าง</h1>
+        <div style={{borderColor:"gray", borderStyle: "groove" ,borderWidth: "5px"}}>
+          <GetInQueue storeName={this.props.match.params.businessName} branch={this.props.match.params.branch} demo={true}/>
         </div>
       </div>
     );

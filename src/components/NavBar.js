@@ -221,6 +221,7 @@ class NavigationBar extends Component {
     this.state = {
       showModeratorBoard: false,
       showAdminBoard: false,
+      showEmployeeBoard: false,
       currentUser: undefined,
       showLogin: true,
       show: false,
@@ -237,6 +238,7 @@ class NavigationBar extends Component {
         currentUser: user,
         showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        showEmployeeBoard: user.roles.includes("ROLE_EMPLOYEE"),
       });
     }
   }
@@ -247,24 +249,46 @@ class NavigationBar extends Component {
   }
 
   toggleMenu() {
-    this.setState({ menu: !this.state.menu })
+    let newMenu = this.state.menu;
+    this.setState({ menu: !newMenu })
   }
 
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard, showEmployeeBoard } = this.state;
     return (
       <Styles>
         <Navbar expand="md" fixed="top">
           <Navbar.Brand href="/">QMS</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: '#3D9280' }} onClick={this.toggleMenu} />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: '#3D9280' }} onClick={() =>this.toggleMenu()} />
 
 
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
 
-              {showModeratorBoard || showAdminBoard ? (
-                <></>
+              {showModeratorBoard || showAdminBoard || showEmployeeBoard ? (
+                <>
+                  {showModeratorBoard && (
+                    <>
+                      <Nav.Link href={"/manageStore/" + currentUser.businessName + "/" + currentUser.branch}>ข้อมูลร้าน</Nav.Link>
+                      <Nav.Link href={"/manageTable/" + currentUser.businessName + "/" + currentUser.branch}>ประเภทโต๊ะ/การให้บริการ</Nav.Link>
+                      <Nav.Link href={"/manageField/" + currentUser.businessName + "/" + currentUser.branch}>ข้อมูลการเข้าใช้บริการ</Nav.Link>
+                      <Nav.Link href={"/managePromotion/" + currentUser.businessName + "/" + currentUser.branch}>โปรโมชั่น</Nav.Link>
+                      <Nav.Link href={"/listEmployee/" + currentUser.businessName + "/" + currentUser.branch}>พนักงาน</Nav.Link>
+                    </>
+                  )}
+
+                  {showAdminBoard && (
+                    <>
+                      <Nav.Link href="/CreateBusiness">Create Manager and Store</Nav.Link>
+                    </>
+                  )}
+
+                  {showEmployeeBoard && (
+                    <>
+                      <Nav.Link href={"/queue/" + currentUser.businessName + "/" + currentUser.branch}>จัดการคิว</Nav.Link>
+                    </>
+                  )}</>
               ) : (
                   <>
                     <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
@@ -279,15 +303,7 @@ class NavigationBar extends Component {
                   </>
                 )}
 
-              {showModeratorBoard && (
-                <Nav.Link href="/manageStore">Manager Store</Nav.Link>
-              )}
 
-              {showAdminBoard && (
-                <>
-                  <Nav.Link href="/CreateBusiness">Create Manager and Store</Nav.Link>
-                </>
-              )}
 
               {/* {currentUser && (
                 <Nav.Link href="/user">User Board</Nav.Link>

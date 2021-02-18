@@ -9,6 +9,7 @@ import ConstraintManage from './ConstraintManage';
 import PromoImgManage from './PromoImgManage';
 import IconChange from './IconChange'
 import { Redirect } from 'react-router-dom';
+import ListEmployees from './ListEmployees';
 
 
 class ManageStore extends Component {
@@ -71,7 +72,7 @@ class ManageStore extends Component {
     // }
     return (
       <Container>
-        <h1 className="h1">Manage Store</h1>
+        <h1 className="h1 text-center">ข้อมูลทั่วไป</h1>
         {/* <div>
           <img
             className="img-responsive"
@@ -85,18 +86,23 @@ class ManageStore extends Component {
         </div> */}
 
         <IconChange/>
-        <FieldManage />
-        <TableManage />
         <BusinessDetailManager />
+        {/* <PromoImgManage /> */}
+        {/* <ListEmployees /> */}
+        {/* <TableManage /> */}
+
+
+        {/* <FieldManage /> */}
         <ConstraintManage />
-        <PromoImgManage />
-        <div style={{ marginLeft: `43%`, padding: '20px' }}>
+        
+        
+        {/* <div style={{ marginLeft: `43%`, padding: '20px' }}>
           <button
             className={"btn btn-danger btn-lg"}
           >
             ย้อนกลับ
                 </button>
-        </div>
+        </div> */}
       </Container>
     );
   }

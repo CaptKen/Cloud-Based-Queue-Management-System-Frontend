@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button , Container} from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
-import { loginAdmin } from "../actions/auth";
+import { login } from "../actions/auth";
 import SignUpPage from "./SignUpPage"
 import { getRoles } from "@testing-library/react";
 
@@ -102,7 +102,7 @@ class Login extends Component {
     const { dispatch, history } = this.props;
 
     if (this.checkBtn.context._errors.length === 0) {
-      dispatch(loginAdmin(this.state.username, this.state.password))
+      dispatch(login(this.state.username, this.state.password))
         .then(() => {
           history.push("/CreateBusiness");
           window.location.reload();
@@ -121,15 +121,13 @@ class Login extends Component {
   }
 
   render() {
-    const { isLoggedIn, message, showAdminBoard } = this.props;
-    if (showAdminBoard) {
-      return <Redirect to="/CreateBusiness" />;
-    }
+    const { isLoggedIn, message } = this.props;
+
 
     return (
-      <div>
+      <Container className="d-flex " style={{ justifyContent: "center", marginTop: "10%"}}>
         {this.state.showLogin ? (
-          <div>
+          <div className="col-md-5">
 
             <Form
               onSubmit={this.handleLogin}
@@ -203,7 +201,7 @@ class Login extends Component {
           </div>
         ) : true}
 
-      </div>
+      </Container>
     );
   }
 }

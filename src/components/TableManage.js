@@ -413,9 +413,11 @@ class TableManage extends React.Component {
 
 
   render() {
+    
     return (
+      <>
+      <h1 className="h1 text-center">ประเภทโต๊ะ/การให้บริการ</h1>
       <div className="row clearfix">
-
         <div className="col-md-12 column">
           <table
             className="table table-bordered table-hover"
@@ -534,6 +536,7 @@ class TableManage extends React.Component {
           </table>
         </div>
       </div>
+      </>
     );
   }
 

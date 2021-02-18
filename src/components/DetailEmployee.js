@@ -56,7 +56,7 @@ class DetailEmployee extends Component {
         status: false
       },
       updateForm: {},
-      passwordObj:{
+      passwordObj: {
         oldPassword: '',
         newPassword: '',
       }
@@ -87,7 +87,7 @@ class DetailEmployee extends Component {
     // });
   }
 
-  addDataToList(name, email, telephone){
+  addDataToList(name, email, telephone) {
     this.setState(
       {
         listEmployees: name, email, telephone
@@ -164,8 +164,8 @@ class DetailEmployee extends Component {
 
   onChangeOldPassword = (e) => {
     this.setState({
-      passwordObj:{
-        oldPassword : e.target.value,
+      passwordObj: {
+        oldPassword: e.target.value,
         newPassword: this.state.passwordObj.newPassword
       }
     });
@@ -175,8 +175,8 @@ class DetailEmployee extends Component {
     console.log(e.target.value);
     this.setState({
       newpass: e.target.value,
-      passwordObj:{
-        oldPassword : this.state.passwordObj.oldPassword,
+      passwordObj: {
+        oldPassword: this.state.passwordObj.oldPassword,
         newPassword: e.target.value
       }
     });
@@ -213,19 +213,19 @@ class DetailEmployee extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       console.log("no err");
       authService.changePassword(this.state.updateForm.username, this.state.passwordObj)
-      .then((res) => {
-        console.log("res: ", res.data.res);
-        this.setState({
-          showChangePW:false,
-          editMode:{
-            status: false
-          }
+        .then((res) => {
+          console.log("res: ", res.data.res);
+          this.setState({
+            showChangePW: false,
+            editMode: {
+              status: false
+            }
+          })
+          alert(res.data.res)
         })
-        alert(res.data.res)
-      })
-      .catch((err) => {
-        console.error(err);
-      })
+        .catch((err) => {
+          console.error(err);
+        })
     }
   }
 
@@ -239,33 +239,31 @@ class DetailEmployee extends Component {
 
     return (
       <Modal show={this.props.itemEmployee.id} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <h1 style={{ textAlign: "center" }}>
-              {this.state.showLogin ? "เข้าสู่ระบบ" : "ข้อมูลพนักงาน"}
-            </h1>
-            {/* <h1 className="text-center">เข้าสู่ระบบ</h1> */}
-          </Modal.Header>
-          <Modal.Body>
-      <div className="container">
-        {/* <header className="jumbotron">
+        <Modal.Header closeButton>
+        <h1 className="h1 text-center">ข้อมูลพนักงาน</h1>
+          {/* <h1 className="text-center">เข้าสู่ระบบ</h1> */}
+        </Modal.Header>
+        <Modal.Body>
+          <div className="container">
+            {/* <header className="jumbotron">
           <h3>
             <strong>{currentUser.username}</strong> Profile
           </h3>
         </header> */}
-        <form className="form">
-          {/* <p>
+            <form className="form">
+              {/* <p>
           <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
           {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
         </p> */}
-          {/* <p>
+              {/* <p>
           <strong>Id:</strong> {currentUser.id}
         </p> */}
 
 
               <div>
-                <h1 className="h1 text-center">ข้อมูลพนักงาน</h1>
+                
                 <div className="form-inline">
-                  <strong className="col-6 form-label" style={{  textAlignLast: 'right' }}>ชื่อผู้ใช้งาน:</strong>
+                  <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>ชื่อผู้ใช้งาน:</strong>
                   {this.state.editMode.status ? (
                     <div>
                       <input
@@ -281,7 +279,7 @@ class DetailEmployee extends Component {
                       <p>
                         {/* {currentUser.username} */}
                         {this.props.itemEmployee.username}
-                        
+
                       </p>
                     )}
                 </div>
@@ -329,21 +327,21 @@ class DetailEmployee extends Component {
                 </div>
               </div>
 
-          {/* <strong>Authorities:</strong>
+              {/* <strong>Authorities:</strong>
         <ul>
           {currentUser.roles &&
             currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
         </ul> */}
 
-        </form>
+            </form>
 
-      </div>
-      </Modal.Body>
-      <Modal.Footer>
-            <p className="text-right" >
-              test
-            </p>
-          </Modal.Footer>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className={"btn btn-danger btn-lg"}>
+            ย้อนกลับ
+                </button>
+        </Modal.Footer>
       </Modal>
     );
   }

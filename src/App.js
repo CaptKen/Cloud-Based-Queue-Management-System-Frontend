@@ -39,6 +39,10 @@ import SetPW from './components/SetPw'
 import BookQueueMain from './components/BookQueueMain';
 import DetailEmployee from './components/DetailEmployee';
 
+import ManageTable from './components/TableManage'
+import manageField from './components/FieldManage'
+import managePromotion from './components/PromoImgManage'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -196,20 +200,28 @@ class App extends Component {
                 <Route path="/currentQueue/:businessName/:username" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store/:businessName/:branch" component={StorePage} />
                 <Route path="/ManageQueuetable" component={ManageQueuetable} />
-                <Route path="/ManageStore" component={ManageStore} />
+                
 
 
                 <Route path="/CreateBusiness" component={CreateBusiness} />
 
                 <Route path="/bookqueue/:businessName/:branch" component={BookQueueMain} />
+
+                <Route path="/ManageStore" component={ManageStore} />
+                <Route path="/listEmployee/:businessName/:branch" component={ListEmployees}/>
+                <Route path="/manageTable/:businessName/:branch" component={ManageTable}/>
+                <Route path="/manageField/:businessName/:branch" component={manageField}/>
+                <Route path="/managePromotion/:businessName/:branch" component={managePromotion}/>
+
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
                 <Route path="/LoginPageManager" component={LoginPageManager} />
                 <Route path="/SignUpEmployee" component={SignUpEmployee} />
                 <Route path="/LoginPageEmployee" component={LoginPageEmployee} />
 
+                {/*
                 <Route path="/ListEmployee" component={ListEmployee} />
-                <Route path="/ListEmployees" component={ListEmployees} />
-                <Route path="/DetailEmployee" component={DetailEmployee} />
+                <Route path="/ListEmployee" component={ListEmployees} />
+                <Route path="/DetailEmployee" component={DetailEmployee} />*/}
 
 
               </Switch>

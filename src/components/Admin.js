@@ -16,11 +16,12 @@ class Admin extends Component {
     const branch = this.props.match.params.branch;
         userService.allQueueOfBusiness(storeName).then(
             res => {
-                
-                if (res.data !== []) {
+                console.log("res ", res.data.length);
+                if (res.data.length !== 0) {
                     console.log("data: ", res.data);
                     userService.currentQueueDetail(storeName).then(
                         response => {
+                            console.log(response);
                             this.setState({
                                 currentQueueDetailRes: response.data.currentQueueDetail[0],
                                 queueDetail: response.data.currentQueueDetail[0].queueDetail
@@ -50,7 +51,7 @@ class Admin extends Component {
         console.log("queueDetail ", queueDetail);
 
         const queueDetailArray = Object.entries(queueDetail);
-        console.log("eiei: ", queueDetailArray);
+        console.log("queueDetailArray: ", queueDetailArray);
         return (
             <div className="container">
                 <div className="card text-center">

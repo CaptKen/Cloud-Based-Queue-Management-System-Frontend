@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import AuthService from "../services/auth.service";
 import DetailEmployee from "./DetailEmployee";
 import { Item } from 'semantic-ui-react';
+import SignUpEmployee from './SignUpEmployee';
 
 class ListEmployees extends React.Component {
   constructor(props) {
@@ -37,20 +38,28 @@ class ListEmployees extends React.Component {
   componentDidMount = () => {
     const user = this.props.user;
     if (user) {
-      this.setState({
-        currentUser: user,
-        branch: user.branch,
-        businessName: user.businessName,
-      });
-
-      AuthService.listEmployee(user.businessName, user.branch).then(
+      // this.setState({
+      //   currentUser: user,
+      //   branch: user.branch,
+      //   businessName: user.businessName,
+      // });
+      AuthService.listEmployee(this.props.match.params.businessName, this.props.match.params.branch).then(
         response => {
           console.log("response.data.listEmployee");
           console.log(response.data);
-          console.log("1111"+user.businessName);
-          console.log("1111"+user.branch);
+
+          const employeeList = response.data.filter((employee) => {
+            console.log("employee.roles", employee.roles[0].name != "ROLE_MODERATOR");
+            return employee.roles[0].name != "ROLE_MODERATOR";
+          })
+
+          console.log("1111" + user.businessName);
+          console.log("1111" + user.branch);
           this.setState({
-            listEmployees: response.data,
+            listEmployees: employeeList,
+            currentUser: user,
+            branch: user.branch,
+            businessName: user.businessName,
           });
 
         },
@@ -78,7 +87,7 @@ class ListEmployees extends React.Component {
     this.setState(state => ({ isShow: !state.isShow }));
   };
 
-  
+
 
 
   redirectToDetailEmployee = () => {
@@ -115,10 +124,12 @@ class ListEmployees extends React.Component {
     });
   };
 
-  handleRemoveSpecificRow = (i) => () => {
+  handleRemoveSpecificRow = (i, id) =>  {
     const apiResponse = [...this.state.apiResponse];
     apiResponse.splice(i, 1);
     this.setState({ apiResponse });
+    AuthService.deleteUser(id);
+    window.location.reload();
   };
 
 
@@ -136,15 +147,16 @@ class ListEmployees extends React.Component {
 
   handleDelete = (i) => {
     AuthService.deleteUser(i);
+    window.location.reload();
   };
 
   redirectToProfile = () => {
     this.props.history.push('/profile');
-}
+  }
 
-redirectToSignUpEmployee = () => {
-  this.props.history.push('/SignUpEmployee');
-}
+  redirectToSignUpEmployee = () => {
+    this.props.history.push('/SignUpEmployee');
+  }
 
 
 
@@ -164,10 +176,11 @@ redirectToSignUpEmployee = () => {
   }
 
   render() {
-    const {user: currentUser} = this.props;
+    const { user: currentUser } = this.props;
     console.log(this.state.editMode.status);
     return (
       <div>
+        <h1 className="h1 text-center">ข้อมูลพนักงาน</h1>
         <div className="row clearfix">
           <div className="col-md-12 column">
             <table
@@ -189,52 +202,39 @@ redirectToSignUpEmployee = () => {
                   <tr id="addr0" key={i}>
 
                     <td>
-                    <p>{item.username}</p>
+                      <p>{item.username}</p>
                     </td>
                     <td className="text-center">
-                          <div>
-                          
-
-                          
-                            <button
-                            
-                              style={{ marginRight: "10px" }}
-                              className={"btn btn-warning btn-sm"}
-                              
-                              onClick = {this.toggleShow}
-                              
-                            >
-                              {!this.state.isShow  ? <DetailEmployee itemEmployee={item} /> : null}
+                      <div>
+                        <button
+                          style={{ marginRight: "10px" }}
+                          className={"btn btn-warning btn-sm"}
+                          onClick={this.toggleShow}
+                        >
+                          {!this.state.isShow ? <DetailEmployee itemEmployee={item} /> : null}
                               More Detail
                           </button>
-
-                            <button
-                              className={"btn btn-outline-danger btn-sm"}
-                              onClick={() => this.handleDelete(item.id)}
-                            >
-                              Remove
+                        <button
+                          className={"btn btn-outline-danger btn-sm"}
+                          onClick={() => this.handleRemoveSpecificRow(i,item.id)}
+                        >
+                          Remove
                           </button>
-                          </div>
-                        
-
+                      </div>
                     </td>
                   </tr>
-                  
-                  
                 )
                 )
                 }
                 <tr>
-                  <td className="text-left">
-                    <button  
-                      className={"btn btn-outline-primary btn-sm "}
+                  <td colSpan="2" className="text-left">
+                    {/* <button
+                      className={"btn btn-outline-primary btn-sm"}
                       onClick={() => this.redirectToSignUpEmployee()}
-                      >
+                    >
                       เพิ่มพนักงาน
-                      </button>
-                  </td>
-                  <td className="text-center">
-
+                      </button> */}
+                    <SignUpEmployee />
                   </td>
                 </tr>
               </tbody>
@@ -243,10 +243,10 @@ redirectToSignUpEmployee = () => {
           </div>
         </div>
       </div>
-      
-      
+
+
     );
-    
+
   }
 }
 
