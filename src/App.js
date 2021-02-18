@@ -37,6 +37,7 @@ import ListEmployees from './components/ListEmployees'
 
 import SetPW from './components/SetPw'
 import BookQueueMain from './components/BookQueueMain';
+import DetailEmployee from './components/DetailEmployee';
 
 class App extends Component {
   constructor(props) {
@@ -208,6 +209,7 @@ class App extends Component {
 
                 <Route path="/ListEmployee" component={ListEmployee} />
                 <Route path="/ListEmployees" component={ListEmployees} />
+                <Route path="/DetailEmployee" component={DetailEmployee} />
 
 
               </Switch>

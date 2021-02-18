@@ -7,6 +7,8 @@ import businessService from '../services/business.service';
 import { render } from "react-dom";
 import { connect } from "react-redux";
 import AuthService from "../services/auth.service";
+import DetailEmployee from "./DetailEmployee";
+import { Item } from 'semantic-ui-react';
 
 class ListEmployees extends React.Component {
   constructor(props) {
@@ -16,6 +18,9 @@ class ListEmployees extends React.Component {
       apiResponse: [],
       listEmployees: [],
       branch: '',
+      editMode: {
+        status: false
+      },
       businessName: this.props.businessName,
       showModeratorBoard: false,
       showAdminBoard: false,
@@ -24,7 +29,8 @@ class ListEmployees extends React.Component {
       editMode: {
         status: false,
         rowKey: null
-      }
+      },
+      isShow: true,
     };
   }
 
@@ -36,14 +42,6 @@ class ListEmployees extends React.Component {
         branch: user.branch,
         businessName: user.businessName,
       });
-      businessService.getBusinessDetail(user.businessName, user.branch).then(
-        res => {
-          console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
-          this.setState({
-            apiResponse: res.data.BusinessDetail[0].fields,
-          })
-        }
-      )
 
       AuthService.listEmployee(user.businessName, user.branch).then(
         response => {
@@ -74,6 +72,27 @@ class ListEmployees extends React.Component {
     console.log("row: ", this.state.rows)
     console.log("apiResponse data: ", this.state.apiResponse);
   }
+
+  toggleShow = () => {
+    console.log("ClickShow!!!!!!!!!!!!!!!!!!!!!")
+    this.setState(state => ({ isShow: !state.isShow }));
+  };
+
+  
+
+
+  redirectToDetailEmployee = () => {
+    this.props.history.push('/DetailEmployee');
+  }
+
+
+  handleDetail = (name, email, telephone) => () => {
+    console.log("click!!!!!!!!!!!");
+    DetailEmployee.addDetailToList(name, email, telephone);
+    this.props.history.push('/DetailEmployee');
+    this.redirectToDetailEmployee();
+  };
+
 
   handleEdit = (i) => () => {
     console.log(i)
@@ -127,6 +146,8 @@ redirectToSignUpEmployee = () => {
   this.props.history.push('/SignUpEmployee');
 }
 
+
+
   handleUpdateField = () => {
     console.log("this.state.apiResponse: ", this.state.apiResponse);
 
@@ -143,6 +164,7 @@ redirectToSignUpEmployee = () => {
   }
 
   render() {
+    const {user: currentUser} = this.props;
     console.log(this.state.editMode.status);
     return (
       <div>
@@ -171,11 +193,18 @@ redirectToSignUpEmployee = () => {
                     </td>
                     <td className="text-center">
                           <div>
+                          
+
+                          
                             <button
+                            
                               style={{ marginRight: "10px" }}
                               className={"btn btn-warning btn-sm"}
-                              onClick={() => this.redirectToProfile()}
+                              
+                              onClick = {this.toggleShow}
+                              
                             >
+                              {!this.state.isShow  ? <DetailEmployee itemEmployee={item} /> : null}
                               More Detail
                           </button>
 
@@ -190,7 +219,11 @@ redirectToSignUpEmployee = () => {
 
                     </td>
                   </tr>
-                ))}
+                  
+                  
+                )
+                )
+                }
                 <tr>
                   <td className="text-left">
                     <button  
@@ -198,7 +231,6 @@ redirectToSignUpEmployee = () => {
                       onClick={() => this.redirectToSignUpEmployee()}
                       >
                       เพิ่มพนักงาน
-                    
                       </button>
                   </td>
                   <td className="text-center">
@@ -211,7 +243,10 @@ redirectToSignUpEmployee = () => {
           </div>
         </div>
       </div>
+      
+      
     );
+    
   }
 }
 
