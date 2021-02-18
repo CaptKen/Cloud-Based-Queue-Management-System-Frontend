@@ -13,7 +13,7 @@ import setMinutes from "date-fns/setMinutes";
 import { addDays, subDays } from "date-fns";
 import userService from "../services/user.service";
 
-import { clearMessage } from "../actions/message";
+import { clearMessage ,setMessage} from "../actions/message";
 
 class BookQueueWithLogin extends Component {
     constructor(props) {
@@ -212,6 +212,9 @@ class BookQueueWithLogin extends Component {
     handleShow = () => {
         console.log("show");
         this.props.dispatch(clearMessage());
+        if (this.state.formElements.username === '') {
+            this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
+          }
         this.setState({
             show: true,
         });
@@ -268,6 +271,9 @@ class BookQueueWithLogin extends Component {
         const { message } = this.props;
         const { currentUser } = this.state;
         const { apiResponse, now ,booked ,listWithFilterByDate} = this.state;
+        
+        const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+        console.log("disableButton", disableButton);
 
         const initialFilterByDate = this.filterByDate(new Date());
         const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
@@ -323,7 +329,7 @@ class BookQueueWithLogin extends Component {
                                 name={item}
                                 placeholder={this.handleValue(item) === "" ? item : this.handleValue(item)}
                                 tabIndex={i += 1}
-                                required
+                                required={item === "รายละเอียด" ? false : true}
                                 onChange={this.onFormChange}
                                 readOnly={item == "เบอร์โทรศัพท์" || item == "Email" ? true : false}
                                 style={{ marginBottom: "10px" }}
@@ -355,7 +361,7 @@ class BookQueueWithLogin extends Component {
 
                     <div className="text-center" style={{ margin: "20px" }}>
                         <Button variant="primary" onClick={this.handleShow}>
-                            บันทึก
+                            จองเวลา
             </Button>
                     </div>
 
@@ -375,7 +381,7 @@ class BookQueueWithLogin extends Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 ยกเลิก
               </Button>
-                            <Button variant="primary" onClick={this.handleAddqueue}>
+                            <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}> 
                                 ยืนยัน
               </Button>
 

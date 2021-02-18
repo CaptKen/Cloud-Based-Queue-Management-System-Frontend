@@ -4,14 +4,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
-import { clearMessage } from "../actions/message";
+import { clearMessage , setMessage} from "../actions/message";
 import businessService from '../services/business.service';
 import DatePicker from 'react-datepicker';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import {addDays, subDays}  from "date-fns";
+import { addDays, subDays } from "date-fns";
+
+import CheckButton from "react-validation/build/button";
 
 import userService from "../services/user.service";
+
 
 class BookQueue extends Component {
   constructor(props) {
@@ -26,8 +29,8 @@ class BookQueue extends Component {
       apiResponse: [],
       now: '',
       booked: [],
-      listWithFilterByDate:[],
-      iiii:0,
+      listWithFilterByDate: [],
+      iiii: 0,
       startDate: null,
       formElements: {
         username: '',
@@ -57,24 +60,24 @@ class BookQueue extends Component {
     )
     const bookedLists = [];
     userService.listBookedTimeQueue(this.state.storeName)
-    .then((response) => {
-      console.log(response.data.bookedTime);
-      const bookedListsWithKey = response.data.bookedTime.filter((booked) => {
-        return booked.book_time !== null;
+      .then((response) => {
+        console.log(response.data.bookedTime);
+        const bookedListsWithKey = response.data.bookedTime.filter((booked) => {
+          return booked.book_time !== null;
+        })
+
+        bookedListsWithKey.forEach((bookedlist) => {
+          bookedLists.push(new Date(bookedlist.book_time))
+        })
+        this.setState({
+          booked: bookedLists,
+          listWithFilterByDate: this.filterByDate(new Date())
+        })
       })
-      
-      bookedListsWithKey.forEach((bookedlist) => {
-        bookedLists.push(new Date(bookedlist.book_time))
-      })
-      this.setState({
-        booked: bookedLists,
-        listWithFilterByDate :this.filterByDate(new Date())
-      })
-    })
-    
+
   }
   filterByDate = allListBook => {
-    let result =this.state.booked.filter((lst) => {
+    let result = this.state.booked.filter((lst) => {
       console.log(lst.getDate() === new Date(allListBook).getDate());
       // lst.getDate()
       return lst.getDate() === new Date(allListBook).getDate();
@@ -185,6 +188,9 @@ class BookQueue extends Component {
   handleShow = () => {
     console.log("show");
     this.props.dispatch(clearMessage()); // clear message when changing location
+    if (this.state.formElements.username === '') {
+      this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
+    }
     this.setState({
       show: true,
     });
@@ -210,13 +216,13 @@ class BookQueue extends Component {
     return nowDateTimeStr;
   }
   isPassDate = (date) => {
-    return subDays(new Date(), 1) < date ;
+    return subDays(new Date(), 1) < date;
   }
-  
+
   filterPassedTime = time => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
-    
+
     // console.log("time", time);
     // console.log(this.state.iiii++);
     // console.log("currentDate.getTime() < selectedDate.getTime() ",currentDate.getTime() < selectedDate.getTime());
@@ -224,44 +230,48 @@ class BookQueue extends Component {
   }
   // const listWithFilterByDate = []
   // filterByDate = (date) => {
-    
-    
+
+
   // }
 
   render() {
     const { message } = this.props;
-    const { apiResponse, now, booked ,listWithFilterByDate} = this.state;
+    const { apiResponse, now, booked, listWithFilterByDate } = this.state;
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+    
+    console.log("disableButton", disableButton);
+
     const initialFilterByDate = this.filterByDate(new Date());
     const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
-      setHours(setMinutes(new Date(), 30), 22),
-      setHours(setMinutes(new Date(), 0), 23),
-      setHours(setMinutes(new Date(), 30), 23),
-      setHours(setMinutes(new Date(), 0), 0),
-      setHours(setMinutes(new Date(), 30), 0),
-      setHours(setMinutes(new Date(), 0), 1),
-      setHours(setMinutes(new Date(), 30), 1),
-      setHours(setMinutes(new Date(), 0), 2),
-      setHours(setMinutes(new Date(), 30), 2),
-      setHours(setMinutes(new Date(), 0), 3),
-      setHours(setMinutes(new Date(), 30), 3),
-      setHours(setMinutes(new Date(), 0), 4),
-      setHours(setMinutes(new Date(), 30), 4),
-      setHours(setMinutes(new Date(), 0), 5),
-      setHours(setMinutes(new Date(), 30), 5),
-      setHours(setMinutes(new Date(), 0), 6),
-      setHours(setMinutes(new Date(), 30), 6),
-      setHours(setMinutes(new Date(), 0), 7),
-      setHours(setMinutes(new Date(), 30), 7),
-      setHours(setMinutes(new Date(), 0), 8),
-      setHours(setMinutes(new Date(), 30), 8),
+    setHours(setMinutes(new Date(), 30), 22),
+    setHours(setMinutes(new Date(), 0), 23),
+    setHours(setMinutes(new Date(), 30), 23),
+    setHours(setMinutes(new Date(), 0), 0),
+    setHours(setMinutes(new Date(), 30), 0),
+    setHours(setMinutes(new Date(), 0), 1),
+    setHours(setMinutes(new Date(), 30), 1),
+    setHours(setMinutes(new Date(), 0), 2),
+    setHours(setMinutes(new Date(), 30), 2),
+    setHours(setMinutes(new Date(), 0), 3),
+    setHours(setMinutes(new Date(), 30), 3),
+    setHours(setMinutes(new Date(), 0), 4),
+    setHours(setMinutes(new Date(), 30), 4),
+    setHours(setMinutes(new Date(), 0), 5),
+    setHours(setMinutes(new Date(), 30), 5),
+    setHours(setMinutes(new Date(), 0), 6),
+    setHours(setMinutes(new Date(), 30), 6),
+    setHours(setMinutes(new Date(), 0), 7),
+    setHours(setMinutes(new Date(), 30), 7),
+    setHours(setMinutes(new Date(), 0), 8),
+    setHours(setMinutes(new Date(), 30), 8),
     ]
-    console.log("booked ",booked);
+    console.log("booked ", booked);
     console.log("listWithFilterByDate ", listWithFilterByDate);
     console.log("initialFilterByDate", initialFilterByDate);
 
-    
+
     // const bookedListsWithKey = booked.filter((booked) => {
-      
+
     //   // console.log("booked", booked.book_time);
     //   // console.log("Object.values(booked) ", (Object.values(booked) === null ? "nullTime" : Object.values(booked)));
     //   return booked.book_time !== null;
@@ -277,7 +287,7 @@ class BookQueue extends Component {
 
 
     // this.filterByDate(17);
-    
+
 
 
     if (this.state.redirectFlag) {
@@ -291,7 +301,10 @@ class BookQueue extends Component {
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
 
-        <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
+        <form id="contact-form" className="form" style={{ margin: "20px" }}
+          ref={(c) => {
+            this.form = c;
+          }}>
           {apiResponse.map((item, i) => (
             <div className="form-inline">
               <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
@@ -303,7 +316,7 @@ class BookQueue extends Component {
                 name={item}
                 placeholder={item}
                 tabIndex={i += 1}
-                required
+                required={item === "รายละเอียด" ? false : true}
                 onChange={this.onFormChange}
                 style={{ marginBottom: "10px" }}
               />
@@ -404,25 +417,25 @@ class BookQueue extends Component {
             />
           </div> */}
           <div className="form-inline">
-          <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
+            <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
             <div className="customDatePickerWidth">
-            <DatePicker
-              className="form-control  col-9"
-              id="book_time"
-              name="book_time"
-              selected={this.state.startDate}
-              placeholderText="เลือกวันเวลาที่ต้องการจอง"
-              onChange={date => this.setBook_time(date)}
-              style={{ marginBottom: "10px" }}
-              showTimeSelect
-              filterDate={this.isPassDate}
-              excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList): listWithFilterByDate.concat(closeTimeList)}
-              dateFormat="yyyy-MM-dd hh:mm aa"
-              filterTime={this.filterPassedTime}
-              includeDates={[new Date(), addDays(new Date(), 1)]}
+              <DatePicker
+                className="form-control  col-9"
+                id="book_time"
+                name="book_time"
+                selected={this.state.startDate}
+                placeholderText="เลือกวันเวลาที่ต้องการจอง"
+                onChange={date => this.setBook_time(date)}
+                style={{ marginBottom: "10px" }}
+                showTimeSelect
+                filterDate={this.isPassDate}
+                excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                dateFormat="yyyy-MM-dd hh:mm aa"
+                filterTime={this.filterPassedTime}
+                includeDates={[new Date(), addDays(new Date(), 1)]}
               // highlightDates={[new Date(), addDays(new Date(), 1)]}
-            />
-            </div> 
+              />
+            </div>
           </div>
 
 
@@ -432,6 +445,12 @@ class BookQueue extends Component {
             <Button variant="primary" onClick={this.handleShow}>
               เข้าคิว/ต่อคิว
             </Button>
+
+            {/* <button
+                className={"btn btn- btn-primary md"}
+                type="button"
+              >เข้าคิว/ต่อคิว
+            </button> */}
           </div>
 
           <Modal show={this.state.show} onHide={this.handleClose}>
@@ -450,7 +469,7 @@ class BookQueue extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue}>
+              <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
                 ยืนยัน
               </Button>
             </Modal.Footer>

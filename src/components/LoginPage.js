@@ -195,6 +195,7 @@ class Login extends Component {
   }
   handleShow = () => {
     console.log("show");
+    this.props.dispatch(clearMessage()); // clear message when changing location
     this.setState({
       show: true,
       showLogin: true
