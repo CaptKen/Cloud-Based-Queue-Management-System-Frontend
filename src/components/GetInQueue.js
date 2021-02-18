@@ -6,7 +6,7 @@ import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
-import { clearMessage } from "../actions/message";
+import { clearMessage ,setMessage} from "../actions/message";
 import businessService from '../services/business.service';
 
 class GetInQueue extends Component {
@@ -112,6 +112,9 @@ class GetInQueue extends Component {
   handleShow = () => {
     console.log("show");
     this.props.dispatch(clearMessage()); // clear message when changing location
+    if (this.state.formElements.username === '') {
+      this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
+    }
     this.setState({
       show: true,
     });
@@ -119,6 +122,9 @@ class GetInQueue extends Component {
   render() {
     const { message } = this.props;
     const { apiResponse } = this.state;
+
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+    console.log("disableButton", disableButton);
 
     if (this.state.redirectFlag) {
       return (<Redirect
@@ -130,7 +136,10 @@ class GetInQueue extends Component {
     }
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-        <form id="contact-form" className="form" onSubmit={this.submit} style={{ margin: "20px" }}>
+        <form id="contact-form" className="form" style={{ margin: "20px" }}
+        ref={(c) => {
+          this.form = c;
+        }}>
           {apiResponse.map((item, i) => (
             <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
@@ -142,7 +151,7 @@ class GetInQueue extends Component {
               name={item}
               placeholder={item}
               tabIndex={i+=1}
-              required
+              required={item === "รายละเอียด" ? false : true}
               onChange={this.onFormChange}
               style={{ marginBottom: "10px" }}
             />
@@ -251,7 +260,7 @@ class GetInQueue extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue}>
+              <Button variant="primary" onClick={this.handleAddqueue} disabled={!disableButton}>
                 ยืนยัน
               </Button>
             </Modal.Footer>

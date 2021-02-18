@@ -8,7 +8,7 @@ import businessService from '../services/business.service';
 import { connect } from "react-redux";
 import { addqueue } from "../actions/userQueue"
 
-import { clearMessage } from "../actions/message";
+import { clearMessage , setMessage} from "../actions/message";
 
 class GetInQueueWithLogin extends Component {
   constructor(props) {
@@ -142,6 +142,9 @@ class GetInQueueWithLogin extends Component {
   handleShow = () => {
     console.log("show");
     this.props.dispatch(clearMessage());
+    if (this.state.formElements.username === '') {
+      this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
+    }
     this.setState({
       show: true,
     });
@@ -164,8 +167,10 @@ class GetInQueueWithLogin extends Component {
 
   render() {
     const { message } = this.props;
-    const { currentUser } = this.state;
-    const { apiResponse } = this.state;
+    const { currentUser , apiResponse } = this.state;
+
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+    console.log("disableButton", disableButton);
 
     console.log("currentUser", this.props.currentUser);
     console.log("business_name", this.props.storeName);
@@ -179,7 +184,7 @@ class GetInQueueWithLogin extends Component {
     }
     return (
       <div className="container">
-        <form id="contact-form" className="form" onSubmit={this.submit} ref={(c) => {
+        <form id="contact-form" className="form" ref={(c) => {
           this.form = c;
         }} style={{ margin: "20px" }}>
 
@@ -209,7 +214,7 @@ class GetInQueueWithLogin extends Component {
               name={item}
               placeholder={this.handleValue(item)}
               tabIndex={i += 1}
-              required
+              required={item === "รายละเอียด" ? false : true}
               onChange={this.onFormChange}
               readOnly={item == "เบอร์โทรศัพท์" || item == "Email"? true : false}
               style={{ marginBottom: "10px" }}
@@ -285,7 +290,7 @@ class GetInQueueWithLogin extends Component {
           </div> */}
           <div className="text-center" style={{ margin: "20px" }}>
             <Button variant="primary" onClick={this.handleShow}>
-              บันทึก
+              ต่อคิว/เข้าคิว
             </Button>
           </div>
 
@@ -305,7 +310,7 @@ class GetInQueueWithLogin extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue}>
+              <Button variant="primary" onClick={this.handleAddqueue} disabled={!disableButton}>
                 ยืนยัน
               </Button>
 

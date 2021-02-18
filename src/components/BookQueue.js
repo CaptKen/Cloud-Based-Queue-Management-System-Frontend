@@ -237,8 +237,8 @@ class BookQueue extends Component {
   render() {
     const { message } = this.props;
     const { apiResponse, now, booked, listWithFilterByDate } = this.state;
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
     
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
     console.log("disableButton", disableButton);
 
     const initialFilterByDate = this.filterByDate(new Date());
@@ -443,14 +443,8 @@ class BookQueue extends Component {
 
           <div className="text-center" style={{ margin: "20px" }}>
             <Button variant="primary" onClick={this.handleShow}>
-              เข้าคิว/ต่อคิว
+              จองเวลา
             </Button>
-
-            {/* <button
-                className={"btn btn- btn-primary md"}
-                type="button"
-              >เข้าคิว/ต่อคิว
-            </button> */}
           </div>
 
           <Modal show={this.state.show} onHide={this.handleClose}>
