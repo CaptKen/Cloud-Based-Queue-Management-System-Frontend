@@ -14,6 +14,7 @@ class GetInQueueWithLogin extends Component {
   constructor(props) {
     super(props);
     this.handleAddqueue = this.handleAddqueue.bind(this);
+    this.onChangeSerivce = this.onChangeSerivce.bind(this);
     this.state = {
       show: false,
       redirectFlag: false,
@@ -21,9 +22,12 @@ class GetInQueueWithLogin extends Component {
       successful: false,
       storeName: this.props.storeName,
       branch: this.props.branch,
+      isRestaurant: false,
       apiResponse: [],
+      serviceList: [],
       formElements: {
         username: this.props.currentUser.username,
+        queue_no: '',
         queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
@@ -57,6 +61,8 @@ class GetInQueueWithLogin extends Component {
         console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
         this.setState({
           apiResponse: res.data.BusinessDetail[0].fields,
+          serviceList: res.data.BusinessDetail[0].tableDetail,
+          isRestaurant: (res.data.BusinessDetail[0].categories === "ร้านอาหาร" ? true : false),
         })
       }
     )
@@ -70,6 +76,24 @@ class GetInQueueWithLogin extends Component {
     //     }
     //   });
     // }
+  }
+
+  onChangeSerivce(e) {
+    console.log(e.target.value);
+    console.log("e.target ",e.target);
+    const value = e.target.value;
+
+    let updateForm = { ...this.state.formElements.queueDetail };
+    updateForm['service'] = value;
+
+    this.setState({
+      ...this.state,
+      formElements: {
+        ...this.state.formElements,
+        queue_no: value,
+        queueDetail: updateForm
+      }
+    })
   }
 
   onFormChange = (e) => {
@@ -167,9 +191,9 @@ class GetInQueueWithLogin extends Component {
 
   render() {
     const { message } = this.props;
-    const { currentUser , apiResponse } = this.state;
+    const { currentUser , apiResponse, isRestaurant , serviceList} = this.state;
 
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '')&& (this.state.formElements.queue_no !== ''));
     console.log("disableButton", disableButton);
 
     console.log("currentUser", this.props.currentUser);
@@ -221,73 +245,20 @@ class GetInQueueWithLogin extends Component {
             />
           </div>
           ))}
-          {/* <div className="form-inline">
-            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>เบอร์โทรศัพท์
-            </label>
-            <input
-              type="text"
-              className="form-control col-9"
-              id="Lastname"
-              name="user_telephone"
-              placeholder="เบอร์โทรศัพท์"
-              tabIndex="1"
-              required
-              value={this.props.currentUser.telephone}
-              onChange={this.onFormChange}
-              readOnly
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
+          
+          {!isRestaurant && (
+            <div className="form-inline" name="services">
+              <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                {serviceList.map((item) => (
+                  console.log("item ", item),
+                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
-          <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>อีเมลล์
-            </label>
-            <input
-              type="email"
-              className="form-control  col-9"
-              id="email"
-              name="user_email"
-              placeholder="อีเมลล์"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-              readOnly
-              value={this.props.currentUser.email}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-label col-3" style={{ justifyContent: "left" }}>รายละเอียดเพิ่มเติม
-            </label>
-            <textarea
-              rows="5"
-              cols="100"
-              name="message"
-              className="form-control col-9"
-              id="message"
-              placeholder="รายละเอียดเพิ่มเติม..."
-              tabIndex="4"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            ></textarea>
-
-          </div> */}
-
-          {/* <div className="form-inline">
-            <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>
-            <input
-              type="number"
-              className="form-control col-9"
-              id="noOfCus"
-              name="noOfCus"
-              placeholder="จำนวนคน"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-            />
-          </div> */}
           <div className="text-center" style={{ margin: "20px" }}>
             <Button variant="primary" onClick={this.handleShow}>
               ต่อคิว/เข้าคิว

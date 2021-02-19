@@ -55,7 +55,7 @@ class StorePage extends Component {
             />
             <Carousel.Caption>
               <h3>Store is under Construction</h3>
-              <p>waiting for manager to setup in store's manage page</p>
+              <p>waiting for manager to setup promotion in store's manage page</p>
             </Carousel.Caption>
           </Carousel.Item>
           )}

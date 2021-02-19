@@ -6,32 +6,34 @@ import UserService from "../services/user.service";
 import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
-import { clearMessage ,setMessage} from "../actions/message";
+import { clearMessage, setMessage } from "../actions/message";
 import businessService from '../services/business.service';
 
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
     this.handleAddqueue = this.handleAddqueue.bind(this);
+    this.onChangeSerivce = this.onChangeSerivce.bind(this);
     this.state = {
       show: false,
       redirectFlag: false,
       successful: false,
       storeName: this.props.storeName,
       branch: this.props.branch,
-      apiResponse:[],
+      apiResponse: [],
+      serviceList: [],
+      isRestaurant: false,
       formElements: {
         queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
         username: '',
-        queueDetail:{}
+        queueDetail: {}
       }
     };
   }
 
   componentDidMount() {
-    
     this.setState({
       redirectFlag: false
     });
@@ -39,9 +41,11 @@ class GetInQueue extends Component {
     console.log("branch", this.state.branch);
     businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
       res => {
-        console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+        console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
         this.setState({
           apiResponse: res.data.BusinessDetail[0].fields,
+          serviceList: res.data.BusinessDetail[0].tableDetail,
+          isRestaurant: (res.data.BusinessDetail[0].categories === "ร้านอาหาร" ? true : false),
         })
       }
     )
@@ -52,26 +56,44 @@ class GetInQueue extends Component {
     const value = e.target.value;
     console.log("name, value : ", name, value);
     let updateForm = { ...this.state.formElements.queueDetail };
-      updateForm[name] = value;
-    if (name=="ชื่อ-นามสกุล") {
-      this.setState({
-        ...this.state,
-        formElements:{
-          ...this.state.formElements,
-          username: value,
-          queueDetail : updateForm
-        }
-      })
-      
-    }else{
+    updateForm[name] = value;
+    if (name == "ชื่อ-นามสกุล") {
       this.setState({
         ...this.state,
         formElements: {
           ...this.state.formElements,
-          queueDetail : updateForm
+          username: value,
+          queueDetail: updateForm
+        }
+      })
+
+    } else {
+      this.setState({
+        ...this.state,
+        formElements: {
+          ...this.state.formElements,
+          queueDetail: updateForm
         }
       })
     }
+  }
+
+  onChangeSerivce(e) {
+    console.log(e.target.value);
+    console.log("e.target ",e.target);
+    const value = e.target.value;
+
+    let updateForm = { ...this.state.formElements.queueDetail };
+    updateForm['service'] = value;
+
+    this.setState({
+      ...this.state,
+      formElements: {
+        ...this.state.formElements,
+        queue_no: value,
+        queueDetail: updateForm
+      }
+    })
   }
 
   handleAddqueue(e) {
@@ -121,15 +143,17 @@ class GetInQueue extends Component {
   };
   render() {
     const { message } = this.props;
-    const { apiResponse } = this.state;
+    const { apiResponse, serviceList, isRestaurant } = this.state;
 
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
     console.log("disableButton", disableButton);
+
+    console.log("serviceList", serviceList);
 
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
+          pathname: "/currentQueue/" + this.state.formElements.business_name + "/" + this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)
@@ -137,26 +161,42 @@ class GetInQueue extends Component {
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
         <form id="contact-form" className="form" style={{ margin: "20px" }}
-        ref={(c) => {
-          this.form = c;
-        }}>
+          ref={(c) => {
+            this.form = c;
+          }}>
+
           {apiResponse.map((item, i) => (
             <div className="form-inline">
-            <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
-            </label>
-            <input
-              type="text"
-              className=" col-9 form-control"
-              id={item}
-              name={item}
-              placeholder={item}
-              tabIndex={i+=1}
-              required={item === "รายละเอียด" ? false : true}
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
+              <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
+              </label>
+              <input
+                type="text"
+                className=" col-9 form-control"
+                id={item}
+                name={item}
+                placeholder={item}
+                tabIndex={i += 1}
+                required={item === "รายละเอียด" ? false : true}
+                onChange={this.onFormChange}
+                style={{ marginBottom: "10px" }}
+              />
+            </div>
+
           ))}
+
+          {!isRestaurant && (
+            <div className="form-inline" name="services">
+              <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                {serviceList.map((item) => (
+                  console.log("item ", item),
+                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
             </label>
@@ -167,38 +207,6 @@ class GetInQueue extends Component {
               name="username"
               placeholder="ชื่อ"
               tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>เบอร์โทรศัพท์
-            </label>
-            <input
-              type="text"
-              className="form-control col-9"
-              id="Lastname"
-              name="user_telephone"
-              placeholder="เบอร์โทรศัพท์"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>อีเมลล์
-            </label>
-            <input
-              type="email"
-              className="form-control  col-9"
-              id="email"
-              name="user_email"
-              placeholder="อีเมลล์"
-              tabIndex="2"
               required
               onChange={this.onFormChange}
               style={{ marginBottom: "10px" }}
@@ -223,19 +231,6 @@ class GetInQueue extends Component {
 
           </div> */}
 
-          {/* <div className="form-inline">
-            <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>
-            <input
-              type="number"
-              className="form-control col-9"
-              id="noOfCus"
-              name="noOfCus"
-              placeholder="จำนวนคน"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-            />
-          </div> */}
 
 
           <div className="text-center" style={{ margin: "20px" }}>

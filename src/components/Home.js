@@ -103,6 +103,7 @@ export default class Home extends Component {
         </Carousel>
 
         <AutoPlayCarousel typeName="ร้านอาหาร" data={this.state.listByCategory}/>
+        <AutoPlayCarousel typeName="อาคาร" />
 
 
 

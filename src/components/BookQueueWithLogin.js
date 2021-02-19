@@ -13,12 +13,13 @@ import setMinutes from "date-fns/setMinutes";
 import { addDays, subDays } from "date-fns";
 import userService from "../services/user.service";
 
-import { clearMessage ,setMessage} from "../actions/message";
+import { clearMessage, setMessage } from "../actions/message";
 
 class BookQueueWithLogin extends Component {
     constructor(props) {
         super(props);
         this.handleAddqueue = this.handleAddqueue.bind(this);
+        this.onChangeSerivce = this.onChangeSerivce.bind(this);
         this.state = {
             show: false,
             redirectFlag: false,
@@ -26,13 +27,16 @@ class BookQueueWithLogin extends Component {
             successful: false,
             storeName: this.props.storeName,
             branch: this.props.branch,
+            isRestaurant: false,
             apiResponse: [],
+            serviceList: [],
             now: '',
             booked: [],
             listWithFilterByDate: [],
             iiii: 0,
             startDate: null,
             formElements: {
+                queue_no: '',
                 username: this.props.currentUser.username,
                 queue_type: 'BOO',
                 status: 'waiting',
@@ -69,6 +73,8 @@ class BookQueueWithLogin extends Component {
                 console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
                 this.setState({
                     apiResponse: res.data.BusinessDetail[0].fields,
+                    serviceList: res.data.BusinessDetail[0].tableDetail,
+                    isRestaurant: (res.data.BusinessDetail[0].categories === "ร้านอาหาร" ? true : false),
                 })
             }
         )
@@ -109,6 +115,25 @@ class BookQueueWithLogin extends Component {
         })
         return result
     }
+
+    onChangeSerivce(e) {
+        console.log(e.target.value);
+        console.log("e.target ", e.target);
+        const value = e.target.value;
+
+        let updateForm = { ...this.state.formElements.queueDetail };
+        updateForm['service'] = value;
+
+        this.setState({
+            ...this.state,
+            formElements: {
+                ...this.state.formElements,
+                queue_no: value,
+                queueDetail: updateForm
+            }
+        })
+    }
+
 
     setBook_time = (e) => {
         console.log("datepick(e) ", e);
@@ -214,7 +239,7 @@ class BookQueueWithLogin extends Component {
         this.props.dispatch(clearMessage());
         if (this.state.formElements.username === '') {
             this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
-          }
+        }
         this.setState({
             show: true,
         });
@@ -270,9 +295,9 @@ class BookQueueWithLogin extends Component {
     render() {
         const { message } = this.props;
         const { currentUser } = this.state;
-        const { apiResponse, now ,booked ,listWithFilterByDate} = this.state;
-        
-        const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== ''));
+        const { apiResponse, now, booked, listWithFilterByDate, isRestaurant, serviceList } = this.state;
+
+        const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
         console.log("disableButton", disableButton);
 
         const initialFilterByDate = this.filterByDate(new Date());
@@ -337,6 +362,19 @@ class BookQueueWithLogin extends Component {
                         </div>
                     ))}
 
+                    {!isRestaurant && (
+                        <div className="form-inline" name="services">
+                            <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+                            <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                                {serviceList.map((item) => (
+                                    console.log("item ", item),
+                                    <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
                     <div className="form-inline">
                         <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
                         <div className="customDatePickerWidth">
@@ -381,7 +419,7 @@ class BookQueueWithLogin extends Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 ยกเลิก
               </Button>
-                            <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}> 
+                            <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
                                 ยืนยัน
               </Button>
 
