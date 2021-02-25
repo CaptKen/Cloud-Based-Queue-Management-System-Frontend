@@ -91,7 +91,7 @@ class GetQueueHeader extends Component {
             <div>
                 <Container>
                     <Row style={{ justifyContent: "center" }}>
-                        <Col xs={5} sm={3} style={{ marginRight: "10" }}>
+                        <Col xs={5} sm={3} md={7} style={{ marginRight: "10" }}>
                             <img
                                 className="img-responsive"
                                 src={this.state.fileInfo.url}
@@ -106,12 +106,12 @@ class GetQueueHeader extends Component {
                                 alt="profile-img"
                                 className="storeProfile-img-card"
                             /> */}
-                            <div>
+                            <div style={{marginBottom:"5%"}}>
                                 <h1>{this.state.storeName}</h1>
                                 <p>สาขา : {this.state.branch}</p>
                             </div>
                         </Col>
-                        <Col xs={7} sm={3} style={{ display: "inline-grid" }}>
+                        <Col xs={7} sm={7} md={9} style={{ display: "inline-grid" }}>
                             {/* <p style={{display:"inline-flex"}}>เวลาเปิดบริการ : 10.00น.-10.05น </p>
                             <Button variant="success" style={{justifySelf:"center"}}>จองเวลา</Button><br/> */}
                             <p style={{ display: "inline-flex" }}>เวลาเปิดบริการ :</p>
