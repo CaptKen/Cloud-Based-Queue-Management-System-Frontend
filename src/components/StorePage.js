@@ -33,11 +33,20 @@ class StorePage extends Component {
     const { fileInfos } = this.state;
     return (
       <div>
-        <GetQueueHeader storeName={storeName} branch={branch}/>
-        <Carousel style={{ margin: 50 }} >
+        <div>
+          <h1 style={{fontSize : "150%"}}>
+          IT Restuarant @ king mongkut's institute of technology ladkrabang
+          </h1>
+          <h2 style={{fontStyle: "oblique", paddingBottom:"2%"}}>
+              ร้านอาหาร | ลาดกระบัง | กรุงเทพ
+          </h2>
+        </div>
+      <div className="row" style={{paddingBottom:'2%'}}>
+        <div className="col-md-7">
+        <Carousel style={{ margin: 5 }} >
           {!fileInfos.length == 0 ? (
             fileInfos.map((item) => (
-            <Carousel.Item interval={1000} style={{ borderRadius: "15px" }}>
+            <Carousel.Item interval={1000} style={{ borderRadius: "4px" }}>
             <img
               className="img-responsive w-100"
               src={item.url}
@@ -97,7 +106,39 @@ class StorePage extends Component {
             </Carousel.Caption>
           </Carousel.Item> */}
         </Carousel>
+          </div>
+          <div className="col-md-5 card-body" style={{background: "#f9f9f9", borderRadius: "4px", boxShadow: "1px 1px #E8E8E8" }}>
+          <GetQueueHeader storeName={storeName} branch={branch}/>
+          </div>
+        </div>
+        <div style= {{background: "#f9f9f9", padding :"3%", boxShadow: "1px 1px #E8E8E8"}}>
+          
+          <h1 style={{fontSize: "70px"}}>
+            ข้อมูลร้าน
+          </h1>
+          <p1>
+            loremLorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!
+          </p1>
 
+          <h1 style={{fontSize: "70px"}}>
+            ข้อมูลร้าน22
+          </h1>
+          <p1>
+            loremLorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta 
+            minus molestiae vel beatae natus eveniet ratione temporibus aperiam harum 
+            alias officiis assumenda officia quibusdam deleniti eos cupiditate dolore 
+            doloribus!loremLorem ipsum dolor sit amet, consectetur adipisicing elit. Qui 
+            dicta minus molestiae vel beatae natus eveniet ratione temporibus aperiam harum 
+            alias officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus
+            !loremLorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus molestiae
+             vel beatae natus eveniet ratione temporibus aperiam harum alias officiis assumenda officia 
+             quibusdam deleniti eos cupiditate dolore doloribus!
+          </p1>
+          
+            <div>
+            <AutoPlayCarousel typeName="ร้านอาหาร" data={this.state.listByCategory}/>
+            </div>
+        </div>
         {/* <AutoPlayCarousel typeName="ร้านอื่นๆ"/> */}
       </div>
     );
@@ -105,3 +146,7 @@ class StorePage extends Component {
 }
 
 export default StorePage;
+
+
+
+
