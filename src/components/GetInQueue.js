@@ -3,12 +3,12 @@ import { Modal, Button, Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import UserService from "../services/user.service";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage, setMessage } from "../actions/message";
 import businessService from '../services/business.service';
-
+import GetQueueHeader from './GetQueueHeader';
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +80,7 @@ class GetInQueue extends Component {
 
   onChangeSerivce(e) {
     console.log(e.target.value);
-    console.log("e.target ",e.target);
+    console.log("e.target ", e.target);
     const value = e.target.value;
 
     let updateForm = { ...this.state.formElements.queueDetail };
@@ -160,107 +160,80 @@ class GetInQueue extends Component {
     }
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-        <form id="contact-form" className="form" style={{ margin: "20px" }}
-          ref={(c) => {
-            this.form = c;
-          }}>
+        {/* <GetQueueHeader storeName={this.state.storeName} branch={this.state.branch} /> */}
+        <div className="row d-block" >
+          <form id="contact-form" className="form" style={{ margin: "20px" }}
+            ref={(c) => {
+              this.form = c;
+            }}>
 
-          {apiResponse.map((item, i) => (
-            <div className="form-inline">
-              <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
-              </label>
-              <input
-                type="text"
-                className=" col-9 form-control"
-                id={item}
-                name={item}
-                placeholder={item}
-                tabIndex={i += 1}
-                required={item === "รายละเอียด" ? false : true}
-                onChange={this.onFormChange}
-                style={{ marginBottom: "10px" }}
-              />
-            </div>
+            {apiResponse.map((item, i) => (
+              <div className="form-inline">
+                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}
+                </label>
+                <input
+                  type="text"
+                  className=" col-xs-9 col-sm-9 col-md-9 form-control"
+                  id={item}
+                  name={item}
+                  placeholder={item}
+                  tabIndex={i += 1}
+                  required={item === "รายละเอียด" ? false : true}
+                  onChange={this.onFormChange}
+                  style={{ marginBottom: "10px" }}
+                />
+              </div>
 
-          ))}
+            ))}
 
-          {!isRestaurant && (
-            <div className="form-inline" name="services">
-              <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
-              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                {serviceList.map((item) => (
-                  console.log("item ", item),
-                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* <div className="form-inline">
-            <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
-            </label>
-            <input
-              type="text"
-              className=" col-9 form-control"
-              id="firstname"
-              name="username"
-              placeholder="ชื่อ"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-label col-3" style={{ justifyContent: "left" }}>รายละเอียดเพิ่มเติม
-            </label>
-            <textarea
-              rows="5"
-              cols="100"
-              name="user_detail"
-              className="form-control col-9"
-              id="message"
-              placeholder="รายละเอียดเพิ่มเติม..."
-              tabIndex="4"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            ></textarea>
-
-          </div> */}
-
-
-
-          <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="primary" onClick={this.handleShow} disabled={this.props.demo === true ? true : false}>
-              เข้าคิว/ต่อคิว
-            </Button>
-          </div>
-
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
-            </Modal.Header>
-            <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
-            {message && (
-              <div className="form-group">
-                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                  {message}
-                </div>
+            {!isRestaurant && (
+              <div className="form-inline" name="services">
+                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+                <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                  <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                  {serviceList.map((item) => (
+                    console.log("item ", item),
+                    <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                  ))}
+                </select>
               </div>
             )}
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                ยกเลิก
+
+
+            <div className="text-center" style={{ margin: "20px" }}>
+              <Button variant="success" style={{ marginRight: "2%" }} onClick={this.handleShow} disabled={this.props.demo === true ? true : false}>
+                เข้าคิว/ต่อคิว
+            </Button>
+
+              <Button variant="danger" onClick={() => window.history.back()}>
+                ย้อนกลับ
+            </Button>
+            </div>
+
+            <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
+              </Modal.Header>
+              <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
+              {message && (
+                <div className="form-group">
+                  <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                    {message}
+                  </div>
+                </div>
+              )}
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue} disabled={!disableButton}>
-                ยืนยัน
+                <Button variant="primary" onClick={this.handleAddqueue} disabled={!disableButton}>
+                  ยืนยัน
               </Button>
-            </Modal.Footer>
-          </Modal>
-        </form>
+              </Modal.Footer>
+            </Modal>
+          </form>
+        </div>
+
       </div>
     );
   }

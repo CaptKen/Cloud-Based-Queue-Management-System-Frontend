@@ -325,18 +325,18 @@ class BookQueue extends Component {
     }
     return (
       <div className="container" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-
+        <div className="row d-block">
         <form id="contact-form" className="form" style={{ margin: "20px" }}
           ref={(c) => {
             this.form = c;
           }}>
           {apiResponse.map((item, i) => (
             <div className="form-inline">
-              <label className="col-3 form-label" style={{ justifyContent: "left" }}>{item}
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}
               </label>
               <input
                 type="text"
-                className=" col-9 form-control"
+                className="col-xs-9 col-sm-9 col-md-9 form-control"
                 id={item}
                 name={item}
                 placeholder={item}
@@ -350,7 +350,7 @@ class BookQueue extends Component {
 
           {!isRestaurant && (
             <div className="form-inline" name="services">
-              <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
                 <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
                 {serviceList.map((item) => (
@@ -360,106 +360,11 @@ class BookQueue extends Component {
               </select>
             </div>
           )}
-
-          {/* <div className="form-inline">
-            <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
-            </label>
-            <input
-              type="text"
-              className=" col-9 form-control"
-              id="firstname"
-              name="username"
-              placeholder="ชื่อ"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
           <div className="form-inline">
-            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>เบอร์โทรศัพท์
-            </label>
-            <input
-              type="text"
-              className="form-control col-9"
-              id="Lastname"
-              name="user_telephone"
-              placeholder="เบอร์โทรศัพท์"
-              tabIndex="1"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>อีเมลล์
-            </label>
-            <input
-              type="email"
-              className="form-control  col-9"
-              id="email"
-              name="user_email"
-              placeholder="อีเมลล์"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-
-          <div className="form-inline">
-            <label className="form-label col-3" style={{ justifyContent: "left" }}>รายละเอียดเพิ่มเติม
-            </label>
-            <textarea
-              rows="5"
-              cols="100"
-              name="user_detail"
-              className="form-control col-9"
-              id="message"
-              placeholder="รายละเอียดเพิ่มเติม..."
-              tabIndex="4"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-            ></textarea>
-          </div> */}
-
-          {/* <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง
-            </label>
-            <input
-              type="datetime-local"
-              className="form-control  col-9"
-              id="book_time"
-              name="book_time"
-              // placeholder="จองเวลา"
-              required
-              onChange={this.onFormChange}
-              style={{ marginBottom: "10px" }}
-              min={now}
-            />
-          </div> */}
-
-          {/* <div className="form-inline">
-            <label className="form-label col-3" style={{justifyContent:"left"}}>จำนวนคน</label>
-            <input
-              type="number"
-              className="form-control col-9"
-              id="noOfCus"
-              name="noOfCus"
-              placeholder="จำนวนคน"
-              tabIndex="2"
-              required
-              onChange={this.onFormChange}
-            />
-          </div> */}
-          <div className="form-inline">
-            <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
+            <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
             <div className="customDatePickerWidth">
               <DatePicker
-                className="form-control  col-9"
+                className="form-control col-xs-9 col-sm-9 col-md-9"
                 id="book_time"
                 name="book_time"
                 selected={this.state.startDate}
@@ -481,8 +386,12 @@ class BookQueue extends Component {
 
 
           <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="primary" onClick={this.handleShow}>
+            <Button variant="success" style={{ marginRight: "2%" }} onClick={this.handleShow}>
               จองเวลา
+            </Button>
+
+            <Button variant="danger" onClick={() => window.history.back()}>
+                ย้อนกลับ
             </Button>
           </div>
 
@@ -508,6 +417,8 @@ class BookQueue extends Component {
             </Modal.Footer>
           </Modal>
         </form>
+        </div>
+        
       </div>
     );
   }

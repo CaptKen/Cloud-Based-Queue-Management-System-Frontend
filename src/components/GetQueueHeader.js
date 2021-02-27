@@ -90,10 +90,10 @@ class GetQueueHeader extends Component {
         return (
             <div>
                 <Container>
-                    <Row style={{ justifyContent: "center" }}>
-                        <Col xs={5} sm={3} md={7} style={{ marginRight: "10" }}>
+                    <Row style={{ justifyContent: "center" ,marginBottom: "2%" , padding: 0}}>
+                        <Col xs={5} sm={3} md={7}>
                             <img
-                                className="img-responsive"
+                                className="img-responsive h-auto w-auto"
                                 src={this.state.fileInfo.url}
                                 alt={this.state.fileInfo.name + "'s icon"}
                                 style={{

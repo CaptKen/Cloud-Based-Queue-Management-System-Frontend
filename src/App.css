@@ -7,8 +7,9 @@
  html, body #root{
      font-family: 'Rubik', 'Kanit', sans-serif;
      height: 100% !important;
-     background-image: url("https://images.pexels.com/photos/62693/pexels-photo-62693.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+     /* background-image: url("https://images.pexels.com/photos/62693/pexels-photo-62693.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"); */
      background-size: cover;
+     background-color: #f3f3f3;
  }
 
 .App-logo {

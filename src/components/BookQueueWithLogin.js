@@ -341,92 +341,97 @@ class BookQueueWithLogin extends Component {
         }
         return (
             <div className="container">
-                <form id="contact-form" className="form" onSubmit={this.submit} ref={(c) => {
-                    this.form = c;
-                }} style={{ margin: "20px" }}>
-                    {apiResponse.map((item, i) => (
-                        <div className="form-inline">
-                            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
-                            <input
-                                type="text"
-                                className="form-control col-9"
-                                id={item}
-                                name={item}
-                                placeholder={this.handleValue(item) === "" ? item : this.handleValue(item)}
-                                tabIndex={i += 1}
-                                required={item === "รายละเอียด" ? false : true}
-                                onChange={this.onFormChange}
-                                readOnly={item == "เบอร์โทรศัพท์" || item == "Email" ? true : false}
-                                style={{ marginBottom: "10px" }}
-                            />
-                        </div>
-                    ))}
+                <div className="row d-block">
+                    <form id="contact-form" className="form" onSubmit={this.submit} ref={(c) => {
+                        this.form = c;
+                    }} style={{ margin: "20px" }}>
+                        {apiResponse.map((item, i) => (
+                            <div className="form-inline">
+                                <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
+                                <input
+                                    type="text"
+                                    className="form-control col-xs-9 col-sm-9 col-md-9"
+                                    id={item}
+                                    name={item}
+                                    placeholder={this.handleValue(item) === "" ? item : this.handleValue(item)}
+                                    tabIndex={i += 1}
+                                    required={item === "รายละเอียด" ? false : true}
+                                    onChange={this.onFormChange}
+                                    readOnly={item == "เบอร์โทรศัพท์" || item == "Email" ? true : false}
+                                    style={{ marginBottom: "10px" }}
+                                />
+                            </div>
+                        ))}
 
-                    {!isRestaurant && (
-                        <div className="form-inline" name="services">
-                            <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
-                            <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                                {serviceList.map((item) => (
-                                    console.log("item ", item),
-                                    <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-
-                    <div className="form-inline">
-                        <label className="form-inline col-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
-                        <div className="customDatePickerWidth">
-                            <DatePicker
-                                className="form-control  col-9"
-                                id="book_time"
-                                name="book_time"
-                                selected={this.state.startDate}
-                                placeholderText="เลือกวันเวลาที่ต้องการจอง"
-                                onChange={date => this.setBook_time(date)}
-                                style={{ marginBottom: "10px" }}
-                                showTimeSelect
-                                filterDate={this.isPassDate}
-                                excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
-                                dateFormat="yyyy-MM-dd hh:mm aa"
-                                filterTime={this.filterPassedTime}
-                                includeDates={[new Date(), addDays(new Date(), 1)]}
-                            // highlightDates={[new Date(), addDays(new Date(), 1)]}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="text-center" style={{ margin: "20px" }}>
-                        <Button variant="primary" onClick={this.handleShow}>
-                            จองเวลา
-            </Button>
-                    </div>
-
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
-                        {message && (
-                            <div className="form-group">
-                                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                                    {message}
-                                </div>
+                        {!isRestaurant && (
+                            <div className="form-inline" name="services">
+                                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+                                <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                                    <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                                    {serviceList.map((item) => (
+                                        console.log("item ", item),
+                                        <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                                    ))}
+                                </select>
                             </div>
                         )}
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleClose}>
-                                ยกเลิก
+
+                        <div className="form-inline">
+                            <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
+                            <div className="customDatePickerWidth">
+                                <DatePicker
+                                    className="form-control col-xs-9 col-sm-9 col-md-9"
+                                    id="book_time"
+                                    name="book_time"
+                                    selected={this.state.startDate}
+                                    placeholderText="เลือกวันเวลาที่ต้องการจอง"
+                                    onChange={date => this.setBook_time(date)}
+                                    style={{ marginBottom: "10px" }}
+                                    showTimeSelect
+                                    filterDate={this.isPassDate}
+                                    excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                                    dateFormat="yyyy-MM-dd hh:mm aa"
+                                    filterTime={this.filterPassedTime}
+                                    includeDates={[new Date(), addDays(new Date(), 1)]}
+                                // highlightDates={[new Date(), addDays(new Date(), 1)]}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="text-center" style={{ margin: "20px" }}>
+                            <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
+                                จองเวลา
+                            </Button>
+
+                            <Button variant="danger" onClick={() => window.history.back()}>
+                                ย้อนกลับ
+                            </Button>
+                        </div>
+
+                        <Modal show={this.state.show} onHide={this.handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
+                            {message && (
+                                <div className="form-group">
+                                    <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                                        {message}
+                                    </div>
+                                </div>
+                            )}
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={this.handleClose}>
+                                    ยกเลิก
               </Button>
-                            <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
-                                ยืนยัน
+                                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
+                                    ยืนยัน
               </Button>
 
-                        </Modal.Footer>
-                    </Modal>
-                </form>
-
+                            </Modal.Footer>
+                        </Modal>
+                    </form>
+                </div>
             </div>
         );
     }

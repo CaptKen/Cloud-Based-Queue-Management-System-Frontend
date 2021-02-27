@@ -208,6 +208,7 @@ class GetInQueueWithLogin extends Component {
     }
     return (
       <div className="container">
+        <div className="row d-block">
         <form id="contact-form" className="form" ref={(c) => {
           this.form = c;
         }} style={{ margin: "20px" }}>
@@ -230,10 +231,10 @@ class GetInQueueWithLogin extends Component {
           </div> */}
           {apiResponse.map((item, i) => (
             <div className="form-inline">
-            <label className="col-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
+            <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
             <input
               type="text"
-              className="form-control col-9"
+              className="form-control col-xs-9 col-sm-9 col-md-9"
               id={item}
               name={item}
               placeholder={this.handleValue(item)}
@@ -248,7 +249,7 @@ class GetInQueueWithLogin extends Component {
           
           {!isRestaurant && (
             <div className="form-inline" name="services">
-              <label className="col-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
                 <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
                 {serviceList.map((item) => (
@@ -260,8 +261,12 @@ class GetInQueueWithLogin extends Component {
           )}
 
           <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="primary" onClick={this.handleShow}>
+            <Button variant="primary" style={{marginRight : "2%"}} onClick={this.handleShow}>
               ต่อคิว/เข้าคิว
+            </Button>
+
+            <Button variant="danger" onClick={() => window.history.back()}>
+              ย้อนกลับ
             </Button>
           </div>
 
@@ -288,6 +293,7 @@ class GetInQueueWithLogin extends Component {
             </Modal.Footer>
           </Modal>
         </form>
+        </div>
 
       </div>
     );
