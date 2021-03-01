@@ -137,7 +137,7 @@ function ManageQueueTable(props) {
           },
           {
             Header: 'เวลาที่จอง',
-            accessor: 'reserve_time',
+            accessor: 'book_time',
           },
           {
             Header: 'หมายเหตุ',
