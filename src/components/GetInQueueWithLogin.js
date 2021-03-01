@@ -30,6 +30,7 @@ class GetInQueueWithLogin extends Component {
         queue_no: '',
         queue_type: 'NOR',
         status: 'waiting',
+        email:this.props.currentUser.email,
         business_name: this.props.storeName,
         queueDetail: {}
       }
@@ -112,12 +113,22 @@ class GetInQueueWithLogin extends Component {
         }
       })
       
-    }else{
+    }else if(name == "Email"){
+      console.log('name == "Email"');
+      this.setState({
+        formElements: {
+          ...this.state.formElements,
+          email: value,
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
+        }
+      })
+    } else {
       this.setState({
         ...this.state,
         formElements: {
           ...this.state.formElements,
-          queueDetail : updateForm
+          queueDetail: updateForm
         }
       })
     }
@@ -286,7 +297,7 @@ class GetInQueueWithLogin extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue} disabled={!disableButton}>
+              <Button variant="primary" onClick={this.handleAddqueue} >
                 ยืนยัน
               </Button>
 

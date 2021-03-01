@@ -31,6 +31,7 @@ class BookQueue extends Component {
       now: '',
       booked: [],
       listWithFilterByDate: [],
+      selectBookTime:false,
       serviceList: [],
       isRestaurant: false,
       iiii: 0,
@@ -39,6 +40,7 @@ class BookQueue extends Component {
         username: '',
         queue_type: 'BOO',
         status: 'waiting',
+        email: '',
         business_name: this.props.storeName,
         book_time: '',
         queueDetail: {},
@@ -128,6 +130,7 @@ class BookQueue extends Component {
     this.setState({
       startDate: new Date(e),
       listWithFilterByDate: lst,
+      selectBookTime:true,
       formElements: {
         ...this.state.formElements,
         book_time: e,
@@ -165,8 +168,19 @@ class BookQueue extends Component {
           queueDetail: updateForm
         }
       })
+    } else if(name == "Email"){
+      console.log('name == "Email"');
+      this.setState({
+        formElements: {
+          ...this.state.formElements,
+          email: value,
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
+        }
+      })
     } else {
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           ...this.state.formElements.queueDetail,
@@ -263,8 +277,8 @@ class BookQueue extends Component {
     const { message } = this.props;
     const { apiResponse, now, booked, listWithFilterByDate, serviceList, isRestaurant } = this.state;
 
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
-    console.log("disableButton", disableButton);
+    // const disableButton = (this.state.formElements.book_time !== '');
+    // console.log("disableButton", disableButton);
 
     const initialFilterByDate = this.filterByDate(new Date());
     const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
@@ -386,7 +400,7 @@ class BookQueue extends Component {
 
 
           <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="success" style={{ marginRight: "2%" }} onClick={this.handleShow}>
+            <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
               จองเวลา
             </Button>
 
@@ -411,7 +425,7 @@ class BookQueue extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 ยกเลิก
               </Button>
-              <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
+              <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!this.state.selectBookTime}>
                 ยืนยัน
               </Button>
             </Modal.Footer>

@@ -28,6 +28,7 @@ class GetInQueue extends Component {
         status: 'waiting',
         business_name: this.props.storeName,
         username: '',
+        email:'',
         queueDetail: {}
       }
     };
@@ -67,6 +68,16 @@ class GetInQueue extends Component {
         }
       })
 
+    } else if(name == "Email"){
+      console.log('name == "Email"');
+      this.setState({
+        formElements: {
+          ...this.state.formElements,
+          email: value,
+          ...this.state.formElements.queueDetail,
+          queueDetail: updateForm
+        }
+      })
     } else {
       this.setState({
         ...this.state,

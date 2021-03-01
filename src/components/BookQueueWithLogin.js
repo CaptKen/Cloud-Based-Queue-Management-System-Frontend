@@ -30,6 +30,7 @@ class BookQueueWithLogin extends Component {
             isRestaurant: false,
             apiResponse: [],
             serviceList: [],
+            selectBookTime:false,
             now: '',
             booked: [],
             listWithFilterByDate: [],
@@ -40,6 +41,7 @@ class BookQueueWithLogin extends Component {
                 username: this.props.currentUser.username,
                 queue_type: 'BOO',
                 status: 'waiting',
+                email:this.props.currentUser.email,
                 business_name: this.props.storeName,
                 book_time: '',
                 queueDetail: {}
@@ -147,6 +149,7 @@ class BookQueueWithLogin extends Component {
         this.setState({
             startDate: new Date(e),
             listWithFilterByDate: lst,
+            selectBookTime:true,
             formElements: {
                 ...this.state.formElements,
                 book_time: e,
@@ -175,6 +178,8 @@ class BookQueueWithLogin extends Component {
         } else if (name == "book_time") {
             console.log('name == "book_time"');
             this.setState({
+                ...this.state,
+                selectBookTime: true,
                 formElements: {
                     ...this.state.formElements,
                     book_time: value,
@@ -182,16 +187,27 @@ class BookQueueWithLogin extends Component {
                     queueDetail: updateForm
                 }
             })
-        } else {
+        } else if(name == "Email"){
+            console.log('name == "Email"');
             this.setState({
                 ...this.state,
-                formElements: {
-                    ...this.state.formElements,
-                    ...this.state.formElements.queueDetail,
-                    queueDetail: updateForm
-                }
+              formElements: {
+                ...this.state.formElements,
+                email: value,
+                ...this.state.formElements.queueDetail,
+                queueDetail: updateForm
+              }
             })
-        }
+          } else {
+            this.setState({
+              ...this.state,
+              formElements: {
+                ...this.state.formElements,
+                ...this.state.formElements.queueDetail,
+                queueDetail: updateForm
+              }
+            })
+          }
 
     }
     handleAddqueue(e) {
@@ -297,8 +313,8 @@ class BookQueueWithLogin extends Component {
         const { currentUser } = this.state;
         const { apiResponse, now, booked, listWithFilterByDate, isRestaurant, serviceList } = this.state;
 
-        const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
-        console.log("disableButton", disableButton);
+        // const disableButton = ();
+        // console.log("disableButton", disableButton);
 
         const initialFilterByDate = this.filterByDate(new Date());
         const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
@@ -424,7 +440,7 @@ class BookQueueWithLogin extends Component {
                                 <Button variant="secondary" onClick={this.handleClose}>
                                     ยกเลิก
               </Button>
-                                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
+                                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!this.state.selectBookTime}>
                                     ยืนยัน
               </Button>
 
