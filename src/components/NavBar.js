@@ -191,6 +191,7 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 // import SignUpPage from "./SignUpPage"
 import Login from "./LoginPage";
+import SeachBar from "./SeachBar";
 
 import { logout } from "../actions/auth";
 import SideNav from './SideBar';
@@ -260,12 +261,12 @@ class NavigationBar extends Component {
       <Styles>
         <Navbar expand="md" fixed="top">
           <Navbar.Brand href="/">QMS</Navbar.Brand>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: '#3D9280' }} onClick={() =>this.toggleMenu()} />
-
-
-          <Navbar.Collapse id="basic-navbar-nav">
+          
+          <Navbar.Collapse id="basic-navbar-nav" >
             <Nav className="ml-auto">
-
+            
               {showModeratorBoard || showAdminBoard || showEmployeeBoard ? (
                 <>
                   {showModeratorBoard && (
@@ -300,51 +301,17 @@ class NavigationBar extends Component {
                     </NavDropdown>
 
                     <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
+                    
                   </>
                 )}
 
 
-
-              {/* {currentUser && (
-                <Nav.Link href="/user">User Board</Nav.Link>
-              )} */}
-
-
-
-
-              {/* {currentUser && (
-                <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
-              )} */}
-
-              {/* {currentUser ? (
-                <Nav.Item><Nav.Link href="/" onClick={this.logOut}>logout</Nav.Link></Nav.Item>
-              ):(
-                <Nav.Item><Nav.Link href="/register">register</Nav.Link></Nav.Item>
-                
-                // <Nav.Item>
-                //     <SignUpPage/>
-                //     </Nav.Item>
-              )} */}
-
-
             </Nav>
 
-            {/* {showAdminBoard ? (
-                <SideNav/>
-              ):(<Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>)}
-              {showAdminBoard ? (
-                <div></div>
-              ):(<div>
-                    <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
-              </div>)} */}
-            {/* {showAdminBoard ? (
-                <div></div>
-              ):(<div>
-                
-              </div>)} */}
-
+            <SeachBar/>
+            
             {currentUser ? (
-              <div>
+              <>
 
                 {/* <Nav.Item><Nav.Link href="/profile">{currentUser.username}</Nav.Link></Nav.Item> */}
                 <NavDropdown title={currentUser.username} id="nav-dropdown" style={{ float: "right" }}>
@@ -354,13 +321,14 @@ class NavigationBar extends Component {
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>
                 </NavDropdown>
-              </div>
+              </>
             ) : (
-                <div>
+                <>
+                  
                   <Login />
                   {/* <Nav.Item><Nav.Link href="/login">เข้าสู่ระบบ</Nav.Link></Nav.Item> */}
                   {/* <Nav.Item><Nav.Link onClick={this.handleShow}>เข้าสู่ระบบ</Nav.Link></Nav.Item>  */}
-                </div>
+                </>
               )
             }
 
@@ -368,6 +336,7 @@ class NavigationBar extends Component {
             <FormControl type="text" placeholder="Search" className="" />
           </Form> */}
           </Navbar.Collapse>
+          
         </Navbar>
 
       </Styles>

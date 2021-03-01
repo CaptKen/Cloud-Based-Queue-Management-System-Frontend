@@ -6,6 +6,8 @@ import AutoPlayCarousel from './PlaceList';
 import AD1 from '../statics/advertising/1.jpg'
 import AD2 from '../statics/advertising/2.jpg'
 import AD3 from '../statics/advertising/3.jpg'
+import SeachBar from "./SeachBar";
+
 
 
 export default class Home extends Component {
@@ -63,6 +65,7 @@ export default class Home extends Component {
 
 
       <div>
+        
         <Carousel>
           <Carousel.Item interval={1000}>
             <img

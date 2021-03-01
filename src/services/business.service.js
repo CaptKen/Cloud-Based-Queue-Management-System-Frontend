@@ -105,6 +105,11 @@ class BusinessService {
     return axios.get(BUSINESS_URL_API + 'findQuantityDetail?business_name=' + businessName)
   }
 
+  //list All Business
+  listAllBusiness(){
+    return axios.get(BUSINESS_URL_API + 'listAllBusiness')
+  }
+
 }
 
 export default new BusinessService();
