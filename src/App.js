@@ -42,7 +42,7 @@ import DetailEmployee from './components/DetailEmployee';
 import ManageTable from './components/TableManage'
 import manageField from './components/FieldManage'
 import managePromotion from './components/PromoImgManage'
-
+import CountDownPage from './components/CountDownPage'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -217,6 +217,7 @@ class App extends Component {
                 <Route path="/LoginPageManager" component={LoginPageManager} />
                 <Route path="/SignUpEmployee" component={SignUpEmployee} />
                 <Route path="/LoginPageEmployee" component={LoginPageEmployee} />
+                <Route path="/CountDownPage" component={CountDownPage} />
 
                 {/*
                 <Route path="/ListEmployee" component={ListEmployee} />
