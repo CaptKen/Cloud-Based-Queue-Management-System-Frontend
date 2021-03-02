@@ -308,7 +308,7 @@ class NavigationBar extends Component {
 
             </Nav>
 
-            <SeachBar/>
+            {/* <SeachBar/> */}
             
             {currentUser ? (
               <>

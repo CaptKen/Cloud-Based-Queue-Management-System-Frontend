@@ -96,7 +96,7 @@ label {
 }
 
 .myapp {
-  padding-top: 100px;
+  padding-top: 75px;
   min-height: 100vh; /* will cover the 100% of viewport or 100*/ 
   display: block;
   position: relative;
