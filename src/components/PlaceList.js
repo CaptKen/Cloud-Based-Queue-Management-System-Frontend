@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import ItemsCarousel from 'react-items-carousel';
 import { withRouter, Link } from 'react-router-dom';
-
+import { Modal, Card } from "react-bootstrap";
 import businessService from '../services/business.service';
-
 // const noOfItems = 12;
 // const noOfCards = 3;
 // const autoPlayDelay = 2000;
@@ -40,6 +39,7 @@ class AutoPlayCarousel extends React.Component {
     storeName: "store",
     listByCategory: [],
     fileInfos: {},
+    show: false,
   };
 
   componentDidMount() {
@@ -48,6 +48,18 @@ class AutoPlayCarousel extends React.Component {
     // this.getIconsImg();
     // this.forceUpdate()
   }
+
+  handleClose = (e) => {
+    this.setState({
+      show: false,
+    });
+  };
+
+  handleShow = () => {
+    this.setState({
+      show: true
+    });
+  };
 
   callAPI() {
     console.log("CallApi()");
@@ -127,33 +139,38 @@ class AutoPlayCarousel extends React.Component {
     console.log("fileInfos : ", fileInfos);
 
     return (
-      <div>
-        <div style={{ marginTop: "30px" }}>
-          <h1 className="h1">{this.state.typeName}</h1>
-          <hr /><br />
-          <ItemsCarousel
-            requestToChangeActive={this.onChange}
-            activeItemIndex={this.state.activeItemIndex}
-            numberOfCards={this.state.noOfCards}
-            gutter={20}
-            leftChevron={<button>{'<'}</button>}
-            rightChevron={<button>{'>'}</button>}
-            outsideChevron
-            chevronWidth={this.state.chevronWidth}
-          >
-            {listByCategory.map((item) => (
-              <SlideItem key={item.name}>
-                <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
-                  <img
-                    className="img-responsive w-100 h-100"
-                    // src={LOGO1}
-                    src={fileInfos.[item.name]}
-                    alt={item.name + "'s icon"}
-                  />
-                </Link>
-              </SlideItem>
-            ))}
-            {/* <SlideItem >
+      <>
+        <div className="container">
+          <div style={{ marginTop: "30px" }}>
+            <div className="d-flex justify-content-between">
+              <h1 className="h1">{this.state.typeName}</h1>
+              <button className="btn btn-link btn-sm" onClick={this.handleShow}>ดูทั้งหมด</button>
+            </div>
+
+            <hr /><br />
+            <ItemsCarousel
+              requestToChangeActive={this.onChange}
+              activeItemIndex={this.state.activeItemIndex}
+              numberOfCards={this.state.noOfCards}
+              gutter={20}
+              leftChevron={<button>{'<'}</button>}
+              rightChevron={<button>{'>'}</button>}
+              outsideChevron
+              chevronWidth={this.state.chevronWidth}
+            >
+              {listByCategory.map((item) => (
+                <SlideItem key={item.name}>
+                  <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
+                    <img
+                      className="img-responsive w-100 h-100"
+                      // src={LOGO1}
+                      src={fileInfos.[item.name]}
+                      alt={item.name + "'s icon"}
+                    />
+                  </Link>
+                </SlideItem>
+              ))}
+              {/* <SlideItem >
               <img
                 className="img-responsive w-100 h-100"
                 src={LOGO1}
@@ -190,15 +207,49 @@ class AutoPlayCarousel extends React.Component {
                 alt="First slide"
                 width="100%"
               /></SlideItem> */}
-            {/* <div style={{ height: 200, background: '#EEE' }}>3</div>
-            <div style={{ height: 200, background: '#EEE' }}>4</div>
-            <div style={{ height: 200, background: '#EEE' }}>5</div>
-            <div style={{ height: 200, background: '#EEE' }}>6</div> */}
-          </ItemsCarousel>
+
+            </ItemsCarousel>
+          </div>
         </div>
-      </div>
+
+        <Modal show={this.state.show} onHide={this.handleClose} size="xl">
+          <Modal.Header closeButton>
+            <h1 className="h3">{this.state.typeName}ทั้งหมด</h1>
+          </Modal.Header>
+          <Modal.Body >
+            <div className="container">
+              <div className="row justify-content-center" style={{height: "63vh", overflowY:'scroll'}}>
+                {listByCategory.map((item) => (
+                  <div className="d-flex">
+
+                    <div className="col-md-4" style={{ marginInline: "2%" }}>
+                      <Card style={{ width: '15rem', height:'15rem' }}>
+                        <Card.Body>
+                          <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
+                            <img
+                              className="img-responsive w-100 h-100"
+                              // src={LOGO1}
+                              src={fileInfos.[item.name]}
+                              alt={item.name + "'s icon"}
+                            />
+                          </Link>
+                          {/* <Card.Title>{item.name}</Card.Title> */}
+                        </Card.Body>
+                      </Card>
+                      {/* <strong><h4>{item.name}</h4></strong> */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+
+      </>
     );
   }
 }
+
+
 
 export default withRouter(AutoPlayCarousel)

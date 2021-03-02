@@ -59,7 +59,6 @@ class SeachBar extends Component {
     this.setState({
       show: false,
     });
-
   };
 
   //   toggleMenu() {
