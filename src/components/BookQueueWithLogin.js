@@ -43,6 +43,7 @@ class BookQueueWithLogin extends Component {
                 status: 'waiting',
                 email:this.props.currentUser.email,
                 business_name: this.props.storeName,
+                branch: this.props.branch,
                 book_time: '',
                 queueDetail: {}
             }
@@ -165,12 +166,14 @@ class BookQueueWithLogin extends Component {
         console.log("name, value : ", name, value);
         let updateForm = { ...this.state.formElements.queueDetail };
         updateForm[name] = value;
+        console.log(updateForm);
         if (name == "ชื่อ-นามสกุล") {
             this.setState({
                 ...this.state,
                 formElements: {
                     ...this.state.formElements,
                     username: value,
+                    ...this.state.formElements.queueDetail,
                     queueDetail: updateForm
                 }
             })
@@ -178,8 +181,6 @@ class BookQueueWithLogin extends Component {
         } else if (name == "book_time") {
             console.log('name == "book_time"');
             this.setState({
-                ...this.state,
-                selectBookTime: true,
                 formElements: {
                     ...this.state.formElements,
                     book_time: value,
@@ -190,7 +191,6 @@ class BookQueueWithLogin extends Component {
         } else if(name == "Email"){
             console.log('name == "Email"');
             this.setState({
-                ...this.state,
               formElements: {
                 ...this.state.formElements,
                 email: value,
@@ -200,7 +200,6 @@ class BookQueueWithLogin extends Component {
             })
           } else {
             this.setState({
-              ...this.state,
               formElements: {
                 ...this.state.formElements,
                 ...this.state.formElements.queueDetail,

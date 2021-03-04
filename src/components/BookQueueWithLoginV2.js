@@ -25,6 +25,7 @@ class BookQueue extends Component {
       show: false,
       redirectFlag: false,
       successful: false,
+      currentUser: undefined,
       storeName: this.props.storeName,
       branch: this.props.branch,
       apiResponse: [],
@@ -37,10 +38,11 @@ class BookQueue extends Component {
       iiii: 0,
       startDate: null,
       formElements: {
-        username: '',
+        username: this.props.currentUser.username,
+        queue_no: '',
         queue_type: 'BOO',
         status: 'waiting',
-        email: '',
+        email: this.props.currentUser.email,
         business_name: this.props.storeName,
         branch: this.props.branch,
         book_time: '',
@@ -52,7 +54,19 @@ class BookQueue extends Component {
   componentDidMount() {
     this.setState({
       redirectFlag: false,
-      now: this.timeStringConverter(new Date())
+      now: this.timeStringConverter(new Date()),
+      formElements: {
+        ...this.state.formElements,
+        username: this.props.currentUser.username,
+        business_name: this.props.storeName,
+        queue_type: 'BOO',
+        status: 'waiting',
+        queueDetail: {
+            ["ชื่อ-นามสกุล"]: this.props.currentUser.username,
+            ["เบอร์โทรศัพท์"]: this.props.currentUser.telephone,
+            ["Email"]: this.props.currentUser.email
+        }
+    }
     });
     console.log("storeName", this.state.storeName);
     console.log("branch", this.state.branch);
@@ -256,17 +270,25 @@ class BookQueue extends Component {
   filterPassedTime = time => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
-
-    // console.log("time", time);
-    // console.log(this.state.iiii++);
-    // console.log("currentDate.getTime() < selectedDate.getTime() ",currentDate.getTime() < selectedDate.getTime());
     return currentDate.getTime() < selectedDate.getTime();
   }
-  // const listWithFilterByDate = []
-  // filterByDate = (date) => {
 
+  handleValue = (key) => {
+    let value;
+    switch (key) {
+        case "ชื่อ-นามสกุล":
+            return this.state.formElements.username;
+        case "Email":
+            return this.props.currentUser.email;
+        case "เบอร์โทรศัพท์":
+            return this.props.currentUser.telephone
 
-  // }
+        default:
+            return ""
+            break;
+    }
+}
+
 
   render() {
     const { message } = this.props;
@@ -348,10 +370,11 @@ class BookQueue extends Component {
                 className="col-xs-9 col-sm-9 col-md-9 form-control"
                 id={item}
                 name={item}
-                placeholder={item}
+                placeholder={this.handleValue(item) === "" ? item : this.handleValue(item)}
                 tabIndex={i += 1}
                 required={item === "รายละเอียด" ? false : true}
                 onChange={this.onFormChange}
+                readOnly={item == "เบอร์โทรศัพท์" || item == "Email" ? true : false}
                 style={{ marginBottom: "10px" }}
               />
             </div>
@@ -391,10 +414,7 @@ class BookQueue extends Component {
             </div>
           </div>
 
-
-
-
-          <div className="text-center" style={{ margin: "20px" }}>
+          <div className="text-center" style={{ margin: "20px", visibility:(this.props.editQueue === true ? "hidden": "visible") }}>
             <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
               จองเวลา
             </Button>

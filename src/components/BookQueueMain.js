@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 import GetQueueHeader from './GetQueueHeader';
 import BookQueue from './BookQueue';
 import GetInQueueWithLogin from './GetInQueueWithLogin';
-import BookQueueWithLogin from './BookQueueWithLogin';
+import BookQueueWithLogin from './BookQueueWithLoginV2';
 import businessService from '../services/business.service';
 
 class BookQueueMain extends Component {

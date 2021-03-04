@@ -65,6 +65,11 @@ class UserService {
     return axios.get(QUEUE_URL_API + 'listBookedTimeQueue?business_name=' + business_name)
   }
 
+  //แก้ไขเวลาที่จอง
+  editQueueDetail(formDate, username) {
+    return axios.put(QUEUE_URL_API + 'updateQueueDetail/' + username, formDate)
+  }
+
 }
 
 export default new UserService();

@@ -27,6 +27,7 @@ class GetInQueue extends Component {
         queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
+        branch: this.props.branch,
         username: '',
         email:'',
         queueDetail: {}

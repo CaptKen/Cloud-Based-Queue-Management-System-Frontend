@@ -32,6 +32,7 @@ class GetInQueueWithLogin extends Component {
         status: 'waiting',
         email:this.props.currentUser.email,
         business_name: this.props.storeName,
+        branch: this.props.branch,
         queueDetail: {}
       }
     };
