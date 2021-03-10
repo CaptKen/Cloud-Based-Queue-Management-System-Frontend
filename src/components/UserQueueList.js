@@ -33,7 +33,7 @@ class UserQueueList extends Component {
         currentUser: user.username,
       });
       console.log("this.state.currentUser", this.state.currentUser);
-      UserService.listQueue(user.username).then(
+      UserService.listQueueByEmail(user.username, user.email).then(
         response => {
           console.log("response.data.listQueue")
           console.log(response.data.listQueue)

@@ -15,6 +15,7 @@ import StorePage from "./components/StorePage"
 import Footer from './components/Footer';
 import './footer.css';
 import UserQueueList from './components/UserQueueList';
+import CheckQueuePage from './components/CheckQueuePage'
 import ManageQueuetable from './components/ManageQueueTable';
 import ManageStore from './components/ManageStore';
 
@@ -192,7 +193,8 @@ class App extends Component {
                 {/* <Route exact path="/login" component={Login} /> */}
                 {/* <Route exact path="/register" component={SignUpPage} /> */}
                 <Route exact path="/profile" component={Profile} />
-                <Route path="/check" component={UserQueueList} />
+                {/* <Route path="/check" component={UserQueueList} /> */}
+                <Route path="/check" component={CheckQueuePage} />
                 <Route path="/user" component={BoardUser} />
                 <Route path="/mod" component={BoardModerator} />
                 <Route path="/queue/:businessName/:branch" component={Admin} />

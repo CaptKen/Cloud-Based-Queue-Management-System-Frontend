@@ -44,6 +44,10 @@ class UserService {
     return axios.get(QUEUE_URL_API + 'checkQueueWithLoginUsername?username=' + username);
   }
 
+  listQueueByEmail(username, email) {
+    return axios.get(QUEUE_URL_API + 'checkQueueWithLoginEmail?username=' + username + "&email=" + email);
+  }
+
   allQueue(business_name, username) {
     return axios.get(QUEUE_URL_API + 'findWatingQueueByBusiness?business_name=' + business_name + "&username=" + username)
   }

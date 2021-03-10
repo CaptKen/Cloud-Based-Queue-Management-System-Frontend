@@ -152,67 +152,72 @@ class CreateBusiness extends Component {
   }
 
   handleRegister(e) {
-    let currentFile = this.state.selectedFiles[0];
-
-    this.setState({
-      progress: 0,
-      currentFile: currentFile,
-    });
+    e.preventDefault();
+    //บัคอยู่ตรงนี้ this.state.selectedFiles[0] ต้องอัพรูปก่อน
+    // let currentFile = this.state.selectedFiles[0];
 
     this.onChangePassword();
-    e.preventDefault();
+    
     this.setState({
       successful: false,
+      progress: 0,
+      // currentFile: currentFile,
     });
     this.form.validateAll();
     console.log(this.state.password);
     console.log(this.state.catagory === "");
-    if (this.state.catagory === "") {
-      alert("กรุณาเลือกประเภทสถานที่");
-    }
-    else if (this.checkBtn.context._errors.length === 0) {
-      this.props
-        .dispatch(
-          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
-        )
-        .then(() => {
-          this.setState({
-            successful: true,
-          });
-        })
-        .catch(() => {
-          this.setState({
-            successful: false,
-          });
-        });
-    }
-    businessService.upLoadIconImg(currentFile, (event) => {
-      this.setState({
-        progress: Math.round((100 * event.loaded) / event.total),
-      });
-    }, this.state.businessName)
-      .then((response) => {
-        this.setState({
-          message: response.data.message,
-          fileNameforShow: 'No file chosen'
-        });
-      })
-      .then((files) => {
-        this.setState({
-          fileInfos: files.data,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          progress: 0,
-          message: "Could not upload the file!",
-          currentFile: undefined,
-        });
-      });
+    console.log("this.checkBtn.context._errors.length: ", this.checkBtn.context._errors.length);
+    // if (this.state.catagory === "") {
+    //   alert("กรุณาเลือกประเภทสถานที่");
+    // }
+    
+    // else 
+    if (this.checkBtn.context._errors.length === 0) {
+      
+      // this.props
+      //   .dispatch(
+      //     registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
+      //   )
+      //   .then(() => {
+      //     this.setState({
+      //       successful: true,
+      //     });
+      //   })
+      //   .catch(() => {
+      //     this.setState({
+      //       successful: false,
+      //     });
+      //   });
 
-    this.setState({
-      selectedFiles: undefined,
-    });
+      //   businessService.upLoadIconImg(currentFile, (event) => {
+      //     this.setState({
+      //       progress: Math.round((100 * event.loaded) / event.total),
+      //     });
+      //   }, this.state.businessName)
+      //     .then((response) => {
+      //       this.setState({
+      //         message: response.data.message,
+      //         fileNameforShow: 'No file chosen'
+      //       });
+      //     })
+      //     .then((files) => {
+      //       this.setState({
+      //         fileInfos: files.data,
+      //       });
+      //     })
+      //     .catch(() => {
+      //       this.setState({
+      //         progress: 0,
+      //         message: "Could not upload the file!",
+      //         currentFile: undefined,
+      //       });
+      //     });
+    
+      //   this.setState({
+      //     selectedFiles: undefined,
+      //   });
+    }
+    
   }
 
   render() {
@@ -277,31 +282,6 @@ class CreateBusiness extends Component {
                     />
                   </div>
 
-                  {/* <div className="form-group">
-                  <label htmlFor="password">รหัสผ่าน*</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                    validations={[required, vpassword]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="checkPassword">ยืนยันรหัสผ่าน*</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="checkPassword"
-                    value={this.state.checkPassword}
-                    onChange={this.onChangeCheckPassword}
-                    validations={[required, this.vCheckPassword]}
-                    
-                  />
-                </div> */}
-
                   <div className="form-group">
                     <label htmlFor="businessName">ชื่อร้าน</label>
                     <Input
@@ -335,15 +315,11 @@ class CreateBusiness extends Component {
                       {listCatagoriesDropdown.map((item) => (
                         <option value={item.categories_name} >{item.categories_name}</option>
                       ))}
-                      {/* <option selected value="grapefruit">{"ร้านอาหาร"}</option>
-                      <option value="lime">Lime</option>
-                      <option value="coconut">Coconut</option>
-                      <option value="mango">Mango</option> */}
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} >สร้างร้าน</button>
+                    <button className="btn btn-primary btn-block" style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }}>สร้างร้าน</button>
                   </div>
                 </div>
               )}
@@ -362,9 +338,6 @@ class CreateBusiness extends Component {
                 }}
               />
             </Form>
-            {/* <h5 className="text-right">Already has account ? <Link to={"/login"}>
-                    Sign in
-                  </Link></h5> */}
           </div>
         </div>
       </Container>

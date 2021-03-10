@@ -53,7 +53,6 @@ class CheckQueuePage extends Component {
                         <UserQueueList username={currentUser} />
                     ) : (
                             <div>
-
                                 <UserQueueList />
                             </div>
                         )
