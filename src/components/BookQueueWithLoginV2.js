@@ -137,6 +137,7 @@ class BookQueue extends Component {
     let lst = this.filterByDate(e);
     console.log("lst ", lst);
     this.setState({
+      ...this.state,
       startDate: new Date(e),
       listWithFilterByDate: lst,
       selectBookTime:true,
@@ -144,7 +145,8 @@ class BookQueue extends Component {
         ...this.state.formElements,
         book_time: e,
         ...this.state.formElements.queueDetail,
-        queueDetail: updateForm
+        queueDetail: updateForm,
+        ["book_time"]: e
       }
     })
   }
@@ -158,6 +160,7 @@ class BookQueue extends Component {
     console.log(updateForm);
     if (name == "ชื่อ-นามสกุล") {
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           username: value,
@@ -170,6 +173,7 @@ class BookQueue extends Component {
     } else if (name == "book_time") {
       console.log('name == "book_time"');
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           book_time: value,
@@ -180,6 +184,7 @@ class BookQueue extends Component {
     } else if(name == "Email"){
       console.log('name == "Email"');
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           email: value,

@@ -317,7 +317,7 @@ class NavigationBar extends Component {
                 <NavDropdown title={currentUser.username} id="nav-dropdown" style={{ float: "right" }}>
                   <NavDropdown.Item href="/profile">ข้อมูลผู้ใช้งาน</NavDropdown.Item>
                   <NavDropdown.Item href="/check">เช็คคิว</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  {/* <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/" onClick={this.logOut}>ออกจากระบบ</NavDropdown.Item>
                 </NavDropdown>

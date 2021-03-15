@@ -123,14 +123,15 @@ class BookQueue extends Component {
     let lst = this.filterByDate(e);
     console.log("lst ", lst);
     this.setState({
-      startDate: new Date(e),
+      ...this.state,
+      startDate: e,
       listWithFilterByDate: lst,
       selectBookTime:true,
       formElements: {
         ...this.state.formElements,
-        book_time: e,
         ...this.state.formElements.queueDetail,
-        queueDetail: updateForm
+        queueDetail: updateForm,
+        ["book_time"]: e
       }
     })
   }
@@ -144,6 +145,7 @@ class BookQueue extends Component {
     console.log(updateForm);
     if (name == "ชื่อ-นามสกุล") {
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           username: value,
@@ -156,6 +158,7 @@ class BookQueue extends Component {
     } else if (name == "book_time") {
       console.log('name == "book_time"');
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           book_time: value,
@@ -166,6 +169,7 @@ class BookQueue extends Component {
     } else if(name == "Email"){
       console.log('name == "Email"');
       this.setState({
+        ...this.state,
         formElements: {
           ...this.state.formElements,
           email: value,
@@ -189,7 +193,8 @@ class BookQueue extends Component {
     e.preventDefault();
     this.setState({
       successful: false,
-    });
+    })
+    console.log("state.formElements", this.state.formElements);
     const formData = {};
 
     for (let name in this.state.formElements) {
@@ -197,7 +202,7 @@ class BookQueue extends Component {
     }
     console.log("formData", formData);
 
-    // const { history } = this.props;
+    const { history } = this.props;
     this.props.dispatch(addqueue(formData))
       .then(() => {
         console.log("in dispatch");

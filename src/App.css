@@ -148,3 +148,16 @@ label {
 #businessList:hover {
   background-color: #CCC7BB;
 }
+
+#storeName :hover{
+  animation: mymove 5s linear infinite;
+}
+
+@keyframes mymove {
+  0% {
+    transform: translateX(20%);
+  }
+  100% { 
+    transform: translateX(-33.33%);  
+  }
+}

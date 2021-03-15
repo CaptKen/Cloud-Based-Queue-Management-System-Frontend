@@ -154,14 +154,14 @@ class CreateBusiness extends Component {
   handleRegister(e) {
     e.preventDefault();
     //บัคอยู่ตรงนี้ this.state.selectedFiles[0] ต้องอัพรูปก่อน
-    // let currentFile = this.state.selectedFiles[0];
+    let currentFile = this.state.selectedFiles[0];
 
     this.onChangePassword();
     
     this.setState({
       successful: false,
       progress: 0,
-      // currentFile: currentFile,
+      currentFile: currentFile,
     });
     this.form.validateAll();
     console.log(this.state.password);
@@ -174,48 +174,48 @@ class CreateBusiness extends Component {
     // else 
     if (this.checkBtn.context._errors.length === 0) {
       
-      // this.props
-      //   .dispatch(
-      //     registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
-      //   )
-      //   .then(() => {
-      //     this.setState({
-      //       successful: true,
-      //     });
-      //   })
-      //   .catch(() => {
-      //     this.setState({
-      //       successful: false,
-      //     });
-      //   });
+      this.props
+        .dispatch(
+          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
+        )
+        .then(() => {
+          this.setState({
+            successful: true,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            successful: false,
+          });
+        });
 
-      //   businessService.upLoadIconImg(currentFile, (event) => {
-      //     this.setState({
-      //       progress: Math.round((100 * event.loaded) / event.total),
-      //     });
-      //   }, this.state.businessName)
-      //     .then((response) => {
-      //       this.setState({
-      //         message: response.data.message,
-      //         fileNameforShow: 'No file chosen'
-      //       });
-      //     })
-      //     .then((files) => {
-      //       this.setState({
-      //         fileInfos: files.data,
-      //       });
-      //     })
-      //     .catch(() => {
-      //       this.setState({
-      //         progress: 0,
-      //         message: "Could not upload the file!",
-      //         currentFile: undefined,
-      //       });
-      //     });
+        businessService.upLoadIconImg(currentFile, (event) => {
+          this.setState({
+            progress: Math.round((100 * event.loaded) / event.total),
+          });
+        }, this.state.businessName)
+          .then((response) => {
+            this.setState({
+              message: response.data.message,
+              fileNameforShow: 'No file chosen'
+            });
+          })
+          .then((files) => {
+            this.setState({
+              fileInfos: files.data,
+            });
+          })
+          .catch(() => {
+            this.setState({
+              progress: 0,
+              message: "Could not upload the file!",
+              currentFile: undefined,
+            });
+          });
     
-      //   this.setState({
-      //     selectedFiles: undefined,
-      //   });
+        this.setState({
+          selectedFiles: undefined,
+        });
     }
     
   }

@@ -218,22 +218,29 @@ class AutoPlayCarousel extends React.Component {
           </Modal.Header>
           <Modal.Body >
             <div className="container">
-              <div className="row justify-content-center" style={{height: "63vh", overflowY:'scroll'}}>
+              <div className="row justify-content-center" style={{ height: "63vh", overflowY: 'scroll' }}>
                 {listByCategory.map((item) => (
                   <div className="d-flex">
 
                     <div className="col-md-4" style={{ marginInline: "2%" }}>
-                      <Card style={{ width: '15rem', height:'15rem' }}>
-                        <Card.Body>
-                          <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
-                            <img
+                      <Card style={{ width: '17rem', height: '20rem' }}>
+
+                        <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
+                          {/* <img
                               className="img-responsive w-100 h-100"
                               // src={LOGO1}
                               src={fileInfos.[item.name]}
                               alt={item.name + "'s icon"}
-                            />
-                          </Link>
-                          {/* <Card.Title>{item.name}</Card.Title> */}
+                            /> */}
+                          <Card.Img className="img-responsive w-100 h-100" variant="top" src={fileInfos.[item.name]} alt={item.name + "'s icon"} />
+                        </Link>
+                        <Card.Body >
+                          <div style={{ overflow: "hidden" }} id="storeName">
+                            <Card.Title className="m-0" style={{ width: "15rem" }}><strong>{item.name}</strong></Card.Title>
+                          </div>
+                            <div style={{ overflow: "hidden" }} id="storeName">
+                              <Card.Text className="m-0" style={{ width: "15rem" }}>สาขา {item.branch}</Card.Text>
+                            </div>
                         </Card.Body>
                       </Card>
                       {/* <strong><h4>{item.name}</h4></strong> */}
