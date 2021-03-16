@@ -22,7 +22,7 @@ class CurrentQueue extends Component {
     this.setBook_time = this.setBook_time.bind(this)
     this.state = {
       show: false,
-      queueDetail: {},
+      queueDetail: [],
       business_name: '',
       waitngTime: '',
       allQueueWait: '',

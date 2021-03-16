@@ -74,6 +74,11 @@ class UserService {
     return axios.put(QUEUE_URL_API + 'updateQueueDetail/' + username, formDate)
   }
 
+  //iับ current คิว
+  acceptCurrentQueue(username, queueDetail) {
+    return axios.patch(QUEUE_URL_API + 'acceptCurrentQueue/' + username, queueDetail);
+  }
+
 }
 
 export default new UserService();
