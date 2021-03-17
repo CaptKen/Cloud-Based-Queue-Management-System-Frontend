@@ -287,7 +287,8 @@ class NavigationBar extends Component {
 
                   {showEmployeeBoard && (
                     <>
-                      <Nav.Link href={"/queue/" + currentUser.businessName + "/" + currentUser.branch}>จัดการคิว</Nav.Link>
+                      <Nav.Link href={"/queue/" + currentUser.businessName + "/" + currentUser.branch}>ผู้ใช้บริการคนปัจจุบัน</Nav.Link>
+                      <Nav.Link href={"/queueList/" + currentUser.businessName + "/" + currentUser.branch}>ตารางคิว</Nav.Link>
                     </>
                   )}</>
               ) : (

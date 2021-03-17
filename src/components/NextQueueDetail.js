@@ -4,8 +4,9 @@ import ManageQueueTable from './ManageQueueTable';
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 import { connect } from "react-redux";
+import ManageQueueTableV2 from './ManageQueueTableV2';
 
-class Admin extends Component {
+class NextQueueDetail extends Component {
     constructor(props) {
         super(props);
         this.handleAcceptCurrentQueue = this.handleAcceptCurrentQueue.bind(this)
@@ -52,6 +53,18 @@ class Admin extends Component {
         )
 
     }
+
+    // callAPI = () => {
+    //     const storeName = this.props.match.params.businessName;
+    //     const branch = this.props.match.params.branch;
+    //     userService.allQueueOfBusiness(storeName).then(
+    //         res => {
+    //             this.setState({
+    //                 apiResponse: res.data
+    //             })
+    //         }
+    //     )
+    // }
 
     componentDidMount() {
         this.callAPI();
@@ -252,4 +265,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Admin);
+export default connect(mapStateToProps)(NextQueueDetail);
