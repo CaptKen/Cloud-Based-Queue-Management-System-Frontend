@@ -11,6 +11,7 @@ class NextQueueDetail extends Component {
         super(props);
         this.handleAcceptCurrentQueue = this.handleAcceptCurrentQueue.bind(this)
         this.handleCancelQueue = this.handleCancelQueue.bind(this);
+        this.handleSkipQueue = this.handleSkipQueue.bind(this)
         this.state = {
             apiResponse: [],
             currentQueueDetailRes: {},
@@ -118,6 +119,29 @@ class NextQueueDetail extends Component {
             });
     }
 
+    handleSkipQueue(e) {
+        console.log(this.state.currentQueueDetailRes);
+        e.preventDefault();
+        this.setState({
+            successful: false,
+        });
+        userService.skipCurrentQueue(this.state.currentQueueDetailRes.username, this.state.currentQueueDetailRes)
+            .then(() => {
+                this.setState({
+                    show: false,
+                    accept: false
+                });
+                this.callAPI();
+                alert("ข้ามคิวสำเร็จ")
+            })
+            .catch(() => {
+                this.setState({
+                    show: false,
+                    accept: false
+                });
+            });
+    }
+
     handleAcceptCurrentQueue(e) {
         console.log("handleAcceptCurrentQueue---------------------------" + this.state.currentQueueDetailRes);
         e.preventDefault();
@@ -141,6 +165,7 @@ class NextQueueDetail extends Component {
             });
 
     }
+    
 
     render() {
         const { message } = this.props;
@@ -215,7 +240,7 @@ class NextQueueDetail extends Component {
                                 {Object.keys(queueDetail).length !== 0 && (
                                     <div>
                                         <button type="button" className="btn btn-success btn-lg" onClick={this.handleShowAccept} >รับคิว</button>
-                                        <button type="button" className="btn btn-danger btn-lg" onClick={this.handleShow} style={{ marginLeft: 10 }}>ยกเลิกคิว</button>
+                                        <button type="button" className="btn btn-warning btn-lg" onClick={this.handleShow} style={{ marginLeft: 10 }}>ข้ามคิว</button>
                                     </div>
                                 )}
 
@@ -227,9 +252,9 @@ class NextQueueDetail extends Component {
 
                 <Modal show={this.state.show} onHide={this.handleClose} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.state.accept ? "ยืนยันการรับคิว ?" : "ยืนยันการยกเลิกคิว"}</Modal.Title>
+                        <Modal.Title>{this.state.accept ? "ยืนยันการรับคิว ?" : "ยืนยันการข้ามคิว"}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body> {this.state.accept ? "ต้องการเรียกคิวที่ " + this.state.currentQueueDetailRes.queue_no + " ใช่หรือไม่ ?" : "ต้องการยกเลิกคิวที่ " + this.state.currentQueueDetailRes.queue_no + " ใช่หรือไม่ ?"}</Modal.Body>
+                    <Modal.Body> {this.state.accept ? "ต้องการเรียกคิวหมายเลข " + this.state.currentQueueDetailRes.queue_no + " ใช่หรือไม่ ?" : "ต้องการข้ามคิวหมายเลข " + this.state.currentQueueDetailRes.queue_no + " ใช่หรือไม่ ?"}</Modal.Body>
                     {message && (
                         <div className="form-group">
                             <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
@@ -242,13 +267,13 @@ class NextQueueDetail extends Component {
                         {this.state.accept ? (
                             <Button variant="success" onClick={this.handleAcceptCurrentQueue}>เรียกคิว</Button>
                         ) : (
-                            <Button variant="danger" onClick={this.handleCancelQueue}>ยกเลิกคิว</Button>
+                            <Button variant="warning" onClick={this.handleSkipQueue}>ข้ามคิว</Button>
                         )}
 
                     </Modal.Footer>
                 </Modal>
 
-                <ManageQueueTable storeName={storeName} data={this.state.apiResponse} />
+                {/* <ManageQueueTable storeName={storeName} data={this.state.apiResponse} /> */}
             </div >
         );
     }

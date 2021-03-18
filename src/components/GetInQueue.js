@@ -198,7 +198,6 @@ class GetInQueue extends Component {
 
             ))}
 
-            {!isRestaurant && (
               <div className="form-inline" name="services">
                 <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
                 <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
@@ -209,7 +208,6 @@ class GetInQueue extends Component {
                   ))}
                 </select>
               </div>
-            )}
 
 
             <div className="text-center" style={{ margin: "20px" }}>

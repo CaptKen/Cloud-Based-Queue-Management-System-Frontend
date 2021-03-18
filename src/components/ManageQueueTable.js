@@ -14,6 +14,7 @@ const Styles = styled.div`
   table {
     border-spacing: 0;
     border: 1px solid black;
+    
 
     tr {
       :last-child {
@@ -23,6 +24,11 @@ const Styles = styled.div`
       }
     }
 
+    // th {
+      //   background-color: #F2C035;
+      //   border-color : black;
+      // }
+      
     th,
     td {
       margin: 0;
@@ -74,7 +80,7 @@ function SelectColumnFilter({
       onChange={e => {
         setFilter(e.target.value || undefined)
       }}
-      style={{border: "1px solid black", color: 'black'}}
+      style={{ border: "1px solid black", color: 'black' }}
     >
       <option value="">All</option>
       {options.map((option, i) => (
@@ -238,18 +244,18 @@ function Table({ columns, data }) {
             <tr {...headerGroup.getHeaderGroupProps()} >
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps()}>
-                  {column.render('Header') === "สถานะ" ||column.render('Header') === "ประเภทคิว" ? (
+                  {column.render('Header') === "สถานะ" || column.render('Header') === "ประเภทคิว" ? (
                     <>
-                    <div>{column.canFilter ? column.render('Filter') : null}</div>
-                    {column.render('Header')}
-                    
+                      <div>{column.canFilter ? column.render('Filter') : null}</div>
+                      {column.render('Header')}
+
                     </>
-                  ):(
+                  ) : (
                     <>
-                    {column.render('Header')}
+                      {column.render('Header')}
                     </>
                   )}
-                  
+
                 </th>
               ))}
             </tr>
@@ -260,7 +266,7 @@ function Table({ columns, data }) {
             prepareRow(row)
             // console.log(row);
             return (
-              <tr {...row.getRowProps()} 
+              <tr {...row.getRowProps()}
               // className={row.cells[2].value === "cancel" && "table-danger"}
               >
                 {/* className="table-danger" */}
@@ -270,7 +276,7 @@ function Table({ columns, data }) {
                   return <td {...cell.getCellProps()}>{cell.column.Header == "จัดการ" ?
                     <div>
                       <Button variant="success" onClick={() => handleAcceptQueue(cell)}>รับคิว</Button>{'           '}
-                      <Button variant="outline-danger" onClick={()=>handleCancelQueue(cell)}>ยกเลิกคิว</Button>
+                      <Button variant="outline-danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
                     </div> : cell.render('Cell')}
                   </td>
                   //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>

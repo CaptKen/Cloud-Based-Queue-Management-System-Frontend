@@ -385,7 +385,6 @@ class BookQueue extends Component {
             </div>
           ))}
 
-          {!isRestaurant && (
             <div className="form-inline" name="services">
               <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
@@ -396,7 +395,7 @@ class BookQueue extends Component {
                 ))}
               </select>
             </div>
-          )}
+            
           <div className="form-inline">
             <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>
             <div className="customDatePickerWidth">

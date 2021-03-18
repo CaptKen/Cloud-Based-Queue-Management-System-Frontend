@@ -8,7 +8,7 @@ import businessService from '../services/business.service';
 import { connect } from "react-redux";
 import { addqueue } from "../actions/userQueue"
 
-import { clearMessage , setMessage} from "../actions/message";
+import { clearMessage, setMessage } from "../actions/message";
 
 class GetInQueueWithLogin extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class GetInQueueWithLogin extends Component {
         queue_no: '',
         queue_type: 'NOR',
         status: 'waiting',
-        email:this.props.currentUser.email,
+        email: this.props.currentUser.email,
         business_name: this.props.storeName,
         branch: this.props.branch,
         queueDetail: {}
@@ -49,10 +49,10 @@ class GetInQueueWithLogin extends Component {
         business_name: this.props.storeName,
         queue_type: 'NOR',
         status: 'waiting',
-        queueDetail:{
-          ["ชื่อ-นามสกุล"]:this.props.currentUser.username,
-          ["เบอร์โทรศัพท์"] :this.props.currentUser.telephone,
-          ["Email"]:this.props.currentUser.email
+        queueDetail: {
+          ["ชื่อ-นามสกุล"]: this.props.currentUser.username,
+          ["เบอร์โทรศัพท์"]: this.props.currentUser.telephone,
+          ["Email"]: this.props.currentUser.email
         }
       }
     });
@@ -82,7 +82,7 @@ class GetInQueueWithLogin extends Component {
 
   onChangeSerivce(e) {
     console.log(e.target.value);
-    console.log("e.target ",e.target);
+    console.log("e.target ", e.target);
     const value = e.target.value;
 
     let updateForm = { ...this.state.formElements.queueDetail };
@@ -104,17 +104,17 @@ class GetInQueueWithLogin extends Component {
     console.log("name, value : ", name, value);
     let updateForm = { ...this.state.formElements.queueDetail };
     updateForm[name] = value;
-    if (name=="ชื่อ-นามสกุล") {
+    if (name == "ชื่อ-นามสกุล") {
       this.setState({
         ...this.state,
-        formElements:{
+        formElements: {
           ...this.state.formElements,
           username: value,
-          queueDetail : updateForm
+          queueDetail: updateForm
         }
       })
-      
-    }else if(name == "Email"){
+
+    } else if (name == "Email") {
       console.log('name == "Email"');
       this.setState({
         formElements: {
@@ -195,7 +195,7 @@ class GetInQueueWithLogin extends Component {
         return this.props.currentUser.email;
       case "เบอร์โทรศัพท์":
         return this.props.currentUser.telephone
-    
+
       default:
         break;
     }
@@ -203,9 +203,9 @@ class GetInQueueWithLogin extends Component {
 
   render() {
     const { message } = this.props;
-    const { currentUser , apiResponse, isRestaurant , serviceList} = this.state;
+    const { currentUser, apiResponse, isRestaurant, serviceList } = this.state;
 
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '')&& (this.state.formElements.queue_no !== ''));
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
     console.log("disableButton", disableButton);
 
     console.log("currentUser", this.props.currentUser);
@@ -213,7 +213,7 @@ class GetInQueueWithLogin extends Component {
     if (this.state.redirectFlag) {
       return (<Redirect
         to={{
-          pathname: "/currentQueue/"+ this.state.formElements.business_name + "/" +this.state.formElements.username,
+          pathname: "/currentQueue/" + this.state.formElements.business_name + "/" + this.state.formElements.username,
           state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
         }}
       />)
@@ -221,11 +221,11 @@ class GetInQueueWithLogin extends Component {
     return (
       <div className="container">
         <div className="row d-block">
-        <form id="contact-form" className="form" ref={(c) => {
-          this.form = c;
-        }} style={{ margin: "20px" }}>
+          <form id="contact-form" className="form" ref={(c) => {
+            this.form = c;
+          }} style={{ margin: "20px" }}>
 
-          {/* <div className="form-inline">
+            {/* <div className="form-inline">
             <label className="col-3 form-label" style={{ justifyContent: "left" }}>ชื่อผู้จอง
             </label>
             <input
@@ -241,25 +241,24 @@ class GetInQueueWithLogin extends Component {
               style={{ marginBottom: "10px" }}
             />
           </div> */}
-          {apiResponse.map((item, i) => (
-            <div className="form-inline">
-            <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
-            <input
-              type="text"
-              className="form-control col-xs-9 col-sm-9 col-md-9"
-              id={item}
-              name={item}
-              placeholder={this.handleValue(item)}
-              tabIndex={i += 1}
-              required={item === "รายละเอียด" ? false : true}
-              onChange={this.onFormChange}
-              readOnly={item == "เบอร์โทรศัพท์" || item == "Email"? true : false}
-              style={{ marginBottom: "10px" }}
-            />
-          </div>
-          ))}
-          
-          {!isRestaurant && (
+            {apiResponse.map((item, i) => (
+              <div className="form-inline">
+                <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}</label>
+                <input
+                  type="text"
+                  className="form-control col-xs-9 col-sm-9 col-md-9"
+                  id={item}
+                  name={item}
+                  placeholder={this.handleValue(item)}
+                  tabIndex={i += 1}
+                  required={item === "รายละเอียด" ? false : true}
+                  onChange={this.onFormChange}
+                  readOnly={item == "เบอร์โทรศัพท์" || item == "Email" ? true : false}
+                  style={{ marginBottom: "10px" }}
+                />
+              </div>
+            ))}
+
             <div className="form-inline" name="services">
               <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
@@ -270,41 +269,40 @@ class GetInQueueWithLogin extends Component {
                 ))}
               </select>
             </div>
-          )}
 
-          <div className="text-center" style={{ margin: "20px" }}>
-            <Button variant="primary" style={{marginRight : "2%"}} onClick={this.handleShow}>
-              ต่อคิว/เข้าคิว
+            <div className="text-center" style={{ margin: "20px" }}>
+              <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
+                ต่อคิว/เข้าคิว
             </Button>
 
-            <Button variant="danger" onClick={() => window.history.back()}>
-              ย้อนกลับ
+              <Button variant="danger" onClick={() => window.history.back()}>
+                ย้อนกลับ
             </Button>
-          </div>
+            </div>
 
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
-            </Modal.Header>
-            <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
-            {message && (
-              <div className="form-group">
-                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                  {message}
+            <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
+              </Modal.Header>
+              <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
+              {message && (
+                <div className="form-group">
+                  <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                    {message}
+                  </div>
                 </div>
-              </div>
-            )}
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                ยกเลิก
+              )}
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  ยกเลิก
               </Button>
-              <Button variant="primary" onClick={this.handleAddqueue} >
-                ยืนยัน
+                <Button variant="primary" onClick={this.handleAddqueue} >
+                  ยืนยัน
               </Button>
 
-            </Modal.Footer>
-          </Modal>
-        </form>
+              </Modal.Footer>
+            </Modal>
+          </form>
         </div>
 
       </div>
