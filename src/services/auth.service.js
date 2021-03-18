@@ -58,14 +58,16 @@ class AuthService {
     });
   }
 
-  registerManager(username, email, password, businessName, branch, category) {
+  registerManager(username, email, password, businessName, branch, category, lat, lng) {
     return axios.post(API_URL + "signupManager", {
       username,
       email,
       password,
       businessName,
       branch,
-      category
+      category,
+      lat,
+      lng
     }, { headers: authHeader() });
   }
 
@@ -73,7 +75,7 @@ class AuthService {
     return axios.patch(API_URL + 'updateProfile/' + username, userProfile)
   }
 
-  getProfile(username){
+  getProfile(username) {
     return axios.get(API_URL + 'profile/' + username)
   }
 
@@ -91,11 +93,11 @@ class AuthService {
             localStorage.setItem("user", JSON.stringify(response.data));
           }
         }
-  
+
         return response.data;
       });
   }
-  
+
   registerEmployee(username, email, password, telephone, businessName, branch) {
     return axios.post(API_URL + "signupEmployee", {
       username,
@@ -109,9 +111,9 @@ class AuthService {
 
 
   listEmployee(businessName, branch) {
-    console.log("testURL________________________________"+ API_URL + 'findEmployeeByBusiness/' + '?businessName=' + 'burinLKB' + "&branch=" + 'LKB');
+    console.log("testURL________________________________" + API_URL + 'findEmployeeByBusiness/' + '?businessName=' + 'burinLKB' + "&branch=" + 'LKB');
     return axios.get(API_URL + 'findEmployeeByBusiness/' + '?businessName=' + businessName + "&branch=" + branch)
-    
+
   }
 
   deleteUser(id) {
@@ -119,7 +121,7 @@ class AuthService {
   }
 
 
-  
+
 }
 
 

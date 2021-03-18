@@ -40,6 +40,8 @@ class CreateBusiness extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangebranch = this.onChangebranch.bind(this);
+    this.onChangelat = this.onChangelat.bind(this);
+    this.onChangelng = this.onChangelng.bind(this);
     this.onChangebusinessName = this.onChangebusinessName.bind(this);
     this.onChangeCatagory = this.onChangeCatagory.bind(this);
 
@@ -52,6 +54,8 @@ class CreateBusiness extends Component {
       password: "",
       businessName: "",
       branch: "",
+      lat: "",
+      lng: "",
       successful: false,
       listCatagoriesDropdown: [''],
       catagory: '',
@@ -81,7 +85,7 @@ class CreateBusiness extends Component {
   //     currentFile: currentFile,
   //   });
 
-    
+
   // }
 
   handleUploadInput = () => {
@@ -132,6 +136,19 @@ class CreateBusiness extends Component {
       branch: e.target.value,
     });
   }
+
+  onChangelat(e) {
+    this.setState({
+      lat: e.target.value,
+    });
+  }
+
+  onChangelng(e) {
+    this.setState({
+      lng: e.target.value,
+    });
+  }
+
   onChangeCatagory(e) {
     this.setState({
       catagory: e.target.value,
@@ -157,7 +174,7 @@ class CreateBusiness extends Component {
     let currentFile = this.state.selectedFiles[0];
 
     this.onChangePassword();
-    
+
     this.setState({
       successful: false,
       progress: 0,
@@ -170,13 +187,13 @@ class CreateBusiness extends Component {
     // if (this.state.catagory === "") {
     //   alert("กรุณาเลือกประเภทสถานที่");
     // }
-    
+
     // else 
     if (this.checkBtn.context._errors.length === 0) {
-      
+
       this.props
         .dispatch(
-          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory)
+          registerManager(this.state.username, this.state.email, this.state.password, this.state.businessName, this.state.branch, this.state.catagory, this.state.lat, this.state.lng)
         )
         .then(() => {
           this.setState({
@@ -189,35 +206,35 @@ class CreateBusiness extends Component {
           });
         });
 
-        businessService.upLoadIconImg(currentFile, (event) => {
-          this.setState({
-            progress: Math.round((100 * event.loaded) / event.total),
-          });
-        }, this.state.businessName)
-          .then((response) => {
-            this.setState({
-              message: response.data.message,
-              fileNameforShow: 'No file chosen'
-            });
-          })
-          .then((files) => {
-            this.setState({
-              fileInfos: files.data,
-            });
-          })
-          .catch(() => {
-            this.setState({
-              progress: 0,
-              message: "Could not upload the file!",
-              currentFile: undefined,
-            });
-          });
-    
+      businessService.upLoadIconImg(currentFile, (event) => {
         this.setState({
-          selectedFiles: undefined,
+          progress: Math.round((100 * event.loaded) / event.total),
         });
+      }, this.state.businessName)
+        .then((response) => {
+          this.setState({
+            message: response.data.message,
+            fileNameforShow: 'No file chosen'
+          });
+        })
+        .then((files) => {
+          this.setState({
+            fileInfos: files.data,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            progress: 0,
+            message: "Could not upload the file!",
+            currentFile: undefined,
+          });
+        });
+
+      this.setState({
+        selectedFiles: undefined,
+      });
     }
-    
+
   }
 
   render() {
@@ -245,7 +262,7 @@ class CreateBusiness extends Component {
               {!this.state.successful && (
                 <div>
                   <div className="form-group">
-                  
+
                     <label htmlFor="actual-btn" className="btn btn-outline-primary" >เพิ่มรูปร้าน</label>
                     <input type="file" id="actual-btn" onChange={this.selectFile} hidden />
                     <span id="file-chosen" style={{ marginRight: "15%", marginLeft: "0.5rem" }} >{this.state.fileNameforShow}</span>
@@ -303,6 +320,33 @@ class CreateBusiness extends Component {
                       name="branch"
                       value={this.state.branch}
                       onChange={this.onChangebranch}
+                      validations={[required]}
+                      maxLength={100}
+                    />
+                  </div>
+
+
+                  <div className="form-group">
+                    <label htmlFor="lat">lat</label>
+                    <Input
+                      type="number"
+                      className="form-control"
+                      name="lat"
+                      value={this.state.lat}
+                      onChange={this.onChangelat}
+                      validations={[required]}
+                      maxLength={100}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="lng">lng</label>
+                    <Input
+                      type="number"
+                      className="form-control"
+                      name="lng"
+                      value={this.state.lng}
+                      onChange={this.onChangelng}
                       validations={[required]}
                       maxLength={100}
                     />
