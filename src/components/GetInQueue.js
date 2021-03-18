@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import { Modal, Button, Container, Row, Col } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from 'axios';
-import UserService from "../services/user.service";
-import { Redirect, Link, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage, setMessage } from "../actions/message";
 import businessService from '../services/business.service';
-import GetQueueHeader from './GetQueueHeader';
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +20,15 @@ class GetInQueue extends Component {
       apiResponse: [],
       serviceList: [],
       isRestaurant: false,
+      isLoading: false,
       formElements: {
+        queue_no: '',
         queue_type: 'NOR',
         status: 'waiting',
         business_name: this.props.storeName,
         branch: this.props.branch,
         username: '',
-        email:'',
+        email: '',
         queueDetail: {}
       }
     };
@@ -69,7 +68,7 @@ class GetInQueue extends Component {
         }
       })
 
-    } else if(name == "Email"){
+    } else if (name == "Email") {
       console.log('name == "Email"');
       this.setState({
         formElements: {
@@ -112,6 +111,7 @@ class GetInQueue extends Component {
     e.preventDefault();
     this.setState({
       successful: false,
+      isLoading: true
     });
     const formData = {};
     for (let name in this.state.formElements) {
@@ -127,12 +127,14 @@ class GetInQueue extends Component {
         console.log("in dispatch");
         this.setState({
           successful: true,
+          isLoading: false,
           redirectFlag: true
         });
       })
       .catch(() => {
         this.setState({
           successful: false,
+          isLoading: false
         });
       });
   }
@@ -144,10 +146,10 @@ class GetInQueue extends Component {
   };
 
   handleShow = () => {
-    console.log("show");
+    console.log("show: ", this.state.formElements);
     this.props.dispatch(clearMessage()); // clear message when changing location
-    if (this.state.formElements.username === '') {
-      this.props.dispatch(setMessage("กรุณากรอกข้อมูลให้ครบ"));
+    if (this.state.formElements.username === '' || this.state.formElements.email === '' || this.state.formElements.queue_no === '' || this.state.formElements.queue_no === "กรุณาเลือกประเภทบริการ") {
+      this.props.dispatch(setMessage("กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบ"));
     }
     this.setState({
       show: true,
@@ -155,9 +157,9 @@ class GetInQueue extends Component {
   };
   render() {
     const { message } = this.props;
-    const { apiResponse, serviceList, isRestaurant } = this.state;
+    const { apiResponse, serviceList, isRestaurant, isLoading } = this.state;
 
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== ''));
+    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== '') && (this.state.formElements.queue_no !== "กรุณาเลือกประเภทบริการ") && (!isLoading));
     console.log("disableButton", disableButton);
 
     console.log("serviceList", serviceList);
@@ -166,7 +168,7 @@ class GetInQueue extends Component {
       return (<Redirect
         to={{
           pathname: "/currentQueue/" + this.state.formElements.business_name + "/" + this.state.formElements.username,
-          state: { username: this.state.formElements.username, business_name: this.state.formElements.business_name }
+          state: { username: this.state.formElements.username, email: this.state.formElements.email, business_name: this.state.formElements.business_name }
         }}
       />)
     }
@@ -178,14 +180,24 @@ class GetInQueue extends Component {
             ref={(c) => {
               this.form = c;
             }}>
+            <div className="form-inline" name="services">
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
+              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                {serviceList.map((item) => (
+                  console.log("item ", item),
+                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                ))}
+              </select>
+            </div>
 
             {apiResponse.map((item, i) => (
               <div className="form-inline">
-                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}
+                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}<p style={{ color: "red" }}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p>
                 </label>
                 <input
                   type="text"
-                  className=" col-xs-9 col-sm-9 col-md-9 form-control"
+                  className="col-xs-9 col-sm-9 col-md-9 form-control"
                   id={item}
                   name={item}
                   placeholder={item}
@@ -197,17 +209,6 @@ class GetInQueue extends Component {
               </div>
 
             ))}
-
-              <div className="form-inline" name="services">
-                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
-                <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                  <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                  {serviceList.map((item) => (
-                    console.log("item ", item),
-                    <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                  ))}
-                </select>
-              </div>
 
 
             <div className="text-center" style={{ margin: "20px" }}>
@@ -224,7 +225,13 @@ class GetInQueue extends Component {
               <Modal.Header closeButton>
                 <Modal.Title>ยืนยันการต่อคิว</Modal.Title>
               </Modal.Header>
-              <Modal.Body> ต้องการเข้าคิว/ต่อคิวหรือไม่</Modal.Body>
+              <Modal.Body style={{ alignSelf: "center" }}>
+                {isLoading ? (
+                  <Spinner className="m-3" animation="border" style={{ alignSelf: "center" }} variant="primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : "ต้องการเข้าคิว/ต่อคิวหรือไม่"}
+                </Modal.Body>
               {message && (
                 <div className="form-group">
                   <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">

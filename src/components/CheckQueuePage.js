@@ -15,7 +15,7 @@ class CheckQueuePage extends Component {
 
     componentDidMount() {
         const user = this.props.user;
-
+        console.log("user", user);
         if (user) {
             this.setState({
                 currentUser: user.username,

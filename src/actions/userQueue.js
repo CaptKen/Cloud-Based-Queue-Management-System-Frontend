@@ -45,8 +45,8 @@ export const addqueue = (formData) => (dispatch) => {
     );
   };
 
-  export const queueDetail = (username, businessName) => (dispatch) => {
-    return UserService.getQueueDetail(username, businessName).then(
+  export const queueDetail = (username, businessName, email) => (dispatch) => {
+    return UserService.getQueueDetail(username, businessName, email).then(
       (response) => {
         dispatch({
           type: LIST_USER_QUEUE,

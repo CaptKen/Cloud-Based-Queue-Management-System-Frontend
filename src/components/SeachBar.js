@@ -107,7 +107,10 @@ class SeachBar extends Component {
                 })).map((item) => (
                   <>
                     <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%", textDecoration: "none", color: "inherit" }} onClick={this.handleClose}>
-                      <p className="h4" id="businessList">{item.name}</p>
+                      <>
+                      <p className="h4" id="businessList">{item.name}<p style={{fontSize: "15px"}}> สาขา: {item.branch}</p></p>
+                      
+                      </>
                     </Link>
 
                   </>

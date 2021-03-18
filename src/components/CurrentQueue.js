@@ -56,11 +56,12 @@ class CurrentQueue extends Component {
       history.push("/home");
     } else {
       const username = this.props.location.state.username;
+      const email = this.props.location.state.email;
       const business_name = this.props.location.state.business_name;
 
-      UserService.getQueueDetail(storeName, username).then(
+      UserService.getQueueDetail(storeName, username, email).then(
         response => {
-
+          console.log("response.data.QueueDetail.userQueueDetail", response.data.QueueDetail.userQueueDetail);
           console.log("response.data.QueueDetail", response.data.QueueDetail.userQueueDetail[0].book_time);
           const timer = this.diffTimeCal(new Date(response.data.QueueDetail.userQueueDetail[0].book_time));
           this.setState({

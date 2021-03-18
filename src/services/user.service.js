@@ -31,8 +31,8 @@ class UserService {
   // }
 
   //ลูกค้าดูรายละเอียดคิวของตัวเอง หน้า currentQueue
-  getQueueDetail(businessName, username) {
-    return axios.get(QUEUE_URL_API + 'queueStatusDetail?business_name=' + businessName + "&username=" + username)
+  getQueueDetail(businessName, username, email) {
+    return axios.get(QUEUE_URL_API + 'queueStatusDetail?business_name=' + businessName + "&username=" + username + "&email=" + email)
   }
 
   //cancel คิว
@@ -40,16 +40,16 @@ class UserService {
     return axios.patch(QUEUE_URL_API + 'cancelQueue/' + username, queueDetail);
   }
 
-  listQueue(username) {
-    return axios.get(QUEUE_URL_API + 'checkQueueWithLoginUsername?username=' + username);
+  listQueue(username, email) {
+    return axios.get(QUEUE_URL_API + 'checkQueueWithLoginUsername?username=' + username + "&email=" + email);
   }
 
   listQueueByEmail(username, email) {
     return axios.get(QUEUE_URL_API + 'checkQueueWithLoginEmail?username=' + username + "&email=" + email);
   }
 
-  allQueue(business_name, username) {
-    return axios.get(QUEUE_URL_API + 'findWatingQueueByBusiness?business_name=' + business_name + "&username=" + username)
+  allQueue(business_name, username, email) {
+    return axios.get(QUEUE_URL_API + 'findWatingQueueByBusiness?business_name=' + business_name + "&username=" + username + "&email=" + email)
   }
 
   allQueueOfBusiness(business_name) {

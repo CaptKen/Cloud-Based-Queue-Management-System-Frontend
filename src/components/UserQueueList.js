@@ -3,7 +3,7 @@ import { Col, Row, Container } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { clearMessage, setMessage } from "../actions/message";
 import UserService from "../services/user.service";
 import businessService from '../services/business.service';
 
@@ -19,9 +19,10 @@ class UserQueueList extends Component {
       listQueue: [],
       redirect: false,
       username: '',
+      email: "",
       businessName: '',
       fileInfos: {},
-      timer :''
+      timer: ''
     };
   }
 
@@ -39,7 +40,7 @@ class UserQueueList extends Component {
           console.log(response.data.listQueue)
           response.data.listQueue.map((item) => (
             console.log("item.business_name ", item),
-            
+
             businessService.getIconImg(item.business_name)
               .then((res) => {
                 this.setState({
@@ -73,13 +74,56 @@ class UserQueueList extends Component {
 
   handelSearch() {
     console.log(this.state.username);
-    UserService.listQueue(this.state.username).then(
+    this.props.dispatch(clearMessage()); // clear message when changing location
+    
+    if ((this.state.username === '' || this.state.email === '')) {
+      this.props.dispatch(setMessage("กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบ"));
+    }else if ((this.state.listQueue.length === 0)) {
+      this.props.dispatch(setMessage("ไม่พบข้อมูลคิว !"));
+    } 
+    // UserService.listQueue(this.state.username).then(
+    //   response => {
+    //     console.log("response.data.listQueue");
+    //     console.log(response.data.listQueue);
+    //     response.data.listQueue.map((item) => (
+    //       console.log("item.business_name ", item),
+
+    //       businessService.getIconImg(item.business_name)
+    //         .then((res) => {
+    //           this.setState({
+    //             ...this.state,
+    //             listQueue: response.data.listQueue,
+    //             fileInfos: {
+    //               ...this.state.fileInfos,
+    //               [item.business_name]: res.data[0].url
+    //             },
+    //           })
+
+    //         })
+    //         .catch((err) => {
+    //           console.error(err);
+    //         })
+    //     ))
+
+    //   },
+    //   error => {
+    //     this.setState({
+    //       listQueue:
+    //         (error.response &&
+    //           error.response.data &&
+    //           error.response.data.message) ||
+    //         error.message ||
+    //         error.toString()
+    //     });
+    //   }
+    // )
+    UserService.listQueueByEmail(this.state.username, this.state.email).then(
       response => {
-        console.log("response.data.listQueue");
-        console.log(response.data.listQueue);
+        console.log("response.data.listQueue")
+        console.log(response.data.listQueue)
         response.data.listQueue.map((item) => (
           console.log("item.business_name ", item),
-          
+
           businessService.getIconImg(item.business_name)
             .then((res) => {
               this.setState({
@@ -96,7 +140,6 @@ class UserQueueList extends Component {
               console.error(err);
             })
         ))
-
       },
       error => {
         this.setState({
@@ -113,8 +156,18 @@ class UserQueueList extends Component {
 
   onChangeUsername = (e) => {
     console.log(e.target.value);
+    this.props.dispatch(clearMessage());
     this.setState({
       username: e.target.value,
+    });
+
+  }
+
+  onChangeEmail = (e) => {
+    console.log(e.target.value);
+    this.props.dispatch(clearMessage());
+    this.setState({
+      email: e.target.value,
     });
 
   }
@@ -137,15 +190,15 @@ class UserQueueList extends Component {
     //   day: 'numeric',
     // });
     const time = new Date(book_time).toLocaleTimeString('th-TH');
-    return <p>{date[1]+"/"+date[0]+"/"+date[2]} <br/>{time} น.</p>
+    return <p>{date[1] + "/" + date[0] + "/" + date[2]} <br />{time} น.</p>
   }
 
   diffTimeCal = (a) => {
     console.log(a);
     const diffTime = Math.abs(new Date(a) - new Date());
-    const days = Math.floor(diffTime/(1000 * 60 * 60 * 24))%30;
-    const mins = Math.floor(diffTime/(1000 * 60))%60;
-    const hours = Math.floor(diffTime/(1000 * 60 * 60))%24;
+    const days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 30;
+    const mins = Math.floor(diffTime / (1000 * 60)) % 60;
+    const hours = Math.floor(diffTime / (1000 * 60 * 60)) % 24;
     const str = (days + " ว. " + hours + " ชม. " + mins + " น.");
 
     // this.setState({
@@ -158,6 +211,7 @@ class UserQueueList extends Component {
 
 
   render() {
+    const { message } = this.props;
     const { listQueue, fileInfos, timer } = this.state;
     console.log(timer);
     if (this.state.redirect) {
@@ -197,9 +251,9 @@ class UserQueueList extends Component {
                     <Col sm md style={{ marginLeft: "5%" }}>
                       <img
                         // className="img-responsive w-100"
-                        style={{ display: "initial" ,height:"150px", width:"auto"}}
+                        style={{ display: "initial", height: "150px", width: "auto" }}
                         src={fileInfos.[item.business_name]}
-                        alt={item.business_name+"'s Icon"}
+                        alt={item.business_name + "'s Icon"}
                       />
                     </Col>
 
@@ -220,17 +274,17 @@ class UserQueueList extends Component {
                         </Col>
                       </>
                     ) : (
-                        <>
-                          <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
-                            <h2>วันและเวลาที่จอง</h2>
-                            <p>{this.convertDate(item.book_time)}</p>
-                          </Col>
-                          <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
+                      <>
+                        <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
+                          <h2>วันและเวลาที่จอง</h2>
+                          <p>{this.convertDate(item.book_time)}</p>
+                        </Col>
+                        <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
                           <h2>เหลือเวลา</h2>
                           <p>{this.diffTimeCal(item.book_time)}</p>
                         </Col>
-                        </>
-                      )}
+                      </>
+                    )}
 
 
                     <Col sm md style={{ padding: "15px" }}>
@@ -242,16 +296,36 @@ class UserQueueList extends Component {
             </Container>
           </div>
         ) : (
-            <form>
-              <div className="form-group text-center">
-                <label className="h1" for="username">เช็คคิวของท่าน</label>
-                <div className="col-8" style={{ display: "inline-flex" }}>
-                  <input type="text" className="form-control form-control-lg" id="username" placeholder="กรุณากรอกชื่อที่ทำการจอง" onChange={this.onChangeUsername} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} />
-                  <button type="button" className="btn btn-primary mb-2 btn-lg" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }} onClick={this.handelSearch}>เช็ค</button>
+          <Container className="mt-4" style={{ background: "#f9f9f9", borderRadius: "15px", boxShadow: "1px 1px #E8E8E8", padding: "5%"}}>
+            <h1 className="h1 text-center mb-4">เช็คคิวของท่าน</h1>
+            <div className="row d-block">
+              <form className="form">
+                <div className="form-inline mb-3">
+                  <label className="h3 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="username">ชื่อผู้จอง<p style={{color: "red"}}>*</p></label>
+                  <input type="text" className="col-xs-9 col-sm-9 col-md-9 form-control form-control-lg" id="username" placeholder="กรุณากรอกชื่อที่ทำการจอง" onChange={this.onChangeUsername} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} />
                 </div>
-              </div>
-            </form>
-          )}
+                <div className="form-inline mb-3">
+                  <label className="h3 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="email">อีเมลล์ที่จองไว้<p style={{color: "red"}}>*</p></label>
+                  <input type="text" name="email" className="col-xs-9 col-sm-9 col-md-9 form-control form-control-lg" id="username" placeholder="กรุณากรอกอีเมลล์ที่ทำการจอง" onChange={this.onChangeEmail} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} />
+                </div>
+                <div >
+                  {message && (
+                    <div className="form-group">
+                      <div className="alert alert-danger col-xs-9 col-sm-9 col-md-9 form-label form-label-lg" style={{ margin: "auto" }} role="alert">
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="text-center" style={{ margin: "20px" }}>
+                  <button type="button" className="btn btn-primary mb-2 btn-lg" onClick={this.handelSearch}>ตรวจสอบข้อมูลคิว</button>
+                </div>
+
+              </form>
+            </div>
+          </Container>
+
+        )}
       </div>
 
     );
@@ -260,8 +334,10 @@ class UserQueueList extends Component {
 
 function mapStateToProps(state) {
   const { user } = state.auth;
+  const { message } = state.message;
   return {
     user,
+    message
   };
 }
 
