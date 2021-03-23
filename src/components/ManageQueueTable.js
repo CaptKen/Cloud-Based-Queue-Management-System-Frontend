@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import { useTable, usePagination, useFilters, useAsyncDebounce, useGlobalFilter } from 'react-table'
+import { useTable, usePagination, useFilters, useAsyncDebounce, useSortBy, useGlobalFilter } from 'react-table'
 import userService from "../services/user.service";
 import { matchSorter } from 'match-sorter'
 import { Button } from "react-bootstrap";
@@ -9,11 +9,11 @@ import { useParams } from "react-router-dom";
 
 const Styles = styled.div`
   padding: 1rem;
-  width: fit-content;
 
   table {
     border-spacing: 0;
     border: 1px solid black;
+
     
 
     tr {
@@ -24,10 +24,9 @@ const Styles = styled.div`
       }
     }
 
-    // th {
-      //   background-color: #F2C035;
-      //   border-color : black;
-      // }
+    th {
+      vertical-align: top;
+      }
       
     th,
     td {
@@ -48,12 +47,14 @@ function DefaultColumnFilter({
   const count = preFilteredRows.length
 
   return (
-    <input
-      value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
-      }}
-    />
+    // <input
+    //   value={filterValue || ''}
+    //   style={{backgroundColor: 'inherit'}}
+    //   onChange={e => {
+    //     setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+    //   }}
+    // />
+    <div></div>
   )
 }
 
@@ -67,6 +68,7 @@ function SelectColumnFilter({
   // using the preFilteredRows
   const options = React.useMemo(() => {
     const options = new Set()
+    console.log("options : ", options);
     preFilteredRows.forEach(row => {
       options.add(row.values[id])
     })
@@ -85,6 +87,7 @@ function SelectColumnFilter({
       <option value="">All</option>
       {options.map((option, i) => (
         <option key={i} value={option}>
+          {console.log("options : ", option)}
           {option}
         </option>
       ))}
@@ -192,7 +195,9 @@ function Table({ columns, data }) {
     filterTypes,
   },
     useFilters,
-    usePagination
+    useSortBy,
+    usePagination,
+
   )
 
   // ลองเอามาใส่ในนี้เพราะเผื่อจะทำ modal สวยๆ
@@ -220,8 +225,8 @@ function Table({ columns, data }) {
   // Render the UI for your table
 
   return (
-    <>
-      <div className="m-auto" style={{ display: "-webkit-inline-box" }}>
+    <div className="container" style={{ margin: "auto" }}>
+      <div style={{ display: "-webkit-inline-box" }}>
         {/* <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
@@ -238,13 +243,14 @@ function Table({ columns, data }) {
         ))}
         <br />
       </div>
-      <table className="table" style={{ backgroundColor: "snow", borderRadius: "10px" }} {...getTableProps()}>
-        <thead className="thead-dark">
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()} >
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>
-                  {column.render('Header') === "สถานะ" || column.render('Header') === "ประเภทคิว" ? (
+      <div className="table-responsive">
+        <table className="table" style={{ backgroundColor: "snow", borderRadius: "10px" }} {...getTableProps()}>
+          <thead className="thead-dark">
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()} >
+                {headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {/* {column.render('Header') === "สถานะ" || column.render('Header') === "ประเภทคิว" ? (
                     <>
                       <div>{column.canFilter ? column.render('Filter') : null}</div>
                       {column.render('Header')}
@@ -254,41 +260,61 @@ function Table({ columns, data }) {
                     <>
                       {column.render('Header')}
                     </>
-                  )}
+                  )} */}
+                    {column.render('Header')}{' '}{' '}
+                    <span>
+                      {(column.canSort && !column.isSorted) && <i class="fas fa-sort"></i>}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? <i class="fas fa-caret-down"></i>
+                          : <i class="fas fa-caret-up"></i>
+                        : ''}
+                    </span>
+                    <div>{column.canFilter ? column.render('Filter') : null}</div>
 
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row)
-            // console.log(row);
-            return (
-              <tr {...row.getRowProps()}
-              // className={row.cells[2].value === "cancel" && "table-danger"}
-              >
-                {/* className="table-danger" */}
-                {/* {console.log("row.cells : ", row.cells[2].value)}, */}
-                {row.cells.map(cell => {
-                  console.log(cell.column.Header == "จัดการ" ? "THIS IS BUTTON" : cell);
-                  return <td {...cell.getCellProps()}>{cell.column.Header == "จัดการ" ?
-                    <div>
-                      <Button variant="success" onClick={() => handleAcceptQueue(cell)}>รับคิว</Button>{'           '}
-                      <Button variant="outline-danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
-                    </div> : cell.render('Cell')}
-                  </td>
-                  //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  // return <td {...cell.getCellProps()}>eiei</td>
-                })}
+                  </th>
+                ))}
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row)
+              // console.log(row);
+              return (
+                <tr {...row.getRowProps()}
+                // className={row.cells[2].value === "cancel" && "table-danger"}
+                >
+                  {/* className="table-danger" */}
+                  {/* {console.log("row.cells : ", row.cells[2].value)}, */}
+                  {row.cells.map(cell => {
+                    console.log(cell.column.Header === "จัดการ" ? "THIS IS BUTTON" : cell);
+                    return <td {...cell.getCellProps()}>{cell.column.Header === "จัดการ" ?
+                      <div>
+                        <Button variant="success" onClick={() => handleAcceptQueue(cell)}>รับคิว</Button>{'           '}
+                        <Button variant="outline-danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
+                      </div> :
+                      // cell.render('Cell')
+                      cell.column.Header === "เวลาที่จอง" ?
+                        (
+                          console.log("เวลาที่จอง : ", cell.render('Cell').props.cell.value),
+                          cell.render('Cell').props.cell.value ? new Date(cell.render('Cell').props.cell.value).toLocaleString('th-TH') : "-"
+                        ) : (
 
-      <div className="pagination m-auto">
+                          cell.render('Cell'))}
+                    </td>
+                    //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    // return <td {...cell.getCellProps()}>eiei</td>
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
+
+      <div className="pagination d-block" style={{ margin: "auto" }}>
         <button className="btn" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -338,7 +364,7 @@ function Table({ columns, data }) {
         </select>
       </div>
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>   */}
-    </>
+    </div>
   )
 }
 
@@ -372,14 +398,23 @@ function ManageQueueTable(props) {
           {
             Header: 'สถานะ',
             accessor: 'status',
+            disableSortBy: true,
             Filter: SelectColumnFilter,
+
             filter: 'includes',
           },
           {
             Header: 'ประเภทคิว',
             accessor: 'queue_type',
+            disableSortBy: true,
             Filter: SelectColumnFilter,
             filter: 'includes',
+          },
+          {
+            Header: 'ประเภทบริการ',
+            accessor: 'service_type',
+            disableSortBy: true,
+            Filter: SelectColumnFilter,
           },
           // {
           //   Header: 'เวลาลงทะเบียนใช้บริการ',
@@ -396,6 +431,7 @@ function ManageQueueTable(props) {
           {
             Header: 'จัดการ',
             accessor: 'manage',
+            disableSortBy: true,
           },
         ],
       },
@@ -434,7 +470,7 @@ function ManageQueueTable(props) {
   //   }, []);
   return (
     <Styles className="row text-center">
-      <Table className="col" columns={columns} data={queues} />
+      <Table className="col-" columns={columns} data={queues} />
     </Styles>
   )
 }

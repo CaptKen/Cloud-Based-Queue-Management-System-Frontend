@@ -4,7 +4,6 @@ import ManageQueueTable from './ManageQueueTable';
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 import { connect } from "react-redux";
-import ManageQueueTableV2 from './ManageQueueTableV2';
 
 class NextQueueDetail extends Component {
     constructor(props) {
@@ -183,20 +182,20 @@ class NextQueueDetail extends Component {
                 <div>
                     <div>
                         <div className="card text-center">
-                            <div className="card-header h1">
+                            <div className="card-header h2">
                                 {storeName}
                             </div>
                             <div className="card-body">
                                 {Object.keys(queueDetail).length === 0 ? (
-                                    <h1 className="card-title display-4" style={{ opacity: "50%" }}><strong>ไม่มีคิวที่รออยู่</strong></h1>
+                                    <h1 className="card-title h3" style={{ opacity: "50%" }}><strong>ไม่มีคิวที่รออยู่</strong></h1>
                                 ) : (
-                                    <h1 className="card-title display-4"><strong>คิวปัจจุบัน</strong></h1>
+                                    <h1 className="card-title h3"><strong>คิวปัจจุบัน</strong></h1>
                                 )}
-                                <div style={{ textAlign: "Left", paddingRight: "5%", paddingLeft: "3%", maxHeight: "50vh", overflow: 'auto' }}>
+                                <div style={{ marginBottom: "2.5%", textAlign: "Left", paddingRight: "5%", paddingLeft: "3%", maxHeight: "45vh", overflow: 'auto' }}>
                                     {Object.keys(queueDetail).length !== 0 && (
                                         <>
-                                            <h5 className="card-title h3"><strong>หมายเลขคิว</strong> </h5><p className="h4" style={{ textAlign: "Right", borderBottomWidth: "3px", marginBottom: "15px" }} >{this.state.currentQueueDetailRes.queue_no}</p>
-                                            <h5 className="card-title h3"><strong>สถานะ</strong></h5><p className="h4" style={{ textAlign: "Right", borderBottomWidth: "3px", marginBottom: "15px" }}>{this.state.currentQueueDetailRes.status}</p>
+                                            <h5 className="card-title h4"><strong>หมายเลขคิว</strong> </h5><p className="h5" style={{ textAlign: "Right", borderBottomWidth: "3px", marginBottom: "15px" }} >{this.state.currentQueueDetailRes.queue_no}</p>
+                                            <h5 className="card-title h4"><strong>สถานะ</strong></h5><p className="h5" style={{ textAlign: "Right", borderBottomWidth: "3px", marginBottom: "15px" }}>{this.state.currentQueueDetailRes.status}</p>
                                         </>
                                     )}
 
@@ -204,7 +203,7 @@ class NextQueueDetail extends Component {
                                         <>
                                             {key === "book_time" ? (
                                                 <>
-                                                    <p className="card-title h3"><strong>เวลาที่จอง</strong></p>
+                                                    <p className="card-title h4"><strong>เวลาที่จอง</strong></p>
                                                     <OverlayTrigger
                                                         key={key}
                                                         placement="right"
@@ -219,7 +218,7 @@ class NextQueueDetail extends Component {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <p className="card-title h2"><strong>{key}</strong> </p>
+                                                    <p className="card-title h4"><strong>{key}</strong> </p>
                                                     <OverlayTrigger
                                                         placement="right"
                                                         overlay={

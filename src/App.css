@@ -6,11 +6,30 @@
 
  html, body #root{
      font-family: 'Rubik', 'Kanit', sans-serif;
+     font-size: 1rem;
      height: 100% !important;
      /* background-image: url("https://images.pexels.com/photos/62693/pexels-photo-62693.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"); */
      background-size: cover;
      background-color: #f3f3f3;
  }
+
+ @include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 1.4rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 1.6rem;
+  }
+}
 
 .App-logo {
   height: 40vmin;
@@ -161,3 +180,4 @@ label {
     transform: translateX(-33.33%);  
   }
 }
+

@@ -23,7 +23,7 @@ class GetInQueue extends Component {
       isLoading: false,
       formElements: {
         queue_no: '',
-        queue_type: 'NOR',
+        queue_type: 'ต่อคิว',
         status: 'waiting',
         business_name: this.props.storeName,
         branch: this.props.branch,

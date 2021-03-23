@@ -189,7 +189,7 @@ class App extends Component {
               <SideNav/>
               )} */}
 
-            <div className="container">
+            <div>
               <Switch>
                 <Route exact path={["/", "/home"]} component={Home} />
                 <Route exact path='/setPassword/:username' render={(props) => <SetPW{...props} />} />

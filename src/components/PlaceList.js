@@ -16,9 +16,9 @@ import businessService from '../services/business.service';
 // `;
 
 const SlideItem = styled.div`
-  height: 200px;
+  height: auto;
   width: auto;
-  background: #EEE;
+  //background: #EEE;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +143,7 @@ class AutoPlayCarousel extends React.Component {
         <div className="container">
           <div style={{ marginTop: "30px" }}>
             <div className="d-flex justify-content-between">
-              <h1 className="h1">{this.state.typeName}</h1>
+              <h1 className="h3">{this.state.typeName}</h1>
               <button className="btn btn-link btn-sm" onClick={this.handleShow}>ดูทั้งหมด</button>
             </div>
 
@@ -160,9 +160,9 @@ class AutoPlayCarousel extends React.Component {
             >
               {listByCategory.map((item) => (
                 <SlideItem key={item.name}>
-                  <Link to={"/store/" + item.name + "/" + item.branch} style={{ width: "100%", height: "100%" }}>
+                  <Link to={"/store/" + item.name + "/" + item.branch} >
                     <img
-                      className="img-responsive w-100 h-100"
+                      className="img-responsive"
                       // src={LOGO1}
                       src={fileInfos.[item.name]}
                       alt={item.name + "'s icon"}

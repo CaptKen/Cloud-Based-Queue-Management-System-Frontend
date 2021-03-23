@@ -109,7 +109,7 @@ class StorePage extends Component {
             <Carousel style={{ borderRadius: "4px", marginInline: "1%", marginBottom: "2%" }}>
               {!fileInfos.length == 0 ? (
                 fileInfos.map((item) => (
-                  <Carousel.Item interval={1000} >
+                  <Carousel.Item interval={5000} >
                     <img
                       className="img-responsive w-100"
                       src={item.url}

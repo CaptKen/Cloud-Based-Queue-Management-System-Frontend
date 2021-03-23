@@ -64,7 +64,7 @@ export default class Home extends Component {
       // </div>
 
 
-      <div>
+      <div className="container">
         <SeachBar/>
         <Carousel className="pt-5">
           <Carousel.Item interval={1000}>

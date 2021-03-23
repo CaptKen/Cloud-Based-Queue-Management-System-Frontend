@@ -39,7 +39,7 @@ class BookQueue extends Component {
       isLoading: false,
       formElements: {
         username: '',
-        queue_type: 'BOO',
+        queue_type: 'จองเวลา',
         status: 'waiting',
         email: '',
         business_name: this.props.storeName,
