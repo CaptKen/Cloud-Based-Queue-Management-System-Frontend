@@ -297,15 +297,15 @@ class UserQueueList extends Component {
           </div>
         ) : (
           <Container className="mt-4" style={{ background: "#f9f9f9", borderRadius: "15px", boxShadow: "1px 1px #E8E8E8", padding: "5%"}}>
-            <h1 className="h1 text-center mb-4">เช็คคิวของท่าน</h1>
+            <h1 className="h3 text-center mb-4">เช็คคิวของท่าน</h1>
             <div className="row d-block">
               <form className="form">
                 <div className="form-inline mb-3">
-                  <label className="h3 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="username">ชื่อผู้จอง<p style={{color: "red"}}>*</p></label>
+                  <label className="h5 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="username">ชื่อผู้จอง<p style={{color: "red"}}>*</p></label>
                   <input type="text" className="col-xs-9 col-sm-9 col-md-9 form-control form-control-lg" id="username" placeholder="กรุณากรอกชื่อที่ทำการจอง" onChange={this.onChangeUsername} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} />
                 </div>
                 <div className="form-inline mb-3">
-                  <label className="h3 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="email">อีเมลล์ที่จองไว้<p style={{color: "red"}}>*</p></label>
+                  <label className="h5 col-xs-3 col-sm-3 col-md-3 form-label form-label-lg" style={{ justifyContent: "left" }} htmlFor="email">อีเมลล์ที่จองไว้<p style={{color: "red"}}>*</p></label>
                   <input type="text" name="email" className="col-xs-9 col-sm-9 col-md-9 form-control form-control-lg" id="username" placeholder="กรุณากรอกอีเมลล์ที่ทำการจอง" onChange={this.onChangeEmail} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} />
                 </div>
                 <div >

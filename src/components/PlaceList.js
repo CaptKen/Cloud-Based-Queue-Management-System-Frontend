@@ -18,6 +18,8 @@ import businessService from '../services/business.service';
 const SlideItem = styled.div`
   height: auto;
   width: auto;
+  max-width: 200px,
+  max-height: 200px,
   //background: #EEE;
   display: flex;
   align-items: center;
@@ -148,6 +150,8 @@ class AutoPlayCarousel extends React.Component {
             </div>
 
             <hr /><br />
+            <div style={{alignItems: 'center'}}>
+            {/* style={{alignItems: 'center'}}  เอาไปแปะใน ไอ้ข่างล่าง หาประมาณว่า style="transform: translateX( มีวงเล็บด้วย*/}
             <ItemsCarousel
               requestToChangeActive={this.onChange}
               activeItemIndex={this.state.activeItemIndex}
@@ -209,6 +213,8 @@ class AutoPlayCarousel extends React.Component {
               /></SlideItem> */}
 
             </ItemsCarousel>
+            </div>
+            
           </div>
         </div>
 
