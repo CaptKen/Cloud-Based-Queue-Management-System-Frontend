@@ -6,7 +6,7 @@ import { isEmail } from "validator";
 
 import { connect } from "react-redux";
 import { registerManager } from "../actions/auth";
-import { Container } from "react-bootstrap";
+import { Modal, Button, Container } from "react-bootstrap";
 import businessService from "../services/business.service";
 
 const required = (value) => {
@@ -27,6 +27,16 @@ const email = (value) => {
       </div>
     );
   }
+};
+
+const requiredPic = () => {
+
+  return (
+    <div className="alert alert-danger" role="alert">
+      กรุณากรอกข้อมูล!
+    </div>
+  );
+
 };
 
 
@@ -65,7 +75,9 @@ class CreateBusiness extends Component {
       progress: 0,
       message: "",
       fileNameforShow: 'No file chosen',
-      fileInfos: []
+      fileInfos: [],
+
+      show: false,
     };
   }
 
@@ -171,6 +183,13 @@ class CreateBusiness extends Component {
   handleRegister(e) {
     e.preventDefault();
     //บัคอยู่ตรงนี้ this.state.selectedFiles[0] ต้องอัพรูปก่อน
+    if (this.state.selectedFiles === undefined) {
+      console.log("false")
+      this.setState({
+        show: true,
+      });
+      return;
+    }
     let currentFile = this.state.selectedFiles[0];
 
     this.onChangePassword();
@@ -237,6 +256,13 @@ class CreateBusiness extends Component {
 
   }
 
+
+  handleClose = (e) => {
+    this.setState({
+      show: false,
+    });
+  };
+
   render() {
     const { message } = this.props;
     const { listCatagoriesDropdown,
@@ -264,7 +290,7 @@ class CreateBusiness extends Component {
                   <div className="form-group">
 
                     <label htmlFor="actual-btn" className="btn btn-outline-primary" >เพิ่มรูปร้าน</label>
-                    <input type="file" id="actual-btn" onChange={this.selectFile} hidden />
+                    <input type="file" id="actual-btn" onChange={this.selectFile} validations={[requiredPic]} hidden />
                     <span id="file-chosen" style={{ marginRight: "15%", marginLeft: "0.5rem" }} >{this.state.fileNameforShow}</span>
 
                     {/* <button
@@ -327,7 +353,7 @@ class CreateBusiness extends Component {
 
 
                   <div className="form-group">
-                    <label htmlFor="lat">lat</label>
+                    <label htmlFor="lat">ละติจูดตำแหน่งร้านอาหาร</label>
                     <Input
                       type="number"
                       className="form-control"
@@ -340,7 +366,7 @@ class CreateBusiness extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="lng">lng</label>
+                    <label htmlFor="lng">ลองจิจูดตำแหน่งร้านอาหาร</label>
                     <Input
                       type="number"
                       className="form-control"
@@ -381,6 +407,26 @@ class CreateBusiness extends Component {
                   this.checkBtn = c;
                 }}
               />
+              <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>แจ้งเตือน</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ alignSelf: "center" }}>
+                  กรุณาใส่รูปภาพร้าน
+                </Modal.Body>
+                {message && (
+                  <div className="form-group">
+                    <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                      {message}
+                    </div>
+                  </div>
+                )}
+                <Modal.Footer>
+                  <Button variant="danger" onClick={this.handleClose}>
+                    ปิด
+              </Button>
+                </Modal.Footer>
+              </Modal>
             </Form>
           </div>
         </div>
