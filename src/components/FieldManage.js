@@ -408,7 +408,7 @@ class FieldManage extends React.Component {
   render() {
     console.log(this.state.editMode.status);
     return (
-      <div>
+      <div className="container">
         <h1 className="h1 text-center">ข้อมูลการเข้าใช้บริการ</h1>
         <div className="row clearfix">
           <div className="col-md-12 column">
@@ -463,22 +463,27 @@ class FieldManage extends React.Component {
                         </button>
 
                       ) : (
-                          <div>
-                            <button
-                              style={{ marginRight: "10px" }}
-                              className={"btn btn-warning btn-sm"}
-                              onClick={this.handleEdit(idx)}
-                            >
-                              Edit
-                          </button>
+                        console.log("item : ", item),
+                        ((item === "ชื่อ-นามสกุล") || ((item === "Email")) ? (
+                          <>
+                          </>
+                        ) : (
+                          <>
+                          <button
+                            style={{ marginRight: "10px" }}
+                            className={"btn btn-warning btn-sm"}
+                            onClick={this.handleEdit(idx)}
+                          >
+                            Edit
+                        </button>
 
-                            <button
-                              className="btn btn-outline-danger btn-sm"
-                              onClick={this.handleRemoveSpecificRow(idx)}
-                            >
-                              Remove
-                          </button>
-                          </div>
+                          <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={this.handleRemoveSpecificRow(idx)}
+                          >
+                            Remove
+                        </button>
+                        </>))
                         )}
 
                     </td>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
 import UserService from "../services/user.service";
-import { Button } from "react-bootstrap";
+import { Button, Modal, Accordion, Card , OverlayTrigger, Tooltip} from "react-bootstrap";
 import businessService from '../services/business.service';
 import { render } from "react-dom";
 import { connect } from "react-redux";
@@ -31,7 +31,7 @@ class ListEmployees extends React.Component {
         status: false,
         rowKey: null
       },
-      isShow: true,
+      isShow: false,
     };
   }
 
@@ -84,7 +84,7 @@ class ListEmployees extends React.Component {
 
   toggleShow = () => {
     console.log("ClickShow!!!!!!!!!!!!!!!!!!!!!")
-    this.setState(state => ({ isShow: !state.isShow }));
+    this.setState(state => ({ isShow: true }));
   };
 
 
@@ -124,7 +124,7 @@ class ListEmployees extends React.Component {
     });
   };
 
-  handleRemoveSpecificRow = (i, id) =>  {
+  handleRemoveSpecificRow = (i, id) => {
     const apiResponse = [...this.state.apiResponse];
     apiResponse.splice(i, 1);
     this.setState({ apiResponse });
@@ -132,6 +132,12 @@ class ListEmployees extends React.Component {
     window.location.reload();
   };
 
+  handleClose = (e) => {
+    this.setState({
+      isShow: false,
+    });
+
+  };
 
 
   handleSave = () => {
@@ -175,11 +181,12 @@ class ListEmployees extends React.Component {
       });
   }
 
+
   render() {
     const { user: currentUser } = this.props;
     console.log(this.state.editMode.status);
     return (
-      <div>
+      <div className="container">
         <h1 className="h1 text-center">ข้อมูลพนักงาน</h1>
         <div className="row clearfix">
           <div className="col-md-12 column">
@@ -199,27 +206,97 @@ class ListEmployees extends React.Component {
                   <td className="text-center" style={{ width: "200px" }}>จัดการ</td>
                 </tr>
                 {this.state.listEmployees.map((item, i) => (
+                  console.log("listEmployees.map((item, i) : ", item, i),
                   <tr id="addr0" key={i}>
 
                     <td>
-                      <p>{item.username}</p>
+
+                      <Accordion>
+                        <div>
+                          <div>
+                            
+                            <OverlayTrigger
+                              placement="right"
+                              overlay={
+                                <Tooltip id={`tooltip-right`}><strong>click for more detail</strong>. </Tooltip>
+                              }
+                            >
+                              <Accordion.Toggle as={Button} variant="link" eventKey="0" ><p className="d-inline-flex" style={{ color: 'black' }}>{item.username}</p>{' '} <i class="fas fa-info-circle"></i> </Accordion.Toggle>
+                            </OverlayTrigger>
+                          </div>
+                          <Accordion.Collapse eventKey="0">
+                            <div className="container">
+                              <div>
+                                <div className="d-block">
+                                  <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>ชื่อผู้ใช้งาน:</strong>
+                                  {item.username}
+                                </div>
+
+                                <div className="d-block">
+                                  <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>อีเมลล์:</strong>
+                                  {item.email}
+                                </div>
+
+                                <div className="d-block">
+                                  <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>เบอร์โทรศัพท์:</strong>
+                                  {item.telephone}
+                                </div>
+                              </div>
+                            </div>
+                          </Accordion.Collapse>
+                        </div>
+                      </Accordion>
                     </td>
                     <td className="text-center">
                       <div>
-                        <button
+                        {/* <button
                           style={{ marginRight: "10px" }}
                           className={"btn btn-warning btn-sm"}
                           onClick={this.toggleShow}
                         >
                           {!this.state.isShow ? <DetailEmployee itemEmployee={item} /> : null}
                               More Detail
-                          </button>
+                          </button> */}
                         <button
                           className={"btn btn-outline-danger btn-sm"}
-                          onClick={() => this.handleRemoveSpecificRow(i,item.id)}
-                        >
-                          Remove
-                          </button>
+                          onClick={() => this.handleRemoveSpecificRow(i, item.id)}
+                        >Remove</button>
+
+                        {this.state.isShow ? (
+                          console.log("eiei : ", this.state.listEmployees[i]),
+                          <Modal show={this.state.isShow} onHide={this.handleClose}>
+                            <Modal.Header closeButton>
+                              <h1 className="h1 text-center">ข้อมูลพนักงาน</h1>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <div className="container">
+                                <form className="form">
+                                  <div>
+                                    <div className="form-inline">
+                                      <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>ชื่อผู้ใช้งาน:</strong>
+                                      {this.state.listEmployees[i].username}
+                                    </div>
+
+                                    <div className="form-inline">
+                                      <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>อีเมลล์:</strong>
+                                      {item.email}
+                                    </div>
+
+                                    <div className="form-inline">
+                                      <strong className="col-6 form-label" style={{ textAlignLast: 'right' }}>เบอร์โทรศัพท์:</strong>
+                                      {item.telephone}
+                                    </div>
+                                  </div>
+                                </form>
+
+                              </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <button className={"btn btn-danger btn-lg"}>ย้อนกลับ</button>
+                            </Modal.Footer>
+                          </Modal>
+                        ) : null}
+
                       </div>
                     </td>
                   </tr>

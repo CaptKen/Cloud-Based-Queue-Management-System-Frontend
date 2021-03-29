@@ -30,7 +30,7 @@ class BookQueueWithLogin extends Component {
             isRestaurant: false,
             apiResponse: [],
             serviceList: [],
-            selectBookTime:false,
+            selectBookTime: false,
             now: '',
             booked: [],
             listWithFilterByDate: [],
@@ -41,7 +41,7 @@ class BookQueueWithLogin extends Component {
                 username: this.props.currentUser.username,
                 queue_type: 'จองเวลา',
                 status: 'waiting',
-                email:this.props.currentUser.email,
+                email: this.props.currentUser.email,
                 business_name: this.props.storeName,
                 branch: this.props.branch,
                 book_time: '',
@@ -150,7 +150,7 @@ class BookQueueWithLogin extends Component {
         this.setState({
             startDate: new Date(e),
             listWithFilterByDate: lst,
-            selectBookTime:true,
+            selectBookTime: true,
             formElements: {
                 ...this.state.formElements,
                 book_time: e,
@@ -188,25 +188,25 @@ class BookQueueWithLogin extends Component {
                     queueDetail: updateForm
                 }
             })
-        } else if(name == "Email"){
+        } else if (name == "Email") {
             console.log('name == "Email"');
             this.setState({
-              formElements: {
-                ...this.state.formElements,
-                email: value,
-                ...this.state.formElements.queueDetail,
-                queueDetail: updateForm
-              }
+                formElements: {
+                    ...this.state.formElements,
+                    email: value,
+                    ...this.state.formElements.queueDetail,
+                    queueDetail: updateForm
+                }
             })
-          } else {
+        } else {
             this.setState({
-              formElements: {
-                ...this.state.formElements,
-                ...this.state.formElements.queueDetail,
-                queueDetail: updateForm
-              }
+                formElements: {
+                    ...this.state.formElements,
+                    ...this.state.formElements.queueDetail,
+                    queueDetail: updateForm
+                }
             })
-          }
+        }
 
     }
     handleAddqueue(e) {
@@ -378,18 +378,16 @@ class BookQueueWithLogin extends Component {
                             </div>
                         ))}
 
-                        {!isRestaurant && (
-                            <div className="form-inline" name="services">
-                                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
-                                <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                                    <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                                    {serviceList.map((item) => (
-                                        console.log("item ", item),
-                                        <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
+                        <div className="form-inline" name="services">
+                            <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ</label>
+                            <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                                {serviceList.map((item) => (
+                                    console.log("item ", item),
+                                    <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                                ))}
+                            </select>
+                        </div>
 
                         <div className="form-inline">
                             <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง</label>

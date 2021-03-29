@@ -35,6 +35,7 @@ import SignUpEmployee from './components/SignUpEmployee';
 
 import ListEmployee from './components/ListEmployee'
 import ListEmployees from './components/ListEmployees'
+import ShowQueuePage from './components/ShowQueuePage'
 
 import SetPW from './components/SetPw'
 import BookQueueMain from './components/BookQueueMain';
@@ -207,7 +208,7 @@ class App extends Component {
                 <Route path="/store/:businessName/:branch" component={StorePage} />
                 <Route path="/ManageQueuetable" component={ManageQueuetable} />
 
-
+                <Route path="/queuePage" component={ShowQueuePage}/>
 
                 <Route path="/CreateBusiness" component={CreateBusiness} />
 

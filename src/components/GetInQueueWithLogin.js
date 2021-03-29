@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Button, Spinner} from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Redirect } from "react-router-dom";
 import businessService from '../services/business.service';
@@ -205,7 +205,7 @@ class GetInQueueWithLogin extends Component {
 
   render() {
     const { message } = this.props;
-    const { currentUser, apiResponse, isRestaurant, serviceList , isLoading} = this.state;
+    const { currentUser, apiResponse, isRestaurant, serviceList, isLoading } = this.state;
 
     const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== '') && (this.state.formElements.queue_no !== "กรุณาเลือกประเภทบริการ") && (!isLoading));
     console.log("disableButton", disableButton);
@@ -243,20 +243,11 @@ class GetInQueueWithLogin extends Component {
               style={{ marginBottom: "10px" }}
             />
           </div> */}
-            <div className="form-inline" name="services">
-              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{color: "red"}}>*</p></label>
-              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                {serviceList.map((item) => (
-                  console.log("item ", item),
-                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                ))}
-              </select>
-            </div>
+
 
             {apiResponse.map((item, i) => (
               <div className="form-inline">
-                <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}<p style={{color: "red"}}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p></label>
+                <label className="col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>{item}<p style={{ color: "red" }}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p></label>
                 <input
                   type="text"
                   className="form-control col-xs-9 col-sm-9 col-md-9"
@@ -271,6 +262,17 @@ class GetInQueueWithLogin extends Component {
                 />
               </div>
             ))}
+
+            <div className="form-inline" name="services">
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
+              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                {serviceList.map((item) => (
+                  console.log("item ", item),
+                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                ))}
+              </select>
+            </div>
 
             <div className="text-center" style={{ margin: "20px" }}>
               <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
@@ -292,7 +294,7 @@ class GetInQueueWithLogin extends Component {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 ) : "ต้องการเข้าคิว/ต่อคิวหรือไม่"}
-                </Modal.Body>
+              </Modal.Body>
               {message && (
                 <div className="form-group">
                   <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">

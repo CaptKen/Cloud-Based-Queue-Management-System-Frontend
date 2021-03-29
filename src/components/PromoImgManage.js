@@ -279,7 +279,7 @@ class PromoImgManage extends React.Component {
 
 
     return (
-      <div>
+      <div className="container">
         <h1 className="h1 text-center">โปรโมชั่น</h1>
         <div className="row clearfix">
 
