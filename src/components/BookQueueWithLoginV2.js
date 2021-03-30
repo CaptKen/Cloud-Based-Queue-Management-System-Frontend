@@ -41,7 +41,7 @@ class BookQueue extends Component {
       formElements: {
         username: this.props.currentUser.username,
         queue_no: '',
-        queue_type: 'BOO',
+        queue_type: 'จองเวลา',
         status: 'waiting',
         email: this.props.currentUser.email,
         business_name: this.props.storeName,
@@ -60,7 +60,7 @@ class BookQueue extends Component {
         ...this.state.formElements,
         username: this.props.currentUser.username,
         business_name: this.props.storeName,
-        queue_type: 'BOO',
+        queue_type: 'จองเวลา',
         status: 'waiting',
         queueDetail: {
           ["ชื่อ-นามสกุล"]: this.props.currentUser.username,

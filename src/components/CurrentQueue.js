@@ -297,7 +297,7 @@ class CurrentQueue extends Component {
           </div>
           <div className="card-body">
             <h5 className="card-title">หมายเลขคิวของท่าน : {this.state.queueDetail.queue_no}</h5>
-            {this.state.queueDetail.queue_type === "NOR" ? (
+            {this.state.queueDetail.queue_type === "ต่อคิว" ? (
               <>
                 <h5 className="card-title">เหลืออีก : {this.state.allQueueWait} คิว</h5>
                 <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5>
@@ -375,7 +375,7 @@ class CurrentQueue extends Component {
           <div className="card-footer text-muted">
             {currentUser && (
               <>
-                {this.state.queueDetail.queue_type === "NOR" ? (
+                {this.state.queueDetail.queue_type === "ต่อคิว" ? (
                   <button type="button" className="btn btn-danger" onClick={this.handleShow}>ยกเลิกคิว</button>
                 ) : (
                     <>

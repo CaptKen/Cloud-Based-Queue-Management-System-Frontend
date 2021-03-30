@@ -266,7 +266,7 @@ class UserQueueList extends Component {
                       <h2>หมายเลขคิว</h2>
                       <p>{item.queue_no}</p>
                     </Col>
-                    {item.queue_type === "NOR" ? (
+                    {item.queue_type === "ต่อคิว" ? (
                       <>
                         <Col sm md style={{ borderRight: "2px solid rgba(0,0,0,0.46)", padding: "15px" }}>
                           <h2>คิวที่เหลือ</h2>
