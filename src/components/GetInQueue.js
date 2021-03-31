@@ -52,6 +52,19 @@ class GetInQueue extends Component {
     )
   }
 
+  // componentDidMount() {
+  //   console.log("storeName", this.state.storeName);
+  //   console.log("branch", this.state.branch);
+  //   businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
+  //     res => {
+  //       console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+  //       this.setState({
+  //         serviceList: res.data.BusinessDetail[0].tableDetail,
+  //       })
+  //     }
+  //   )
+  // }
+
   onFormChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -146,13 +159,24 @@ class GetInQueue extends Component {
   };
 
   handleShow = () => {
+    console.log("now time : ", new Date());
     console.log("show: ", this.state.formElements);
     this.props.dispatch(clearMessage()); // clear message when changing location
     if (this.state.formElements.username === '' || this.state.formElements.email === '' || this.state.formElements.queue_no === '' || this.state.formElements.queue_no === "กรุณาเลือกประเภทบริการ") {
       this.props.dispatch(setMessage("กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบ"));
     }
+
+    let updateForm = { ...this.state.formElements.queueDetail };
+    updateForm["book_time"] = new Date();
+
     this.setState({
       show: true,
+      formElements: {
+        ...this.state.formElements,
+        ...this.state.formElements.queueDetail,
+        queueDetail: updateForm,
+        ["book_time"]: new Date()
+      }
     });
   };
   render() {

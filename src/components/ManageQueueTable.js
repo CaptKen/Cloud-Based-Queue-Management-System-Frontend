@@ -295,9 +295,9 @@ function Table({ columns, data }) {
                         <Button variant="outline-danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
                       </div> :
                       // cell.render('Cell')
-                      cell.column.Header === "เวลาที่จอง" ?
+                      cell.column.Header === "เวลา" ?
                         (
-                          console.log("เวลาที่จอง : ", cell.render('Cell').props.cell.value),
+                          console.log("เวลา : ", cell.render('Cell').props.cell.value),
                           cell.render('Cell').props.cell.value ? new Date(cell.render('Cell').props.cell.value).toLocaleString('th-TH') : "-"
                         ) : (
 
@@ -421,7 +421,7 @@ function ManageQueueTable(props) {
           //   accessor: 'get_in_time',
           // },
           {
-            Header: 'เวลาที่จอง',
+            Header: 'เวลา',
             accessor: 'book_time',
           },
           // {

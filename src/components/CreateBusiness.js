@@ -353,7 +353,7 @@ class CreateBusiness extends Component {
 
 
                   <div className="form-group">
-                    <label htmlFor="lat">ละติจูดตำแหน่งร้านอาหาร</label>
+                    <label htmlFor="lat">ละติจูดตำแหน่งร้าน</label>
                     <Input
                       type="number"
                       className="form-control"
@@ -366,7 +366,7 @@ class CreateBusiness extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="lng">ลองจิจูดตำแหน่งร้านอาหาร</label>
+                    <label htmlFor="lng">ลองจิจูดตำแหน่งร้าน</label>
                     <Input
                       type="number"
                       className="form-control"

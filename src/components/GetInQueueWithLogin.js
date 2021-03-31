@@ -183,8 +183,18 @@ class GetInQueueWithLogin extends Component {
     if (this.state.formElements.username === '' || this.state.formElements.queue_no === '' || this.state.formElements.queue_no === "กรุณาเลือกประเภทบริการ") {
       this.props.dispatch(setMessage("กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบ"));
     }
+
+    let updateForm = { ...this.state.formElements.queueDetail };
+    updateForm["book_time"] = new Date();
+
     this.setState({
       show: true,
+      formElements: {
+        ...this.state.formElements,
+        ...this.state.formElements.queueDetail,
+        queueDetail: updateForm,
+        ["book_time"]: new Date()
+      }
     });
   };
 
