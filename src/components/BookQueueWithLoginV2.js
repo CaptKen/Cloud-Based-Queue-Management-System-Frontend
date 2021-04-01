@@ -390,17 +390,6 @@ class BookQueue extends Component {
               </div>
             ))}
 
-            <div className="form-inline" name="services">
-              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
-              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
-                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
-                {serviceList.map((item) => (
-                  console.log("item ", item),
-                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
-                ))}
-              </select>
-            </div>
-
             <div className="form-inline">
               <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง <p style={{ color: "red" }}>*</p></label>
               <div className="customDatePickerWidth">
@@ -421,8 +410,19 @@ class BookQueue extends Component {
                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                 />
               </div>
+              
+              
             </div>
-
+            <div className="form-inline mt-2" name="services">
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
+              <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
+                <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
+                {serviceList.map((item) => (
+                  console.log("item ", item),
+                  <option name={item.name} value={item.typeSymbol} >{item.name}</option>
+                ))}
+              </select>
+            </div>
             <div className="text-center" style={{ margin: "20px", visibility: (this.props.editQueue === true ? "hidden" : "visible") }}>
               <Button variant="primary" style={{ marginRight: "2%" }} onClick={this.handleShow}>
                 จองเวลา

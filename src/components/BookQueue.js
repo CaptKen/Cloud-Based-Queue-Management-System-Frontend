@@ -389,7 +389,7 @@ class BookQueue extends Component {
               </div>
             </div>
 
-            <div className="form-inline" name="services">
+            <div className="form-inline mt-2" name="services">
               <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{color: "red"}}>*</p></label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
                 <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>

@@ -17,8 +17,9 @@ class CurrentQueue extends Component {
   constructor(props) {
     super(props);
     this.handleCancelQueue = this.handleCancelQueue.bind(this);
+    this.handleAddTimeQueue = this.handleAddTimeQueue.bind(this);
     this.handleSaveEdit = this.handleSaveEdit.bind(this);
-    this.isPassDate =this.isPassDate.bind(this);
+    this.isPassDate = this.isPassDate.bind(this);
     this.setBook_time = this.setBook_time.bind(this)
     this.state = {
       show: false,
@@ -124,20 +125,20 @@ class CurrentQueue extends Component {
 
     let lst = this.filterByDate(e);
     console.log("lst ", lst);
-    
+
     this.setState({
       startDate: new Date(e),
       listWithFilterByDate: lst,
       queueDetail: {
         ...this.state.queueDetail,
-        book_time : new Date(e),
+        book_time: new Date(e),
         queueDetail: updateForm
       }
-      
+
     })
   }
 
-  handleSaveEdit(){
+  handleSaveEdit() {
     console.log("queueDetail before update: ", this.state.queueDetail);
 
     const formData = {};
@@ -152,12 +153,12 @@ class CurrentQueue extends Component {
     console.log("formData", formData);
 
     userService.editQueueDetail(formData, this.state.username)
-    .then(() => {
-      this.setState({
-        showEdit: false
-      });
-      alert("แก้ไขเวลาที่จองสำเร็จ")
-    })
+      .then(() => {
+        this.setState({
+          showEdit: false
+        });
+        alert("แก้ไขเวลาที่จองสำเร็จ")
+      })
   }
 
   componentWillUnmount() {
@@ -172,6 +173,14 @@ class CurrentQueue extends Component {
     });
   };
 
+  handleShowAddTime = () => {
+    console.log("show add time");
+    this.props.dispatch(clearMessage()); // clear message when changing location
+    this.setState({
+      showAddTime: true,
+    });
+  };
+
   handleShowEdit = () => {
     console.log("show edit");
     this.props.dispatch(clearMessage()); // clear message when changing location
@@ -183,7 +192,8 @@ class CurrentQueue extends Component {
   handleClose = (e) => {
     this.setState({
       show: false,
-      showEdit: false
+      showEdit: false,
+      showAddTime: false
     });
   };
   handleCancelQueue(e) {
@@ -206,6 +216,28 @@ class CurrentQueue extends Component {
       });
     alert("ยกเลิกคิวสำเร็จ")
     window.history.back();
+  }
+
+  handleAddTimeQueue(e) {
+    const { history } = this.props;
+    console.log(this.state.queueDetail);
+    e.preventDefault();
+    this.setState({
+      successful: false,
+    });
+    UserService.addTimeQueue(this.state.username, this.state.queueDetail)
+      .then(() => {
+        this.setState({
+          addTimeSuccessful: true,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          addTimeSuccessful: false,
+        });
+      });
+    alert("ต่อเวลาสำเร็จ")
+    window.location.reload();
   }
 
   diffTimeCal = (a) => {
@@ -246,28 +278,28 @@ class CurrentQueue extends Component {
     const { timer, currentUser, listWithFilterByDate } = this.state;
     const initialFilterByDate = this.filterByDate(new Date());
     const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
-      setHours(setMinutes(new Date(), 30), 22),
-      setHours(setMinutes(new Date(), 0), 23),
-      setHours(setMinutes(new Date(), 30), 23),
-      setHours(setMinutes(new Date(), 0), 0),
-      setHours(setMinutes(new Date(), 30), 0),
-      setHours(setMinutes(new Date(), 0), 1),
-      setHours(setMinutes(new Date(), 30), 1),
-      setHours(setMinutes(new Date(), 0), 2),
-      setHours(setMinutes(new Date(), 30), 2),
-      setHours(setMinutes(new Date(), 0), 3),
-      setHours(setMinutes(new Date(), 30), 3),
-      setHours(setMinutes(new Date(), 0), 4),
-      setHours(setMinutes(new Date(), 30), 4),
-      setHours(setMinutes(new Date(), 0), 5),
-      setHours(setMinutes(new Date(), 30), 5),
-      setHours(setMinutes(new Date(), 0), 6),
-      setHours(setMinutes(new Date(), 30), 6),
-      setHours(setMinutes(new Date(), 0), 7),
-      setHours(setMinutes(new Date(), 30), 7),
-      setHours(setMinutes(new Date(), 0), 8),
-      setHours(setMinutes(new Date(), 30), 8),
-      ]
+    setHours(setMinutes(new Date(), 30), 22),
+    setHours(setMinutes(new Date(), 0), 23),
+    setHours(setMinutes(new Date(), 30), 23),
+    setHours(setMinutes(new Date(), 0), 0),
+    setHours(setMinutes(new Date(), 30), 0),
+    setHours(setMinutes(new Date(), 0), 1),
+    setHours(setMinutes(new Date(), 30), 1),
+    setHours(setMinutes(new Date(), 0), 2),
+    setHours(setMinutes(new Date(), 30), 2),
+    setHours(setMinutes(new Date(), 0), 3),
+    setHours(setMinutes(new Date(), 30), 3),
+    setHours(setMinutes(new Date(), 0), 4),
+    setHours(setMinutes(new Date(), 30), 4),
+    setHours(setMinutes(new Date(), 0), 5),
+    setHours(setMinutes(new Date(), 30), 5),
+    setHours(setMinutes(new Date(), 0), 6),
+    setHours(setMinutes(new Date(), 30), 6),
+    setHours(setMinutes(new Date(), 0), 7),
+    setHours(setMinutes(new Date(), 30), 7),
+    setHours(setMinutes(new Date(), 0), 8),
+    setHours(setMinutes(new Date(), 30), 8),
+    ]
 
 
     console.log("nowDateTime ", nowDateTime);
@@ -303,15 +335,15 @@ class CurrentQueue extends Component {
                 <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5>
               </>
             ) : (
-                <>
-                  {this.state.showEdit ? (
-                    <>
-                      <form className="form">
-                        {Object.keys(this.state.queueDetail.queueDetail).map((item, i) => (
-                          <>
-                            {/* {this.state.queueDetail.queueDetail[item]} */}
-                            {item === "book_time" ? (
-                              <div className="form-inline">
+              <>
+                {this.state.showEdit ? (
+                  <>
+                    <form className="form">
+                      {Object.keys(this.state.queueDetail.queueDetail).map((item, i) => (
+                        <>
+                          {/* {this.state.queueDetail.queueDetail[item]} */}
+                          {item === "book_time" ? (
+                            <div className="form-inline">
                               <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เวลาในการจอง</label>
                               <div className="customDatePickerWidth">
                                 <DatePicker
@@ -332,8 +364,8 @@ class CurrentQueue extends Component {
                                 />
                               </div>
                             </div>
-                            ):(
-                              <div className="form-inline">
+                          ) : (
+                            <div className="form-inline">
                               <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}
                               </label>
                               <input
@@ -350,23 +382,23 @@ class CurrentQueue extends Component {
                                 style={{ marginBottom: "10px" }}
                               />
                             </div>
-                            )}
-                          </>
-                        ))}
-                      </form>
-                      {/* <BookQueueWithLogin storeName={this.state.queueDetail.business_name} branch={this.state.queueDetail.branch} editQueue={true} currentUser={currentUser} /> */}
-                    </>
-                  ) : (
-                      <>
-                        <h5 className="card-title">วันที่จอง : {bookTimeDate}</h5>
-                        <h5 className="card-title">เวลาที่จอง : {bookTime}</h5>
-                        <h5 className="card-title">เหลือเวลาอีก : {timer}</h5>
-                      </>
-                    )}
+                          )}
+                        </>
+                      ))}
+                    </form>
+                    {/* <BookQueueWithLogin storeName={this.state.queueDetail.business_name} branch={this.state.queueDetail.branch} editQueue={true} currentUser={currentUser} /> */}
+                  </>
+                ) : (
+                  <>
+                    <h5 className="card-title">วันที่จอง : {bookTimeDate}</h5>
+                    <h5 className="card-title">เวลาที่จอง : {bookTime}</h5>
+                    <h5 className="card-title">เหลือเวลาอีก : {timer}</h5>
+                  </>
+                )}
 
-                </>
+              </>
 
-              )}
+            )}
 
             {/* <p className="card-text">คิวของคุณ</p> */}
 
@@ -376,29 +408,48 @@ class CurrentQueue extends Component {
             {currentUser && (
               <>
                 {this.state.queueDetail.queue_type === "ต่อคิว" ? (
-                  <button type="button" className="btn btn-danger" onClick={this.handleShow}>ยกเลิกคิว</button>
+                  <>
+                    <button type="button" className="btn btn-danger" onClick={this.handleShow}>ยกเลิกคิว</button>
+                  </>
                 ) : (
-                    <>
+                  <>
                     {this.state.showEdit ? (
                       <>
-                      <button type="button" className="btn btn-success" onClick={this.handleSaveEdit}>บันทึก</button>
-                      {" "}
-                      <button type="button" className="btn btn-danger" onClick={this.handleClose}>ยกเลิกการแก้ไข</button>
+                        <button type="button" className="btn btn-success" onClick={this.handleSaveEdit}>บันทึก</button>
+                        {" "}
+                        <button type="button" className="btn btn-danger" onClick={this.handleClose}>ยกเลิกการแก้ไข</button>
                       </>
-                    ):(
+                    ) : (
                       <>
-                      <button type="button" className="btn btn-warning" onClick={this.handleShowEdit}>แก้ไข</button>
-                      {" "}
-                      <button type="button" className="btn btn-danger" onClick={this.handleShow}>ยกเลิกคิว</button>
+                        <button type="button" className="btn btn-warning" onClick={this.handleShowEdit}>แก้ไข</button>
+                        {" "}
+                        {/* <button type="button" className="btn btn-warning" onClick={this.handleShowAddTime}>ต่อเวลา</button> */}
+                        {" "}
+                        <button type="button" className="btn btn-danger" onClick={this.handleShow}>ยกเลิกคิว</button>
                       </>
                     )}
-                    </>
-                  )}
+                  </>
+                )}
               </>
             )}
 
           </div>
         </div>
+
+        <Modal show={this.state.showAddTime} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>ต่อเวลา</Modal.Title>
+          </Modal.Header>
+          <Modal.Body> ต่อเวลาอีก 5 นาที ?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              ปิด
+                    </Button>
+            <Button variant="warning" onClick={this.handleAddTimeQueue}>
+              ต่อเวลา
+                    </Button>
+          </Modal.Footer>
+        </Modal>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>

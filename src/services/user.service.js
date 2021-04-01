@@ -84,6 +84,11 @@ class UserService {
     return axios.patch(QUEUE_URL_API + 'skipQueue/' + username, queueDetail);
   }
 
+  // ต่อเวลา
+  addTimeQueue(username, queueDetail) {
+    return axios.patch(QUEUE_URL_API + 'addTimeQueue/' + username, queueDetail);
+  }
+
 }
 
 export default new UserService();
