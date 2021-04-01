@@ -172,14 +172,15 @@ class UserQueueList extends Component {
 
   }
 
-  handleRedirect = (username, businessName) => {
+  handleRedirect = (username, businessName, email) => {
     console.log("------handleRedirect------");
     console.log(username, businessName);
     console.log("------handleRedirect------");
     this.setState({
       redirect: true,
       username: username,
-      businessName: businessName
+      businessName: businessName,
+      email: email
     })
   }
   convertDate = (book_time) => {
@@ -218,7 +219,7 @@ class UserQueueList extends Component {
       return (<Redirect
         to={{
           pathname: "/currentQueue/" + this.state.businessName + "/" + this.state.username,
-          state: { business_name: this.state.businessName, username: this.state.username }
+          state: { business_name: this.state.businessName, username: this.state.username, email: this.state.email }
         }}
       />)
     }
@@ -246,6 +247,7 @@ class UserQueueList extends Component {
             <h1 className="h3" style={{ padding: "10px" }}>รายการคิวของท่าน</h1><br />
             <Container style={border2} className="text-center">
               {listQueue.map((item, i) => {
+                console.log(item);
                 return (
                   <Row sm md lg className="text-center" style={{ padding: "10px", }, border} key={i}>
                     <Col sm md style={{ marginLeft: "5%" }}>
@@ -288,7 +290,7 @@ class UserQueueList extends Component {
 
 
                     <Col sm md style={{ padding: "15px" }}>
-                      <button type="button" className="btn btn-info btn-lg" onClick={() => this.handleRedirect(item.username, item.business_name)} >รายละเอียด</button>
+                      <button type="button" className="btn btn-info btn-lg" onClick={() => this.handleRedirect(item.username, item.business_name, item.user_email)} >รายละเอียด</button>
                     </Col>
                   </Row>
                 )

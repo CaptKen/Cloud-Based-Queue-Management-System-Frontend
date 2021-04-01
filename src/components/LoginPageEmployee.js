@@ -6,7 +6,7 @@ import { Modal, Button, Container } from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 
 import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import { login , logout} from "../actions/auth";
 import SignUpPage from "./SignUpPage"
 import { getRoles } from "@testing-library/react";
 
@@ -36,6 +36,25 @@ class Login extends Component {
       showLogin: true,
       showLogout: false
     };
+  }
+
+  componentDidMount() {
+    const user = this.props.user;
+
+    
+    if (user) {
+      if(user.roles.includes("ROLE_EMPLOYEE")){
+        this.setState({
+          currentUser: user,
+          showAdminEmployee: user.roles.includes("ROLE_EMPLOYEE"),
+        });
+      }else {
+        this.props.dispatch(logout());
+        console.log("logout");
+        window.location.reload();
+      }
+      
+    }
   }
   handleShow = () => {
     console.log("show");
@@ -198,11 +217,12 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoggedIn } = state.auth;
+  const { isLoggedIn, user } = state.auth;
   const { message } = state.message;
   return {
     isLoggedIn,
-    message
+    message,
+    user
   };
 }
 

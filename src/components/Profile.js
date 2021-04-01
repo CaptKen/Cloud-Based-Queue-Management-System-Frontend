@@ -63,7 +63,8 @@ class Profile extends Component {
 
   componentDidMount() {
     const { user } = this.props;
-    authService.getProfile(user.username)
+    if(user){
+      authService.getProfile(user.username)
       .then((res) => {
         console.log(res);
         this.setState({
@@ -75,6 +76,8 @@ class Profile extends Component {
           },
         })
       })
+    }
+    
 
   }
 

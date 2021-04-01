@@ -52,7 +52,7 @@ class CurrentQueue extends Component {
         currentUser: user
       })
     }
-    if (this.props.location.state == undefined || this.props.location.state == null || this.props.location.state == '' || this.props.match.params.businessName == undefined || this.props.match.params.username == undefined) {
+    if (this.props.location.state == undefined || this.props.location.state == null || this.props.location.state == '' || this.props.match.params.businessName == undefined || this.props.match.params.businessName == '' || this.props.match.params.businessName == null || this.props.match.params.username == undefined) {
       history.push("/home");
     } else {
       const username = this.props.location.state.username;

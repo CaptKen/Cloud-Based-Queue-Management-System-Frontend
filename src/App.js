@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Switch, Route, Router } from 'react-router-dom';
+import { Switch, Route, Router, Redirect } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import GetQueue from "./components/GetQueue";
@@ -47,6 +47,7 @@ import managePromotion from './components/PromoImgManage'
 import CountDownPage from './components/CountDownPage'
 import ManageQueueTable from './components/ManageQueueTable';
 import BusinessLocation from './components/BusinessLocation';
+import NotFoundPage from './components/NotFoundPage';
 
 class App extends Component {
   constructor(props) {
@@ -114,7 +115,10 @@ class App extends Component {
     });
   };
   render() {
-    // const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const user = this.props.user;
+    console.log("showAdminBoard : ", showAdminBoard);
+    console.log("user", user);
     return (
       <div >
         <div className="myapp">
@@ -193,39 +197,82 @@ class App extends Component {
             <div>
               <Switch>
                 <Route exact path={["/", "/home"]} component={Home} />
-                <Route exact path='/setPassword/:username' render={(props) => <SetPW{...props} />} />
-                {/* <Route exact path="/login" component={Login} /> */}
-                {/* <Route exact path="/register" component={SignUpPage} /> */}
-                <Route exact path="/profile" component={Profile} />
-                {/* <Route path="/check" component={UserQueueList} /> */}
-                <Route path="/check" component={CheckQueuePage} />
-                <Route path="/user" component={BoardUser} />
-                <Route path="/mod" component={BoardModerator} />
-                <Route path="/queue/:businessName/:branch" component={Admin} />
-                <Route path="/queueList/:businessName/:branch" component={ManageQueueTable} />
-                <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
-                <Route path="/currentQueue/:businessName/:username" render={(props) => <CurrentQueue{...props} />} />
                 <Route path="/store/:businessName/:branch" component={StorePage} />
-                <Route path="/ManageQueuetable" component={ManageQueuetable} />
-
-                <Route path="/queuePage" component={ShowQueuePage}/>
-
-                <Route path="/CreateBusiness" component={CreateBusiness} />
-
+                <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
                 <Route path="/bookqueue/:businessName/:branch" component={BookQueueMain} />
-
-                <Route path="/ManageStore" component={ManageStore} />
-                <Route path="/listEmployee/:businessName/:branch" component={ListEmployees} />
-                <Route path="/manageTable/:businessName/:branch" component={ManageTable} />
-                <Route path="/manageField/:businessName/:branch" component={manageField} />
-                <Route path="/managePromotion/:businessName/:branch" component={managePromotion} />
+                <Route path="/queuePage" component={ShowQueuePage} />
+                <Route path="/check" component={CheckQueuePage} />
+                <Redirect exact from="/currentQueue/" to="/" />
+                <Route path="/currentQueue/:businessName/:username" render={(props) => <CurrentQueue{...props} />} />
+                <Route exact path="/profile"
+                  render={(props) => user ?
+                    <Profile {...props} /> : <Redirect to="/home" />
+                  } component={Profile} />
 
                 <Route path="/LoginPageAdmin" component={LoginPageAdmin} />
-                <Route path="/LoginPageManager" component={LoginPageManager} />
-                <Route path="/SignUpEmployee" component={SignUpEmployee} />
+                <Route
+                  path="/CreateBusiness"
+                  render={() => (user && user.roles.includes("ROLE_ADMIN")) ?
+                    <CreateBusiness /> : <Redirect to="/LoginPageAdmin" />
+                  } />
+
                 <Route path="/LoginPageEmployee" component={LoginPageEmployee} />
+                <Route
+                  path="/queue/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_EMPLOYEE")) ?
+                    <Admin {...props} /> : <Redirect to="/LoginPageEmployee" />
+                  } />
+                <Route
+                  path="/queueList/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_EMPLOYEE")) ?
+                    <ManageQueueTable {...props} /> : <Redirect to="/LoginPageEmployee" />
+                  } />
+
+                {/* <Route exact path='/setPassword/:username' render={(props) => <SetPW{...props} />} /> */}
+                {/* <Route exact path="/login" component={Login} /> */}
+                {/* <Route exact path="/register" component={SignUpPage} /> */}
+                {/* <Route path="/check" component={UserQueueList} /> */}
+                {/* <Route path="/user" component={BoardUser} />
+                 <Route path="/mod" component={BoardModerator} /> */}
+                {/* <Route path="/ManageQueuetable" component={ManageQueuetable} />*/}
+
+                <Route path="/LoginPageManager" component={LoginPageManager} />
+                <Route
+                  path="/ManageStore"
+                  render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
+                    <ManageStore {...props} /> : <Redirect to="/LoginPageManager" />
+                  } />
+                <Route
+                  path="/listEmployee/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
+                    <ListEmployees {...props} /> : <Redirect to="/LoginPageManager" />
+                  } />
+
+                <Route
+                  path="/manageTable/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
+                    <ManageTable {...props} /> : <Redirect to="/LoginPageManager" />
+                  } />
+
+                <Route
+                  path="/manageField/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
+                    <manageField {...props} /> : <Redirect to="/LoginPageManager" />
+                  } />
+
+                <Route
+                  path="/managePromotion/:businessName/:branch"
+                  render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
+                    <managePromotion {...props} /> : <Redirect to="/LoginPageManager" />
+                  }/>
+
+                  {/*<Route component={NotFoundPage} />*/} 
+                  <Route component={Home} />
+                
+                // <Route path="/SignUpEmployee" component={SignUpEmployee} />
+
                 <Route path="/CountDownPage" component={CountDownPage} />
-                <Route path="/BusinessLocation" component={BusinessLocation} />
+                // <Route path="/BusinessLocation" component={BusinessLocation} />
 
                 {/*
                 <Route path="/ListEmployee" component={ListEmployee} />

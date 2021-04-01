@@ -295,11 +295,11 @@ class NavigationBar extends Component {
                   <>
                     <Nav.Item><Nav.Link href="/">หน้าหลัก</Nav.Link></Nav.Item>
 
-                    <NavDropdown title="ประเภทกิจการ" id="nav-dropdown">
+                    {/* <NavDropdown title="ประเภทกิจการ" id="nav-dropdown">
                       <NavDropdown.Item href="#/">ร้านอาหาร</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.2">อาคาร</NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.3">สำนักงาน</NavDropdown.Item>
-                    </NavDropdown>
+                    </NavDropdown> */}
 
                     <Nav.Item><Nav.Link href="/check">เช็คคิว</Nav.Link></Nav.Item>
                     

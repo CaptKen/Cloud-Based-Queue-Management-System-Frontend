@@ -7,7 +7,7 @@ import { clearMessage } from "../actions/message";
 import { Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import { login , logout} from "../actions/auth";
 import SignUpPage from "./SignUpPage"
 import { getRoles } from "@testing-library/react";
 
@@ -42,11 +42,20 @@ class Login extends Component {
   componentDidMount() {
     const user = this.props.user;
 
+    
     if (user) {
-      this.setState({
-        currentUser: user,
-        showMODBoard: user.roles.includes("ROLE_MODERATOR"),
-      });
+      if(user.roles.includes("ROLE_MODERATOR")){
+        this.setState({
+          currentUser: user,
+          showAdminBoard: user.roles.includes("ROLE_MODERATOR"),
+        });
+      }else {
+        this.props.dispatch(logout());
+        console.log("logout");
+        window.location.reload();
+        
+      }
+      
     }
   }
 
@@ -211,11 +220,12 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoggedIn } = state.auth;
+  const { isLoggedIn ,user} = state.auth;
   const { message } = state.message;
   return {
     isLoggedIn,
-    message
+    message,
+    user
   };
 }
 

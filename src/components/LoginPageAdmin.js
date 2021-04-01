@@ -6,7 +6,8 @@ import { Modal, Button , Container} from "react-bootstrap";
 import { clearMessage } from "../actions/message";
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import { login ,logout} from "../actions/auth";
+
 import SignUpPage from "./SignUpPage"
 import { getRoles } from "@testing-library/react";
 
@@ -42,11 +43,20 @@ class Login extends Component {
   componentDidMount() {
     const user = this.props.user;
 
+    
     if (user) {
-      this.setState({
-        currentUser: user,
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-      });
+      if(user.roles.includes("ROLE_ADMIN")){
+        this.setState({
+          currentUser: user,
+          showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        });
+      }else {
+        this.props.dispatch(logout());
+        console.log("logout");
+        window.location.reload();
+        
+      }
+      
     }
   }
 
@@ -207,11 +217,12 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoggedIn } = state.auth;
+  const { isLoggedIn , user} = state.auth;
   const { message } = state.message;
   return {
     isLoggedIn,
     message,
+    user
   };
 }
 
