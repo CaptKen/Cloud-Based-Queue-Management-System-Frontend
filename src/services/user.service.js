@@ -89,6 +89,11 @@ class UserService {
     return axios.patch(QUEUE_URL_API + 'addTimeQueue/' + username, queueDetail);
   }
 
+  // ส่งโต๊ะ
+  getServiceNo(username, service_no, queueDetail) {
+    return axios.patch(QUEUE_URL_API + 'getServiceNo/' + username + '/' + service_no, queueDetail);
+  }
+
 }
 
 export default new UserService();
