@@ -8,8 +8,8 @@ import { useParams } from "react-router-dom";
 import businessService from "../services/business.service";
 import axios from "axios";
 import { connect } from "react-redux";
-import DropDownTable from "./DropDownTable"
-import OptionServiceList from "./OptionServiceList"
+// import DropDownTable from "./DropDownTable"
+// import OptionServiceList from "./OptionServiceList"
 import ShowQueuePage from "./ShowQueuePage"
 // import makeData from './makeData'
 
@@ -121,7 +121,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table({ columns, data }) {
+function Table({ columns, data, tableList }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -141,12 +141,22 @@ function Table({ columns, data }) {
     }),
     []
   )
+  
+  const [type, setType] = useState("")
+  const [service_no, setService_no] = useState("")
 
+  const handleChangeTableName = (e) => {
+    console.log("e.target.value : ", e.target.value);
+    const test = e.target.value;
+    setService_no(test)
+  }
 
-
-  const handleAcceptQueue = useCallback(
-    (e) => {
+  const handleAcceptQueue = (e) => {
       console.log("handleAcceptQueue : ", e.row.original);
+      const queueDetailData = e.row.original;
+      console.log("service_no : ",  service_no);
+      queueDetailData['service_no'] = service_no
+      console.log("queueDetailData : ",queueDetailData);
       var r = window.confirm("ยืนยันการรับคิว");
       if (r) {
         userService.acceptCurrentQueue(e.row.original.username, e.row.original)
@@ -158,17 +168,15 @@ function Table({ columns, data }) {
             console.error(err);
             alert("รับคิวไม่สำเร็จ")
           });
-        userService.getServiceNo(e.row.original.username, "โต๊ะ1", e.row.original)
-          .then(() => {
-          })
-          .catch((err) => {
-          });
+        // userService.getServiceNo(e.row.original.username, "โต๊ะ1", e.row.original)
+        //   .then(() => {
+        //   })
+        //   .catch((err) => {
+        //   });
       } else {
         alert("ยกเลิกการรับคิว")
       }
-    },
-    [], // Tells React to memoize regardless of arguments.
-  );
+    };
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -235,7 +243,7 @@ function Table({ columns, data }) {
     [], // Tells React to memoize regardless of arguments.
   );
 
-  const [type, setType] = useState("")
+  
 
   // Render the UI for your table
   return (
@@ -256,16 +264,26 @@ function Table({ columns, data }) {
           </div>
 
         ))}
-        {/* <select className="form-control" style={{ width: "180px", marginLeft: "170px" }} >
-          <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์</option>
+        <div className="dropdown ml-3">
+        {/* <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          กรุณาเลือกเคาเตอร์
+        </button>
+        <div className="dropdown-menu" style={{ backgroundColor: "white" }} aria-labelledby="dropdownMenuButton">
+          {tableList.map((item) => {
+            // return <a className="dropdown-item" onClick={() => this.props.acceptQueue()}>{item}</a>
+            return <a className="dropdown-item">{item}</a>
 
-          <option>เคาเตอร์1</option>
-          <option>เคาเตอร์2</option>
-          <option>เคาเตอร์3</option>
-          <option>เคาเตอร์4</option>
-          <option>เคาเตอร์5</option>
+          })}
+        </div> */}
+        <select onChange={(e) => handleChangeTableName(e)} className="form-control" style={{ width: "180px", marginLeft: "80%", position: "absolute" }}>
+          <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์ </option>
+          {tableList.map((item) => {
+            return <option className="dropdown-item" value={item} type="button" style={{ color: "Black" }}>{item}</option>
 
-        </select> */}
+          })}
+        </select>
+
+      </div>
         <br />
       </div>
       <div className="table-responsive">
@@ -410,19 +428,37 @@ function ManageQueueTable(props) {
   let [queues, setQueues] = useState([]);
   let [serviceList, setServiceList] = useState([]);
   let [services, setServices] = useState([]);
-  let [tables, setTable] = useState([]);
+  let [tableList, setTableList] = useState([]);
   useEffect(() => {
     userService.allQueueOfBusiness(businessName).then(
       res => {
         setQueues(res.data)
-        setServices(res.data[0].service_type)
+        // setServices(res.data[0].service_type)
       }
 
     )
     businessService.getBusinessDetail(businessName, branch).then(
       res => {
-        console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
+        console.log("tableDetail: " + res.data.BusinessDetail[0]);
         setServiceList(res.data.BusinessDetail[0].tableDetail)
+        const tableslist = []
+
+        res.data.BusinessDetail[0].tableDetail.forEach((item) => {
+
+          for (let i = 1; i <= parseInt(item.quantity); i++) {
+            console.log("i : ", i);
+            console.log("item.name + i : ", item.typeSymbol + i);
+            console.log("tableList : ", tableList);
+            // setTableList([...tableList, item.typeSymbol + i])
+            tableslist.push(item.typeSymbol + i)
+
+          }
+          
+        })
+        setTableList(tableslist)
+        console.log("tableslist : ", tableslist);
+          console.log("tableList : ", tableList);
+
       }
     )
   },
@@ -521,17 +557,7 @@ function ManageQueueTable(props) {
   return (
 
     <Styles className="row text-center">
-      <div>
-        <select className="form-control" style={{ width: "180px", marginLeft: "80%", position: "absolute" }}>
-          <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์</option>
-          {serviceList.map((item) => {
-            return <option class="dropdown-item" type="button" style={{ color: "Black" }} onClick={() => this.props.acceptQueue()}>{item.name}</option>
-
-          })}
-        </select>
-
-      </div>
-      <Table className="col-" columns={columns} data={queues} />
+      <Table className="col-" columns={columns} data={queues} tableList={tableList}  />
       {/* <ShowQueuePage serviceType={services}></ShowQueuePage> */}
     </Styles>
   )
