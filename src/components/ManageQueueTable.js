@@ -121,7 +121,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table({ columns, data, tableList }) {
+function Table({ columns, data, tableList, categories }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -141,10 +141,10 @@ function Table({ columns, data, tableList }) {
     }),
     []
   )
-  
+
   const [type, setType] = useState("")
   const [service_no, setService_no] = useState("")
-
+  const [notthing, setNotthing] = useState("")
   const handleChangeTableName = (e) => {
     console.log("e.target.value : ", e.target.value);
     const test = e.target.value;
@@ -152,31 +152,40 @@ function Table({ columns, data, tableList }) {
   }
 
   const handleAcceptQueue = (e) => {
-      console.log("handleAcceptQueue : ", e.row.original);
-      const queueDetailData = e.row.original;
-      console.log("service_no : ",  service_no);
-      queueDetailData['service_no'] = service_no
-      console.log("queueDetailData : ",queueDetailData);
-      var r = window.confirm("ยืนยันการรับคิว");
-      if (r) {
-        userService.acceptCurrentQueue(e.row.original.username, e.row.original)
-          .then(() => {
-            alert("รับคิวสำเร็จ")
-            window.location.reload()
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("รับคิวไม่สำเร็จ")
-          });
-        // userService.getServiceNo(e.row.original.username, "โต๊ะ1", e.row.original)
-        //   .then(() => {
-        //   })
-        //   .catch((err) => {
-        //   });
-      } else {
-        alert("ยกเลิกการรับคิว")
-      }
-    };
+    console.log("handleAcceptQueue : ", e.row.original);
+    const queueDetailData = e.row.original;
+    console.log("service_no : ", service_no);
+
+    if (service_no === "" && categories !== "ร้านอาหาร") {
+      alert("กรุณาเลือกเคาเตอร์")
+    } else {
+        queueDetailData['service_no'] = service_no
+        var r = window.confirm("ยืนยันการรับคิว");
+        if (r) {
+          userService.acceptCurrentQueue(e.row.original.username, e.row.original)
+            .then(() => {
+              setNotthing("")
+              alert("รับคิวสำเร็จ")
+              // window.location.reload()
+            })
+            .catch((err) => {
+              console.error(err);
+              alert("รับคิวไม่สำเร็จ")
+            });
+          // userService.getServiceNo(e.row.original.username, "โต๊ะ1", e.row.original)
+          //   .then(() => {
+          //   })
+          //   .catch((err) => {
+          //   });
+        } else {
+          alert("ยกเลิกการรับคิว")
+        }
+    }
+
+
+    console.log("queueDetailData : ", queueDetailData);
+
+  };
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -243,7 +252,7 @@ function Table({ columns, data, tableList }) {
     [], // Tells React to memoize regardless of arguments.
   );
 
-  
+
 
   // Render the UI for your table
   return (
@@ -264,8 +273,9 @@ function Table({ columns, data, tableList }) {
           </div>
 
         ))}
-        <div className="dropdown ml-3">
-        {/* <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {!(categories === "ร้านอาหาร") && (
+          <div className="dropdown ml-3">
+            {/* <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           กรุณาเลือกเคาเตอร์
         </button>
         <div className="dropdown-menu" style={{ backgroundColor: "white" }} aria-labelledby="dropdownMenuButton">
@@ -275,15 +285,17 @@ function Table({ columns, data, tableList }) {
 
           })}
         </div> */}
-        <select onChange={(e) => handleChangeTableName(e)} className="form-control" style={{ width: "180px", marginLeft: "80%", position: "absolute" }}>
-          <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์ </option>
-          {tableList.map((item) => {
-            return <option className="dropdown-item" value={item} type="button" style={{ color: "Black" }}>{item}</option>
+            <select onChange={(e) => handleChangeTableName(e)} className="form-control" style={{ width: "180px", marginLeft: "80%", position: "absolute" }}>
+              <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์ </option>
+              {tableList.map((item) => {
+                return <option className="dropdown-item" value={item} type="button" style={{ color: "Black" }}>{item}</option>
 
-          })}
-        </select>
+              })}
+            </select>
 
-      </div>
+          </div>
+        )}
+
         <br />
       </div>
       <div className="table-responsive">
@@ -326,10 +338,12 @@ function Table({ columns, data, tableList }) {
               // console.log(row);
               return (
                 <tr {...row.getRowProps()}
-                // className={row.cells[2].value === "cancel" && "table-danger"}
+
+                  className={row.cells[3].value === "จองเวลา" ? "table-warning" : "table-info"}
                 >
+
                   {/* className="table-danger" */}
-                  {/* {console.log("row.cells : ", row.cells[2].value)}, */}
+
                   {row.cells.map(cell => {
                     console.log(cell.column.Header === "จัดการ" ? "THIS IS BUTTON" : cell);
                     return <td {...cell.getCellProps()}>{cell.column.Header === "จัดการ" ?
@@ -342,7 +356,7 @@ function Table({ columns, data, tableList }) {
                         <DropDownTable acceptQueue={() => handleAcceptQueue(cell)} service_type={cell.column.filteredRows[0].original.service_type} business_name={cell.column.filteredRows[0].original.business_name} branch={cell.column.filteredRows[0].original.branch}></DropDownTable> */}
 
                         <Button variant="success" onClick={() => handleAcceptQueue(cell)}>รับคิว</Button>{'           '}
-                        <Button variant="outline-danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
+                        <Button variant="danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
                       </div> :
                       // cell.render('Cell')
                       cell.column.Header === "เวลา" ?
@@ -427,6 +441,7 @@ function ManageQueueTable(props) {
   console.log("storename : ", branch);
   let [queues, setQueues] = useState([]);
   let [serviceList, setServiceList] = useState([]);
+  let [categories, setCategories] = useState("");
   let [services, setServices] = useState([]);
   let [tableList, setTableList] = useState([]);
   useEffect(() => {
@@ -435,11 +450,11 @@ function ManageQueueTable(props) {
         setQueues(res.data)
         // setServices(res.data[0].service_type)
       }
-
     )
     businessService.getBusinessDetail(businessName, branch).then(
       res => {
-        console.log("tableDetail: " + res.data.BusinessDetail[0]);
+        console.log("res.data.BusinessDetail[0]: " + res.data.BusinessDetail[0].categories);
+        setCategories(res.data.BusinessDetail[0].categories)
         setServiceList(res.data.BusinessDetail[0].tableDetail)
         const tableslist = []
 
@@ -453,11 +468,11 @@ function ManageQueueTable(props) {
             tableslist.push(item.typeSymbol + i)
 
           }
-          
+
         })
         setTableList(tableslist)
         console.log("tableslist : ", tableslist);
-          console.log("tableList : ", tableList);
+        console.log("tableList : ", tableList);
 
       }
     )
@@ -557,7 +572,7 @@ function ManageQueueTable(props) {
   return (
 
     <Styles className="row text-center">
-      <Table className="col-" columns={columns} data={queues} tableList={tableList}  />
+      <Table className="col" columns={columns} data={queues} tableList={tableList} categories={categories} />
       {/* <ShowQueuePage serviceType={services}></ShowQueuePage> */}
     </Styles>
   )
