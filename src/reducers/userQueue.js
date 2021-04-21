@@ -25,6 +25,7 @@ export default function (state = initialState, action) {
 
     case VIEW_QUEUE:
       return {
+        ...state,
         queueDetail: payload
       };
 

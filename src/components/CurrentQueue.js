@@ -332,7 +332,7 @@ class CurrentQueue extends Component {
             {this.state.queueDetail.queue_type === "ต่อคิว" ? (
               <>
                 <h5 className="card-title">เหลืออีก : {this.state.allQueueWait} คิว</h5>
-                <h5 className="card-title">เวลาที่ใช้ในการรอ : {this.state.waitngTime} นาที</h5>
+                <h5 className="card-title">เวลาที่ใช้ในการรอ : {timer}</h5>
               </>
             ) : (
               <>

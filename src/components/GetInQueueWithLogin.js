@@ -28,7 +28,7 @@ class GetInQueueWithLogin extends Component {
         username: this.props.currentUser.username,
         queue_no: '',
         queue_type: 'ต่อคิว',
-        status: 'waiting',
+        status: 'Waiting',
         email: this.props.currentUser.email,
         business_name: this.props.storeName,
         branch: this.props.branch,
@@ -47,7 +47,7 @@ class GetInQueueWithLogin extends Component {
         username: this.props.currentUser.username,
         business_name: this.props.storeName,
         queue_type: 'ต่อคิว',
-        status: 'waiting',
+        status: 'Waiting',
         queueDetail: {
           ["ชื่อ-นามสกุล"]: this.props.currentUser.username,
           ["เบอร์โทรศัพท์"]: this.props.currentUser.telephone,
@@ -83,7 +83,13 @@ class GetInQueueWithLogin extends Component {
     console.log(e.target.value);
     console.log("e.target ", e.target);
     const value = e.target.value;
-
+    var serviceTypeDesc;
+    this.state.serviceList.forEach((item) => {
+      console.log("serviceList item : ", item);
+      if (value === item.typeSymbol) {
+        serviceTypeDesc = item.name
+      }
+    })
     let updateForm = { ...this.state.formElements.queueDetail };
     updateForm['service'] = value;
 
@@ -92,6 +98,7 @@ class GetInQueueWithLogin extends Component {
       formElements: {
         ...this.state.formElements,
         queue_no: value,
+        serviceTypeDesc: serviceTypeDesc,
         queueDetail: updateForm
       }
     })

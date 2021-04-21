@@ -120,7 +120,7 @@ class GetQueueHeader extends Component {
                                 <Button variant="success" style={{ width: "100%" }}>จองเวลา</Button>
                             </Link>
                             <br />
-                            <p style={{ display: "inline-flex" }}>คิวในระบบ : {this.state.queueDetail.allQueueWait} คิว</p>
+                            <p style={{ display: "inline-flex" }}>จำนวนคิวก่อนหน้า : {this.state.queueDetail.allQueueWait} คิว</p>
                             <p style={{ display: "inline-flex" }}>ระยะเวลารอคิว : {this.state.queueDetail.wait_time} นาที </p>
                             <Link to={"/getqueue/" + this.state.storeName + "/" + this.state.branch}>
                                 <Button variant="success" style={{ width: "100%" }} >ต่อคิว</Button>

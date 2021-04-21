@@ -42,7 +42,7 @@ class BookQueue extends Component {
         username: this.props.currentUser.username,
         queue_no: '',
         queue_type: 'จองเวลา',
-        status: 'waiting',
+        status: 'Waiting',
         email: this.props.currentUser.email,
         business_name: this.props.storeName,
         branch: this.props.branch,
@@ -61,7 +61,7 @@ class BookQueue extends Component {
         username: this.props.currentUser.username,
         business_name: this.props.storeName,
         queue_type: 'จองเวลา',
-        status: 'waiting',
+        status: 'Waiting',
         queueDetail: {
           ["ชื่อ-นามสกุล"]: this.props.currentUser.username,
           ["เบอร์โทรศัพท์"]: this.props.currentUser.telephone,
@@ -104,7 +104,13 @@ class BookQueue extends Component {
     console.log(e.target.value);
     console.log("e.target ", e.target);
     const value = e.target.value;
-
+    var serviceTypeDesc;
+    this.state.serviceList.forEach((item) => {
+      console.log("serviceList item : ", item);
+      if (value === item.typeSymbol) {
+        serviceTypeDesc = item.name
+      }
+    })
     let updateForm = { ...this.state.formElements.queueDetail };
     updateForm['service'] = value;
 
@@ -113,6 +119,7 @@ class BookQueue extends Component {
       formElements: {
         ...this.state.formElements,
         queue_no: value,
+        serviceTypeDesc: serviceTypeDesc,
         queueDetail: updateForm
       }
     })

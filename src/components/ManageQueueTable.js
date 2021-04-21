@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { useTable, usePagination, useFilters, useAsyncDebounce, useSortBy, useGlobalFilter } from 'react-table'
 import userService from "../services/user.service";
 import { matchSorter } from 'match-sorter'
-import { Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import businessService from "../services/business.service";
+import { clearMessage, setMessage } from "../actions/message";
 import axios from "axios";
 import { connect } from "react-redux";
 // import DropDownTable from "./DropDownTable"
@@ -121,7 +122,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table({ columns, data, tableList, categories }) {
+function Table({ columns, data, tableList, categories, forceUpdate, handleShow, handleShowSkip }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -142,51 +143,61 @@ function Table({ columns, data, tableList, categories }) {
     []
   )
 
+
   const [type, setType] = useState("")
   const [service_no, setService_no] = useState("")
-  const [notthing, setNotthing] = useState("")
+  const [, updateState] = React.useState();
+  let [isLoading, setIsLoading] = useState(false);
+  const [isShowDetail, setIsShowDetail] = useState(false);
+  const [details, setDetails] = useState([]);
+  let [isShowMarkDone, setShowMarkDone] = useState(false);
+
   const handleChangeTableName = (e) => {
     console.log("e.target.value : ", e.target.value);
     const test = e.target.value;
+    console.log("test : ", test);
     setService_no(test)
   }
 
-  const handleAcceptQueue = (e) => {
-    console.log("handleAcceptQueue : ", e.row.original);
-    const queueDetailData = e.row.original;
-    console.log("service_no : ", service_no);
-
-    if (service_no === "" && categories !== "ร้านอาหาร") {
-      alert("กรุณาเลือกเคาเตอร์")
-    } else {
-        queueDetailData['service_no'] = service_no
-        var r = window.confirm("ยืนยันการรับคิว");
-        if (r) {
-          userService.acceptCurrentQueue(e.row.original.username, e.row.original)
-            .then(() => {
-              setNotthing("")
-              alert("รับคิวสำเร็จ")
-              // window.location.reload()
-            })
-            .catch((err) => {
-              console.error(err);
-              alert("รับคิวไม่สำเร็จ")
-            });
-          // userService.getServiceNo(e.row.original.username, "โต๊ะ1", e.row.original)
-          //   .then(() => {
-          //   })
-          //   .catch((err) => {
-          //   });
-        } else {
-          alert("ยกเลิกการรับคิว")
-        }
-    }
-
-
-    console.log("queueDetailData : ", queueDetailData);
-
+  const handleClose = () => {
+    setIsShowDetail(false)
+    setShowMarkDone(false)
   };
 
+  const handleCloseMarkDone = () => {
+    setShowMarkDone(false)
+  };
+
+  const handleShowDetail = (e) => {
+    console.log("setDetails : ", e);
+    setDetails(e)
+    setIsShowDetail(true)
+  };
+
+  const handleShowMarkDone = (details) => {
+    console.log("showMarkDone : ", details);
+    setShowMarkDone(true)
+  };
+
+  const handleMarkAsDone = () => {
+    setIsLoading(true)
+    const queueDetailData = details;
+    userService.markQueueAsDone(details.username, details)
+      .then(() => {
+        setIsLoading(false)
+        alert("สิ้นสุดการให้บริการคิว : " + details.queue_no + " สำเร็จ")
+        handleClose()
+        forceUpdate()
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsLoading(false)
+        alert("เกิดข้อผิดพลาด/ไม่สามารถสิ้นสุดการให้บริการได้")
+        handleClose()
+        forceUpdate()
+      });
+    console.log("queueDetailData : ", queueDetailData);
+  }
   const defaultColumn = React.useMemo(
     () => ({
       // Let's set up our default Filter UI
@@ -223,6 +234,8 @@ function Table({ columns, data, tableList, categories }) {
     initialState: { pageIndex: 0 },
     defaultColumn, // Be sure to pass the defaultColumn option
     filterTypes,
+    autoResetFilters: false,
+
   },
     useFilters,
     useSortBy,
@@ -230,27 +243,27 @@ function Table({ columns, data, tableList, categories }) {
 
   )
 
-  // ลองเอามาใส่ในนี้เพราะเผื่อจะทำ modal สวยๆ
-  const handleCancelQueue = useCallback(
-    (e) => {
-      console.log("handleCancelQueue : ", e.row.original);
-      var r = window.confirm("ยืนยันการยกเลิกคิว");
-      if (r) {
-        userService.cancelQueue(e.row.original.username, e.row.original)
-          .then(() => {
-            alert("ยกเลิกคิวสำเร็จ")
-            window.location.reload()
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("ยกเลิกไม่คิวสำเร็จ")
-          });
-      } else {
-        alert("ยกเลิกการยกเลิกคิว")
-      }
-    },
-    [], // Tells React to memoize regardless of arguments.
-  );
+  // // ลองเอามาใส่ในนี้เพราะเผื่อจะทำ modal สวยๆ
+  // const handleCancelQueue = useCallback(
+  //   (e) => {
+  //     console.log("handleCancelQueue : ", e.row.original);
+  //     var r = window.confirm("ยืนยันการยกเลิกคิว");
+  //     if (r) {
+  //       userService.cancelQueue(e.row.original.username, e.row.original)
+  //         .then(() => {
+  //           alert("ยกเลิกคิวสำเร็จ")
+  //           window.location.reload()
+  //         })
+  //         .catch((err) => {
+  //           console.error(err);
+  //           alert("ยกเลิกไม่คิวสำเร็จ")
+  //         });
+  //     } else {
+  //       alert("ยกเลิกการยกเลิกคิว")
+  //     }
+  //   },
+  //   [], // Tells React to memoize regardless of arguments.
+  // );
 
 
 
@@ -346,26 +359,40 @@ function Table({ columns, data, tableList, categories }) {
 
                   {row.cells.map(cell => {
                     console.log(cell.column.Header === "จัดการ" ? "THIS IS BUTTON" : cell);
+                    console.log("cell : ", cell)
                     return <td {...cell.getCellProps()}>{cell.column.Header === "จัดการ" ?
-                      <div>
-                        {/* <OptionServiceList service_type={cell.column.filteredRows[0].original.service_type} business_name={cell.column.filteredRows[0].original.business_name} branch={cell.column.filteredRows[0].original.branch}></OptionServiceList> */}
-                        {/* <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          รับคิว
-                          </button>
-                        <DropDownTable acceptQueue={() => handleAcceptQueue(cell)} service_type={cell.column.filteredRows[0].original.service_type} business_name={cell.column.filteredRows[0].original.business_name} branch={cell.column.filteredRows[0].original.branch}></DropDownTable> */}
+                      cell.row.original.status === "Waiting" ?
+                        (
+                          <div>
+                            <Button variant="success" onClick={() => handleShow(cell.row.original, service_no)}>รับคิว</Button>{'    '}
+                            <Button variant="warning" onClick={() => handleShowSkip(cell.row.original)}>ข้ามคิว</Button>
+                          </div>
+                        ) : (
+                          cell.row.original.status === "Skip" ? (
+                            <div>
+                              <Button variant="success" onClick={() => handleShow(cell.row.original, service_no)}>รับคิว</Button>
+                            </div>
+                          ) : (
+                            <div>
+                              <Button style={{ width: "fit-content", margin: "auto" }} variant="primary" onClick={() => handleShowDetail(cell.row.original)}>รายละเอียด</Button>
+                            </div>
+                          )
 
-                        <Button variant="success" onClick={() => handleAcceptQueue(cell)}>รับคิว</Button>{'           '}
-                        <Button variant="danger" onClick={() => handleCancelQueue(cell)}>ยกเลิกคิว</Button>
-                      </div> :
+                        ) :
                       // cell.render('Cell')
                       cell.column.Header === "เวลา" ?
                         (
                           console.log("เวลา : ", cell.render('Cell').props.cell.value),
                           cell.render('Cell').props.cell.value ? new Date(cell.render('Cell').props.cell.value).toLocaleString('th-TH') : "-"
                         ) : (
-
-                          cell.render('Cell'))}
+                          cell.column.Header === "สถานะ" ? (
+                            <div style={{ color: cell.row.original.status === "Skip" ? "black" : 'white', paddingInline: "5px", width: "fit-content", borderColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545" : "#6C757D", borderWidth: "2px", backgroundColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545": "#6C757D", borderRadius: "20px 20px 20px 20px" }}>
+                            {cell.render('Cell')}
+                          </div>
+                          ):(
+                            cell.render('Cell')
+                          )
+                        )}
                     </td>
                     //   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                     // return <td {...cell.getCellProps()}>eiei</td>
@@ -428,6 +455,131 @@ function Table({ columns, data, tableList, categories }) {
         </select>
       </div>
       {/* <pre>{JSON.stringify(state, null, 2)}</pre>   */}
+
+      <Modal show={isShowDetail} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {isShowMarkDone ? "สิ้นสุดการให้บริการคิว" : "ข้อมูลคิว " + details.queue_no}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ alignSelf: isShowMarkDone && "center" }}>
+          {isShowMarkDone ? (
+            isLoading ? (
+              <Spinner className="m-3" animation="border" style={{ alignSelf: "center" }} variant="primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : (
+              <>
+                <p>ต้องการสิ้นสุดการให้บริการคิว : {details.queue_no} หรือไม่ ?</p>
+              </>
+            )
+
+          ) : (
+            <>
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    หมายเลขคิว. :
+                  </strong>
+
+                </div>
+                <div className="col">
+                  {details.queue_no}
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    ชื่อผู้ใช้บริการ :
+                  </strong>
+
+                </div>
+                <div className="col">
+                  {details.username}
+                </div>
+              </div>
+
+              {/* <div className="row">
+            <div className="col">
+            เบอร์โทรศัพท์ :
+            </div>
+            <div className="col">
+              {details.queueDetail.เบอร์โทรศัพท์}
+            </div>
+          </div> */}
+
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    Email :
+                    </strong>
+
+                </div>
+                <div className="col">
+                  {details.email}
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    ประเภทบริการที่เข้าใช้ :
+                    </strong>
+
+                </div>
+                <div className="col">
+                  {details.serviceTypeDesc}
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    ช่องบริการ :
+                    </strong>
+
+                </div>
+                <div className="col">
+                  {details.service_no}
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <strong>
+                    สถานะการใช้บริการ :
+                    </strong>
+
+                </div>
+                <div className="col">
+                  <p style={{ color: 'white', paddingInline: "5px", width: "fit-content", borderColor: details.status === "Done" ? "#28A745" : details.status === "Cancel" ? "#DC3545" : "#007BFF", borderWidth: "2px", backgroundColor: details.status === "Done" ? "#28A745" : details.status === "Cancel" ? "#DC3545" : "#007BFF", borderRadius: "20px 20px 20px 20px" }}>{details.status}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          {isShowMarkDone ? (
+            <>
+              <Button variant="success" onClick={handleMarkAsDone}> ยืนยัน</Button>
+              <Button variant="danger" onClick={handleCloseMarkDone}> ยกเลิก</Button>
+            </>
+          ) : (
+            details.status === "In Process" ? (
+              <>
+                <Button variant="success" onClick={() => handleShowMarkDone(details)}> เสร็จสิ้นการให้บริการ</Button>
+                <Button variant="danger" onClick={handleClose}> ปิด</Button>
+              </>
+            ) : (
+              <Button variant="danger" onClick={handleClose}> ปิด</Button>
+            )
+
+          )}
+
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
@@ -441,13 +593,107 @@ function ManageQueueTable(props) {
   console.log("storename : ", branch);
   let [queues, setQueues] = useState([]);
   let [serviceList, setServiceList] = useState([]);
+  let [event, setEvent] = useState([]);
+  let [tableName, setTable] = useState([]);
   let [categories, setCategories] = useState("");
-  let [services, setServices] = useState([]);
+  let [isLoading, setIsLoading] = useState(false);
+  let [isShow, setShow] = useState(false);
+  let [isShowSkip, setShowSkip] = useState(false);
   let [tableList, setTableList] = useState([]);
+  const [update, updateState] = React.useState(false);
+  let [disableButton, setDisableButton] = useState(true);
+  let [message, setMessage] = useState("");
+  let [successful, setSuccessful] = useState(false);
+
+  const forceUpdate = () => {
+    updateState(!update)
+  }
+
+  const handleAcceptQueue = () => {
+    setIsLoading(true)
+    setDisableButton(true)
+    console.log("handleAcceptQueue : ", event);
+    const queueDetailData = event;
+    console.log("service_no : ", tableName);
+    queueDetailData['service_no'] = tableName
+    userService.acceptCurrentQueue(event.username, event)
+      .then(() => {
+        setIsLoading(false)
+        alert("รับคิวสำเร็จ")
+        updateState(!update)
+        setShow(false)
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        console.error(err);
+        alert("รับคิวไม่สำเร็จ")
+        updateState(!update)
+        setShow(false)
+      });
+    console.log("queueDetailData : ", queueDetailData);
+  };
+
+  const handleSkipQueue = () => {
+    setIsLoading(true)
+    console.log("handleAcceptQueue : ", event);
+    const queueDetailData = event;
+    userService.skipCurrentQueue(event.username, event)
+      .then(() => {
+        setIsLoading(false)
+        alert("ข้ามคิวสำเร็จ")
+        setIsLoading(true)
+        setShowSkip(false)
+        updateState(!update)
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        console.error(err);
+        alert("ข้ามคิวไม่สำเร็จ")
+        setShowSkip(false)
+        updateState(!update)
+      });
+    console.log("queueDetailData : ", queueDetailData);
+  };
+
+  const handleClose = (e) => {
+    setShow(false)
+    setShowSkip(false)
+    setIsLoading(false)
+  };
+
+  const handleShow = (e, tableName) => {
+    setIsLoading(false)
+    setTable(tableName)
+    console.log("setEvent : ", e);
+    console.log("e.queueDetail['queue_no'] : ", e.queue_no);
+    console.log("tableName : ", tableName);
+    setEvent(e)
+    if ((tableName === "" && categories !== "ร้านอาหาร") || (tableName === "กรุณาเลือกเคาเตอร์" && categories !== "ร้านอาหาร")) {
+      setMessage("กรุณาเลือกเคาเตอร์ที่รับผิดชอบ")
+      setDisableButton(true)
+    } else {
+      setSuccessful(true)
+      setDisableButton(false)
+      setMessage("ต้องการเรียกคิว " + e.queue_no + " หรือไม่ ?")
+    }
+    setShow(true)
+  };
+
+  const handleShowSkip = (e) => {
+    setIsLoading(false)
+    console.log("setEvent : ", e);
+    setEvent(e)
+    setSuccessful(true)
+    setDisableButton(false)
+    setMessage("ต้องการข้ามคิว " + e.queue_no + " หรือไม่")
+    setShowSkip(true)
+  };
+
   useEffect(() => {
     userService.allQueueOfBusiness(businessName).then(
       res => {
         setQueues(res.data)
+        console.log("setQueue : ", res.data);
         // setServices(res.data[0].service_type)
       }
     )
@@ -466,9 +712,7 @@ function ManageQueueTable(props) {
             console.log("tableList : ", tableList);
             // setTableList([...tableList, item.typeSymbol + i])
             tableslist.push(item.typeSymbol + i)
-
           }
-
         })
         setTableList(tableslist)
         console.log("tableslist : ", tableslist);
@@ -477,9 +721,7 @@ function ManageQueueTable(props) {
       }
     )
   },
-
-
-    []);
+    [update]);
 
   console.log("prop +++++++++", props);
   const columns = React.useMemo(
@@ -512,7 +754,7 @@ function ManageQueueTable(props) {
           },
           {
             Header: 'ประเภทบริการ',
-            accessor: 'service_type',
+            accessor: 'serviceTypeDesc',
             disableSortBy: true,
             Filter: SelectColumnFilter,
           },
@@ -572,8 +814,68 @@ function ManageQueueTable(props) {
   return (
 
     <Styles className="row text-center">
-      <Table className="col" columns={columns} data={queues} tableList={tableList} categories={categories} />
+      <Table className="col" columns={columns} data={queues} tableList={tableList} categories={categories} forceUpdate={forceUpdate} handleShow={handleShow} handleShowSkip={handleShowSkip} />
       {/* <ShowQueuePage serviceType={services}></ShowQueuePage> */}
+
+      <Modal show={isShow} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>ยืนยันการเรียกคิว</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ alignSelf: "center" }}>
+          {isLoading ? (
+            <Spinner className="m-3" animation="border" style={{ alignSelf: "center" }} variant="primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          ) : message && successful ? (
+            <div>
+              {message}
+            </div>
+          ) : (
+            <div className="alert alert-danger" role="alert">
+              {message}
+            </div>
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            ยกเลิก
+              </Button>
+          <Button variant="success" onClick={handleAcceptQueue} disabled={disableButton && !isLoading}>
+            ยืนยัน
+              </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={isShowSkip} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>ยืนยันการข้ามคิว</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ alignSelf: "center" }}>
+          {isLoading ? (
+            <Spinner className="m-3" animation="border" style={{ alignSelf: "center" }} variant="primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          ) : message && successful ? (
+            <div>
+              {message}
+            </div>
+          ) : (
+            <div className="alert alert-danger" role="alert">
+              {message}
+            </div>
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            ยกเลิก
+              </Button>
+          <Button variant="success" onClick={handleSkipQueue} disabled={isLoading}>
+            ยืนยัน
+              </Button>
+        </Modal.Footer>
+      </Modal>
     </Styles>
   )
 }

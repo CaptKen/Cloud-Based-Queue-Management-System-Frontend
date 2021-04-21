@@ -24,7 +24,7 @@ class GetInQueue extends Component {
       formElements: {
         queue_no: '',
         queue_type: 'ต่อคิว',
-        status: 'waiting',
+        status: 'Waiting',
         business_name: this.props.storeName,
         branch: this.props.branch,
         username: '',
@@ -106,7 +106,13 @@ class GetInQueue extends Component {
     console.log(e.target.value);
     console.log("e.target ", e.target);
     const value = e.target.value;
-
+    var serviceTypeDesc;
+    this.state.serviceList.forEach((item) => {
+      console.log("serviceList item : ", item);
+      if (value === item.typeSymbol) {
+        serviceTypeDesc = item.name
+      }
+    })
     let updateForm = { ...this.state.formElements.queueDetail };
     updateForm['service'] = value;
 
@@ -115,6 +121,7 @@ class GetInQueue extends Component {
       formElements: {
         ...this.state.formElements,
         queue_no: value,
+        serviceTypeDesc: serviceTypeDesc,
         queueDetail: updateForm
       }
     })
