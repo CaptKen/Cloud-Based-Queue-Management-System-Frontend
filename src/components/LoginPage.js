@@ -162,9 +162,9 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { Modal, Button } from "react-bootstrap";
 import { clearMessage } from "../actions/message";
-
+import { isEmail } from "validator";
 import { connect } from "react-redux";
-import { login } from "../actions/auth";
+import { login, forgetpass } from "../actions/auth";
 import SignUpPage from "./SignUpPage"
 
 const required = (value) => {
@@ -177,20 +177,34 @@ const required = (value) => {
   }
 };
 
+const email = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        อีเมลไม่ถูกต้อง!
+      </div>
+    );
+  }
+};
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-
+    this.showForgetPassword = this.showForgetPassword.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.handleForgetPassword = this.handleForgetPassword.bind(this);
     this.state = {
       username: "",
       password: "",
+      email: "",
       loading: false,
       show: false,
       showLogin: true,
-      showLogout: false
+      showLogout: false,
+      showForgetPassword: false,
     };
   }
   handleShow = () => {
@@ -216,6 +230,13 @@ class Login extends Component {
     this.props.dispatch(clearMessage()); // clear message when changing location
   }
 
+  showForgetPassword = () => {
+    this.setState({
+      showForgetPassword: !this.state.showForgetPassword
+    });
+    this.props.dispatch(clearMessage()); // clear message when changing location
+  }
+
   toggleMenu() {
     this.setState({ menu: !this.state.menu })
   }
@@ -229,6 +250,12 @@ class Login extends Component {
   onChangePassword(e) {
     this.setState({
       password: e.target.value,
+    });
+  }
+
+  onChangeEmail(e) {
+    this.setState({
+      email: e.target.value,
     });
   }
 
@@ -261,6 +288,33 @@ class Login extends Component {
     }
   }
 
+  handleForgetPassword(e) {
+    e.preventDefault();
+    this.setState({
+      loading: true,
+    });
+    const { dispatch } = this.props;
+    this.form.validateAll();
+    if (this.checkBtn.context._errors.length === 0) {
+      console.log("this.state.email : ", this.state.email);
+      dispatch(forgetpass(this.state.email))
+        .then(() => {
+          this.setState({
+            loading: false
+          });
+        })
+        .catch(() => {
+          this.setState({
+            loading: false
+          });
+        });
+    } else {
+      this.setState({
+        loading: false,
+      });
+    }
+  }
+
   render() {
     const { isLoggedIn, message } = this.props;
     // if (isLoggedIn) {
@@ -269,7 +323,6 @@ class Login extends Component {
 
     return (
       <div>
-
         <Button style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d" }} onClick={this.handleShow}>
           เข้าสู่ระบบ
       </Button>
@@ -282,8 +335,59 @@ class Login extends Component {
           </Modal.Header>
           <Modal.Body>
             {this.state.showLogin ? (
-              <div>
+              this.state.showForgetPassword ? (
+                <>
+                <Form
+                  onSubmit={this.handleForgetPassword}
+                  ref={(c) => {
+                    this.form = c;
+                  }}
+                >
+                  <div className="form-group">
+                  <label htmlFor="email" className="form-inline">กรุณากรอกอีเมลล์ที่ลงทะเบียนไว้กับระบบ<p style={{color:"red"}}>*</p></label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChangeEmail}
+                    validations={[required, email]}
+                  />
+                </div>
 
+                  <div className="form-group">
+                    <button
+                      className="btn btn-block"
+                      disabled={this.state.loading}
+                      style={{ backgroundColor: "#b38f2d", borderColor: "#b38f2d", color: "white" }}
+                    >
+                      {this.state.loading && (
+                        <span className="spinner-border spinner-border-sm"></span>
+                      )}
+                      <span>ยืนยัน</span>
+                    </button>
+                  </div>
+
+                  {message && (
+                    <div className="form-group">
+                      <div className="alert alert-warning" role="alert">
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                  <CheckButton
+                    style={{
+                      display: "none",
+                    }}
+                    ref={(c) => {
+                      this.checkBtn = c;
+                    }}
+                  />
+                </Form>
+                <Button style={{float: "right", padding: "0", borderWidth : "0"}} variant="link" onClick={this.showForgetPassword}>เข้าสู่ระบบ</Button>
+                </>
+              ):(
+                <div>
                 <Form
                   onSubmit={this.handleLogin}
                   ref={(c) => {
@@ -291,7 +395,7 @@ class Login extends Component {
                   }}
                 >
                   <div className="form-group">
-                    <label htmlFor="username">ชื่อผู้ใช้งาน*</label>
+                    <label htmlFor="username" className="form-inline">ชื่อผู้ใช้งาน<p style={{color:"red"}}>*</p></label>
                     <Input
                       type="text"
                       className="form-control"
@@ -303,7 +407,7 @@ class Login extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="password">รหัสผ่าน*</label>
+                    <label htmlFor="password" className="form-inline">รหัสผ่าน<p style={{color:"red"}}>*</p></label>
                     <Input
                       type="password"
                       className="form-control"
@@ -343,6 +447,7 @@ class Login extends Component {
                     }}
                   />
                 </Form>
+                <Button style={{float: "right", padding: "0", borderWidth : "0"}} variant="link" onClick={this.showForgetPassword}>ลืมรหัสผ่าน ?</Button>
                 {/* <h5 className="text-right">No Account ? <Link to={"/register"}>
                         Sign Up
                       </Link></h5> */}
@@ -350,6 +455,8 @@ class Login extends Component {
                   สมัครสมาชิก
               </Button> */}
               </div>
+              )
+              
             ) : <SignUpPage />}
 
           </Modal.Body>

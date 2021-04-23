@@ -266,12 +266,12 @@ class Profile extends Component {
 
                 <div className="form-inline">
                   {/* <label className="col-6 form-label" style={{ textAlignLast: 'right'}}><strong>รหัสผ่านเใหม่*</strong></label> */}
-                  <strong className="col-6 form-label" style={{  textAlignLast: 'right' }}>รหัสผ่านเใหม่* :</strong>
+                  <strong className="col-6 form-label" style={{  textAlignLast: 'right' }}>รหัสผ่านใหม่* :</strong>
                   <Input
                     type="password"
                     className=" col-6 form-control"
                     name="newPassword"
-                    placeholder="รหัสผ่านเใหม่"
+                    placeholder="รหัสผ่านใหม่"
                     tabIndex="2"
                     required
                     onChange={this.onChangeNewPassword}
@@ -282,12 +282,12 @@ class Profile extends Component {
 
                 <div className="form-inline">
                   {/* <label className="col-6 form-label" style={{ textAlignLast: 'right' }}><strong>ยืนยันรหัสผ่านเใหม่*</strong></label> */}
-                  <strong className="col-6 form-label" style={{  textAlignLast: 'right' }}>ยืนยันรหัสผ่านเใหม่* :</strong>
+                  <strong className="col-6 form-label" style={{  textAlignLast: 'right' }}>ยืนยันรหัสผ่านใหม่* :</strong>
                   <Input
                     type="password"
                     className=" col-6 form-control"
                     name="newPassword"
-                    placeholder="ยืนยันรหัสผ่านเใหม่"
+                    placeholder="ยืนยันรหัสผ่านใหม่"
                     tabIndex="3"
                     required
                     onChange={this.onChangeVNewPassword}

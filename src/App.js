@@ -40,7 +40,7 @@ import ShowQueuePage from './components/ShowQueuePage'
 import SetPW from './components/SetPw'
 import BookQueueMain from './components/BookQueueMain';
 import DetailEmployee from './components/DetailEmployee';
-
+import ChangePassword from './components/ChangePassword';
 import ManageTable from './components/TableManage'
 import ManageField from './components/FieldManage'
 import ManagePromotion from './components/PromoImgManage'
@@ -202,6 +202,7 @@ class App extends Component {
                 <Route path="/bookqueue/:businessName/:branch" component={BookQueueMain} />
                 <Route path="/queuePage" component={ShowQueuePage} />
                 <Route path="/check" component={CheckQueuePage} />
+                <Route path="/cpw/:e" component={ChangePassword} />
                 <Redirect exact from="/currentQueue/" to="/" />
                 <Route path="/currentQueue/:businessName/:username" render={(props) => <CurrentQueue{...props} />} />
                 <Route exact path="/profile"
