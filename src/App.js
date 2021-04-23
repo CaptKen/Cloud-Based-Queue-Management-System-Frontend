@@ -42,8 +42,8 @@ import BookQueueMain from './components/BookQueueMain';
 import DetailEmployee from './components/DetailEmployee';
 
 import ManageTable from './components/TableManage'
-import manageField from './components/FieldManage'
-import managePromotion from './components/PromoImgManage'
+import ManageField from './components/FieldManage'
+import ManagePromotion from './components/PromoImgManage'
 import CountDownPage from './components/CountDownPage'
 import ManageQueueTable from './components/ManageQueueTable';
 import BusinessLocation from './components/BusinessLocation';
@@ -257,13 +257,13 @@ class App extends Component {
                 <Route
                   path="/manageField/:businessName/:branch"
                   render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
-                    <manageField {...props} /> : <Redirect to="/LoginPageManager" />
+                    <ManageField {...props} /> : <Redirect to="/LoginPageManager" />
                   } />
 
                 <Route
                   path="/managePromotion/:businessName/:branch"
                   render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
-                    <managePromotion {...props} /> : <Redirect to="/LoginPageManager" />
+                    <ManagePromotion {...props} /> : <Redirect to="/LoginPageManager" />
                   }/>
 
                   {/*<Route component={NotFoundPage} />*/} 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, forwardRef } from 'react'
+import "bootstrap/dist/css/bootstrap.min.css";
 import styled from 'styled-components'
 import { useTable, usePagination, useFilters, useAsyncDebounce, useSortBy, useGlobalFilter } from 'react-table'
 import userService from "../services/user.service";
@@ -6,6 +7,8 @@ import { matchSorter } from 'match-sorter'
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import businessService from "../services/business.service";
+import DatePicker from 'react-datepicker';
+import { addDays, subDays } from "date-fns";
 import { clearMessage, setMessage } from "../actions/message";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -16,10 +19,11 @@ import ShowQueuePage from "./ShowQueuePage"
 
 const Styles = styled.div`
   padding: 1rem;
-
+margin: auto;
   table {
     border-spacing: 0;
     border: 1px solid black;
+    text-align: center;
 
     
 
@@ -122,7 +126,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-function Table({ columns, data, tableList, categories, forceUpdate, handleShow, handleShowSkip }) {
+function Table({ columns, data, forceUpdate, handleShow, handleShowSkip }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -145,19 +149,11 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
 
 
   const [type, setType] = useState("")
-  const [service_no, setService_no] = useState("")
   const [, updateState] = React.useState();
   let [isLoading, setIsLoading] = useState(false);
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [details, setDetails] = useState([]);
   let [isShowMarkDone, setShowMarkDone] = useState(false);
-
-  const handleChangeTableName = (e) => {
-    console.log("e.target.value : ", e.target.value);
-    const test = e.target.value;
-    console.log("test : ", test);
-    setService_no(test)
-  }
 
   const handleClose = () => {
     setIsShowDetail(false)
@@ -178,6 +174,24 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
     console.log("showMarkDone : ", details);
     setShowMarkDone(true)
   };
+
+  const [dateForFilter, setDateforfilter] = useState(new Date())
+  // const setDate = (date) => {
+  //   console.log("setDate : ", date);
+  //   setDateforfilter(data)
+  // };
+
+  const isPassDate = (date) => {
+    return subDays(new Date(), 1) > date
+  }
+
+  const ExampleCustomInput = forwardRef(
+    ({ value, onClick }, ref) => (
+      <button className="btn btn-secondary" onClick={onClick} ref={ref}>
+        <i className="far fa-calendar-alt ml-2 mr-2"></i>{value}
+      </button>
+    ),
+  );
 
   const handleMarkAsDone = () => {
     setIsLoading(true)
@@ -270,7 +284,7 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
   // Render the UI for your table
   return (
     <div className="container" style={{ margin: "auto" }}>
-      <div style={{ display: "-webkit-inline-box" }}>
+      <div className="d-flex justify-content-center" >
         {/* <div>
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
@@ -284,32 +298,8 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
               {column.Header}
             </label>
           </div>
-
         ))}
-        {!(categories === "ร้านอาหาร") && (
-          <div className="dropdown ml-3">
-            {/* <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          กรุณาเลือกเคาเตอร์
-        </button>
-        <div className="dropdown-menu" style={{ backgroundColor: "white" }} aria-labelledby="dropdownMenuButton">
-          {tableList.map((item) => {
-            // return <a className="dropdown-item" onClick={() => this.props.acceptQueue()}>{item}</a>
-            return <a className="dropdown-item">{item}</a>
 
-          })}
-        </div> */}
-            <select onChange={(e) => handleChangeTableName(e)} className="form-control" style={{ width: "180px", marginLeft: "80%", position: "absolute" }}>
-              <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกเคาเตอร์ </option>
-              {tableList.map((item) => {
-                return <option className="dropdown-item" value={item} type="button" style={{ color: "Black" }}>{item}</option>
-
-              })}
-            </select>
-
-          </div>
-        )}
-
-        <br />
       </div>
       <div className="table-responsive">
         <table className="table" style={{ backgroundColor: "snow", borderRadius: "10px" }} {...getTableProps()}>
@@ -318,6 +308,7 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
               <tr {...headerGroup.getHeaderGroupProps()} >
                 {headerGroup.headers.map(column => (
                   <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+
                     {/* {column.render('Header') === "สถานะ" || column.render('Header') === "ประเภทคิว" ? (
                     <>
                       <div>{column.canFilter ? column.render('Filter') : null}</div>
@@ -352,7 +343,7 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
               return (
                 <tr {...row.getRowProps()}
 
-                  className={row.cells[3].value === "จองเวลา" ? "table-warning" : "table-info"}
+                  className={row.cells[3].value === "จองเวลา" ? "table-info" : "table-warning"}
                 >
 
                   {/* className="table-danger" */}
@@ -364,13 +355,13 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
                       cell.row.original.status === "Waiting" ?
                         (
                           <div>
-                            <Button variant="success" onClick={() => handleShow(cell.row.original, service_no)}>รับคิว</Button>{'    '}
+                            <Button variant="success" onClick={() => handleShow(cell.row.original)}>รับคิว</Button>{'    '}
                             <Button variant="warning" onClick={() => handleShowSkip(cell.row.original)}>ข้ามคิว</Button>
                           </div>
                         ) : (
                           cell.row.original.status === "Skip" ? (
                             <div>
-                              <Button variant="success" onClick={() => handleShow(cell.row.original, service_no)}>รับคิว</Button>
+                              <Button variant="success" onClick={() => handleShow(cell.row.original)}>รับคิว</Button>
                             </div>
                           ) : (
                             <div>
@@ -386,10 +377,10 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
                           cell.render('Cell').props.cell.value ? new Date(cell.render('Cell').props.cell.value).toLocaleString('th-TH') : "-"
                         ) : (
                           cell.column.Header === "สถานะ" ? (
-                            <div style={{ color: cell.row.original.status === "Skip" ? "black" : 'white', paddingInline: "5px", width: "fit-content", borderColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545" : "#6C757D", borderWidth: "2px", backgroundColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545": "#6C757D", borderRadius: "20px 20px 20px 20px" }}>
-                            {cell.render('Cell')}
-                          </div>
-                          ):(
+                            <div style={{ color: cell.row.original.status === "Skip" ? "black" : 'white', paddingInline: "5px", width: "fit-content", borderColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545" : "#6C757D", borderWidth: "2px", backgroundColor: cell.row.original.status === "Done" ? "#28A745" : cell.row.original.status === "In Process" ? "#007BFF" : cell.row.original.status === "Skip" ? "#FFC107" : cell.row.original.status === "Cancel" ? "#DC3545" : "#6C757D", borderRadius: "20px 20px 20px 20px" }}>
+                              {cell.render('Cell')}
+                            </div>
+                          ) : (
                             cell.render('Cell')
                           )
                         )}
@@ -405,7 +396,7 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
       </div>
 
 
-      <div className="pagination d-block" style={{ margin: "auto" }}>
+      <div className="pagination d-block text-center" style={{ margin: "auto" }}>
         <button className="btn" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -588,10 +579,10 @@ function Table({ columns, data, tableList, categories, forceUpdate, handleShow, 
 function ManageQueueTable(props) {
   const { businessName } = useParams();
   const { branch } = useParams();
-  const service_no = "";
   console.log("storename : ", businessName);
   console.log("storename : ", branch);
   let [queues, setQueues] = useState([]);
+  let [listQueues, setListQueues] = useState([]);
   let [serviceList, setServiceList] = useState([]);
   let [event, setEvent] = useState([]);
   let [tableName, setTable] = useState([]);
@@ -604,6 +595,7 @@ function ManageQueueTable(props) {
   let [disableButton, setDisableButton] = useState(true);
   let [message, setMessage] = useState("");
   let [successful, setSuccessful] = useState(false);
+  const [service_no, setService_no] = useState("")
 
   const forceUpdate = () => {
     updateState(!update)
@@ -614,8 +606,8 @@ function ManageQueueTable(props) {
     setDisableButton(true)
     console.log("handleAcceptQueue : ", event);
     const queueDetailData = event;
-    console.log("service_no : ", tableName);
-    queueDetailData['service_no'] = tableName
+    console.log("service_no : ", service_no);
+    queueDetailData['service_no'] = service_no
     userService.acceptCurrentQueue(event.username, event)
       .then(() => {
         setIsLoading(false)
@@ -661,14 +653,12 @@ function ManageQueueTable(props) {
     setIsLoading(false)
   };
 
-  const handleShow = (e, tableName) => {
+  const handleShow = (e) => {
     setIsLoading(false)
-    setTable(tableName)
     console.log("setEvent : ", e);
     console.log("e.queueDetail['queue_no'] : ", e.queue_no);
-    console.log("tableName : ", tableName);
     setEvent(e)
-    if ((tableName === "" && categories !== "ร้านอาหาร") || (tableName === "กรุณาเลือกเคาเตอร์" && categories !== "ร้านอาหาร")) {
+    if ((service_no === "" && categories !== "ร้านอาหาร") || (service_no === "กรุณาเลือกเคาเตอร์" && categories !== "ร้านอาหาร")) {
       setMessage("กรุณาเลือกเคาเตอร์ที่รับผิดชอบ")
       setDisableButton(true)
     } else {
@@ -688,11 +678,51 @@ function ManageQueueTable(props) {
     setMessage("ต้องการข้ามคิว " + e.queue_no + " หรือไม่")
     setShowSkip(true)
   };
+  const [dateForFilter, setDateforfilter] = useState(new Date())
 
+  const setDate = (date) => {
+    console.log("setDate : ", date);
+    const selectedDateArr = [new Date(date).getDate(), new Date(date).getMonth(), new Date(date).getFullYear()]
+    console.log("now date : ", selectedDateArr);
+    setDateforfilter(date)
+    const toDayQueues = queues.filter((item) => {
+      let itemDate = [new Date(item.book_time).getDate(), new Date(item.book_time).getMonth(), new Date(item.book_time).getFullYear()];
+      console.log("filter queue: ", JSON.stringify(itemDate) === JSON.stringify(selectedDateArr));
+      return JSON.stringify(itemDate) === JSON.stringify(selectedDateArr);
+    })
+    console.log("toDayQueues :", toDayQueues);
+    console.log("queues : ", queues);
+    setListQueues(toDayQueues);
+  };
+
+  const isPassDate = (date) => {
+    return new Date() > date
+  }
+
+  const handleChangeTableName = (e) => {
+    console.log("e.target.value : ", e.target.value);
+    const test = e.target.value;
+    console.log("test : ", test);
+    setService_no(test)
+  }
+
+  const ExampleCustomInput = forwardRef(
+    ({ value, onClick }, ref) => (
+      <button className="btn btn-info btn-lg" onClick={onClick} ref={ref}>
+        <i className="far fa-calendar-alt mr-2"></i>{value}
+      </button>
+    ),
+  );
   useEffect(() => {
+    const selectedDateArr = [new Date().getDate(), new Date().getMonth(), new Date().getFullYear()]
     userService.allQueueOfBusiness(businessName).then(
       res => {
         setQueues(res.data)
+        setListQueues(res.data.filter((item) => {
+          let itemDate = [new Date(item.book_time).getDate(), new Date(item.book_time).getMonth(), new Date(item.book_time).getFullYear()];
+          console.log("filter queue: ", JSON.stringify(itemDate) === JSON.stringify(selectedDateArr));
+          return JSON.stringify(itemDate) === JSON.stringify(selectedDateArr);
+        }))
         console.log("setQueue : ", res.data);
         // setServices(res.data[0].service_type)
       }
@@ -813,8 +843,37 @@ function ManageQueueTable(props) {
   //   }, []);
   return (
 
-    <Styles className="row text-center">
-      <Table className="col" columns={columns} data={queues} tableList={tableList} categories={categories} forceUpdate={forceUpdate} handleShow={handleShow} handleShowSkip={handleShowSkip} />
+    <Styles>
+      <div className="col d-flex justify-content-center align-items-center">
+        <label className="h3 mr-2">รายการคิวของวันที่</label>
+        <DatePicker
+          className="form-control"
+          name="book_time"
+          selected={dateForFilter}
+          onChange={date => setDate(date)}
+          filterDate={isPassDate}
+          dateFormat="dd-MM-yyyy"
+          customInput={<ExampleCustomInput />}
+        // includeDates={[new Date(), addDays(new Date(), 1)]}
+        // highlightDates={[new Date(), addDays(new Date(), 1)]}
+        />
+
+        {!(categories === "ร้านอาหาร") && (
+          <div className="text-center">
+          <label className="h5 ml-3">ช่องบริการที่รับผิดชอบ</label>
+          <div className="dropdown ml-3">
+            <select onChange={(e) => handleChangeTableName(e)} className="form-control" style={{ width: "100%" }}>
+              <option selected value="กรุณาเลือกเคาเตอร์">กรุณาเลือกช่องบริการ</option>
+              {tableList.map((item) => {
+                return <option className="dropdown-item" value={item} type="button" style={{ color: "Black" }}>{item}</option>
+              })}
+            </select>
+          </div>
+          </div>
+        )}
+      </div>
+
+      <Table className="col" columns={columns} data={listQueues} forceUpdate={forceUpdate} handleShow={handleShow} handleShowSkip={handleShowSkip} />
       {/* <ShowQueuePage serviceType={services}></ShowQueuePage> */}
 
       <Modal show={isShow} onHide={handleClose}>
