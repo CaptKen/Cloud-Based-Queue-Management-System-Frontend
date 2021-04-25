@@ -48,12 +48,12 @@ class BookQueueMain extends Component {
         <div className="row">
           <div className="col-xs-12 col-sm-12 col-md-12">
             <img
-              className="img-responsive h-auto w-auto"
+              className="img-responsive w-auto"
               src={this.state.fileInfo.url}
               alt={this.state.fileInfo.name + "'s icon"}
               style={{
-                height: "200px", width: "200px", display: "block",
-                marginLeft: "auto", marginRight: "auto", marginBottom: "2%"
+                height: "150px", width: "150px", display: "block",
+                marginLeft: "auto", marginRight: "auto"
               }}
             />
             <div style={{ marginBottom: "5%" ,textAlignLast:"center"}}>

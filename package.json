@@ -10,6 +10,7 @@
     "awesome-react-icons": "^1.4.2",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "crypto-js": "^4.0.0",
     "generate-password": "^1.6.0",
     "google-map-react": "^2.1.9",
     "install": "^0.13.0",
