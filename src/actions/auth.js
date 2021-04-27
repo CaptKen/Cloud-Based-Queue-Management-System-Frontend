@@ -256,8 +256,8 @@ export const registerEmployee = (username, email, password, telephone, businessN
   );
 };
 
-export const forgetpass = (email) => (dispatch) => {
-  return AuthService.forgetpass(email).then(
+export const forgetpass = (email, otp) => (dispatch) => {
+  return AuthService.forgetpass(email, otp).then(
     (response) => {
       dispatch({
         type: FORGETPASSWORD,

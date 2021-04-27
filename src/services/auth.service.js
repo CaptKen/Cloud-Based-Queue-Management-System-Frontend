@@ -83,8 +83,8 @@ class AuthService {
     return axios.patch(API_URL + 'changePassword/' + username, password)
   }
 
-  forgetpass(email){
-    return axios.post(API_URL + 'forgetpass/', [email])
+  forgetpass(email, otp){
+    return axios.post(API_URL + 'forgetpass/', [email, otp])
   }
 
   changeByForgetPassword(codeEmail, pass) {
