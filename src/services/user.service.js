@@ -60,6 +60,18 @@ class UserService {
     return axios.get(QUEUE_URL_API + 'findCurrentQueueDetail?business_name=' + business_name)
   }
 
+  doneAndInprocessQueueDetail(business_name) {
+    return axios.get(QUEUE_URL_API + 'findDoneAndInprocess?business_name=' + business_name)
+  }
+
+  curentQueueDetailForShowPage(business_name) {
+    return axios.get(QUEUE_URL_API + 'findCurentQueueDetailforShowQueue?business_name=' + business_name)
+  }
+
+  findShowCurentQueueDetail(business_name) {
+    return axios.get(QUEUE_URL_API + 'findShowCurentQueueDetail?business_name=' + business_name)
+  }
+
   addQueueWithDynamicFields(formDate) {
     return axios.post(QUEUE_URL_API + 'addQueueWithDynamicFields', formDate);
   }

@@ -200,7 +200,7 @@ class App extends Component {
                 <Route path="/store/:businessName/:branch" component={StorePage} />
                 <Route path="/getqueue/:businessName/:branch" component={GetQueue} />
                 <Route path="/bookqueue/:businessName/:branch" component={BookQueueMain} />
-                <Route path="/queuePage" component={ShowQueuePage} />
+                <Route path="/queuePage/:businessName/:branch" component={ShowQueuePage} />
                 <Route path="/check" component={CheckQueuePage} />
                 <Route path="/cpw/:e" component={ChangePassword} />
                 <Redirect exact from="/currentQueue/" to="/" />
@@ -265,11 +265,11 @@ class App extends Component {
                   path="/managePromotion/:businessName/:branch"
                   render={(props) => (user && user.roles.includes("ROLE_MODERATOR")) ?
                     <ManagePromotion {...props} /> : <Redirect to="/LoginPageManager" />
-                  }/>
+                  } />
 
-                  {/*<Route component={NotFoundPage} />*/} 
-                  <Route component={Home} />
-                
+                {/*<Route component={NotFoundPage} />*/}
+                <Route component={Home} />
+
                 // <Route path="/SignUpEmployee" component={SignUpEmployee} />
 
                 <Route path="/CountDownPage" component={CountDownPage} />
