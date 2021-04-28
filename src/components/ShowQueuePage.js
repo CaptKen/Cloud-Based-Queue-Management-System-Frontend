@@ -120,22 +120,32 @@ class ShowQueuePage extends Component {
         <div className="row" style={{ margin: "auto" }}>
           <div className="col-md-9">
 
-            <div class="card text-center">
+            <div class="card text-center" style={{minHeight: "50vh"}}>
               <div class="card-header">
                 <h1 className="h1">ชื่อร้าน</h1>
               </div>
               <div class="card-body">
-                <h1 className="h1">หมายเลขคิว</h1>
-                <p className="display-1">{this.state.previousQueue.queue_no}</p>
-                <h2 className="h2">เชิญที่ช่องบริการ</h2>
-                <p className="display-3">{this.state.previousQueue.service_no}</p>
+                {this.state.previousQueue.length ? (
+                  <>
+                    <h1 className="h1">หมายเลขคิว</h1>
+                    <p className="display-1">{this.state.previousQueue.queue_no}</p>
+                    <h2 className="h2">เชิญที่ช่องบริการ</h2>
+                    <p className="display-3">{this.state.previousQueue.service_no}</p>
+                  </>
+                ) : (
+                  <div style={{ textAlign: "center" , color:"gray" }}>
+                    <h1 className="h1">
+                      ไม่มีคิวที่กำลังเข้ารับบริการ
+                    </h1>
+                  </div>
+                )}
               </div>
             </div>
 
             <h1 className="h2 ml-5">คิวถัดไป</h1>
 
             {this.state.currentQueueDetailList.length ? (
-              <div className="text-center" style={{ borderWidth: "1px", paddingInline: "30px" }}>
+              <div className="text-center" style={{ borderWidth: "1px", paddingInline: "30px", minHeight: "25vh" }}>
                 <ItemsCarousel
                   requestToChangeActive={this.onChange}
                   activeItemIndex={this.state.activeItemIndex}
@@ -161,8 +171,8 @@ class ShowQueuePage extends Component {
                 </ItemsCarousel>
               </div>
             ) : (
-              <div style={{ textAlign: "center", fontSize: "150%" }}>
-                <h1>
+              <div style={{ textAlign: "center" , color:"gray"  }}>
+                <h1 className="h3">
                   ไม่มีคิวถัดไป
                     </h1>
               </div>
@@ -203,8 +213,10 @@ class ShowQueuePage extends Component {
                 </div>
               </div>
             ) : (
-              <div style={{ textAlign: "center", fontSize: "150%", marginTop: "10%" }}>
-                <p1>ไม่มีคิวที่เรียกไปแล้ว</p1>
+              <div style={{ textAlign: "center" , color:"gray"  }}>
+                <h1 className="h3">
+                  ไม่มีคิวที่เรียกไปแล้ว
+                    </h1>
               </div>
             )}
 
