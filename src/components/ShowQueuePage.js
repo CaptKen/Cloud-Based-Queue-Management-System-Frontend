@@ -120,9 +120,9 @@ class ShowQueuePage extends Component {
         <div className="row" style={{ margin: "auto" }}>
           <div className="col-md-9">
 
-            <div class="card text-center" style={{minHeight: "50vh"}}>
+            <div class="card text-center" style={{ minHeight: "50vh" }}>
               <div class="card-header">
-                <h1 className="h1">ชื่อร้าน</h1>
+                <h1 className="h1">{storeName}</h1>
               </div>
               <div class="card-body">
                 {this.state.previousQueue.length ? (
@@ -133,7 +133,7 @@ class ShowQueuePage extends Component {
                     <p className="display-3">{this.state.previousQueue.service_no}</p>
                   </>
                 ) : (
-                  <div style={{ textAlign: "center" , color:"gray" }}>
+                  <div style={{ textAlign: "center", color: "gray" }}>
                     <h1 className="h1">
                       ไม่มีคิวที่กำลังเข้ารับบริการ
                     </h1>
@@ -171,7 +171,7 @@ class ShowQueuePage extends Component {
                 </ItemsCarousel>
               </div>
             ) : (
-              <div style={{ textAlign: "center" , color:"gray"  }}>
+              <div style={{ textAlign: "center", color: "gray" }}>
                 <h1 className="h3">
                   ไม่มีคิวถัดไป
                     </h1>
@@ -193,13 +193,22 @@ class ShowQueuePage extends Component {
                     <div className="card">
                       <div className="row">
                         <div className="col">
-                          <div class="card-body text-center">
+                          <table class="card-table table">
+                            <thead>
+                              <tr>
+                                <th scope="col">หมายเลขคิว</th>
+                                <th scope="col">ช่องบริการ</th>
+                              </tr>
+                            </thead>
                             {this.state.previousQueueDetailList.map((item) => {
-                              return <div>
-                                <p className="display-3 card-text">{item.queue_no}</p>
-                              </div>
+                              return <tbody>
+                                <tr>
+                                  <td className="display-4 card-text">{item.queue_no}</td>
+                                  <td className="display-4 card-text">{item.service_no}</td>
+                                </tr>
+                              </tbody>
                             })}
-                          </div>
+                          </table>
 
                         </div>
                       </div>
@@ -213,7 +222,7 @@ class ShowQueuePage extends Component {
                 </div>
               </div>
             ) : (
-              <div style={{ textAlign: "center" , color:"gray"  }}>
+              <div style={{ textAlign: "center", color: "gray" }}>
                 <h1 className="h3">
                   ไม่มีคิวที่เรียกไปแล้ว
                     </h1>
