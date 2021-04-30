@@ -900,7 +900,7 @@ function ManageQueueTable(props) {
           <Button variant="danger" onClick={handleClose}>
             ยกเลิก
               </Button>
-          <Button variant="success" onClick={handleAcceptQueue} disabled={disableButton && !isLoading}>
+          <Button variant="success" onClick={handleAcceptQueue} disabled={disableButton && isLoading}>
             ยืนยัน
               </Button>
         </Modal.Footer>

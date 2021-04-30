@@ -259,7 +259,7 @@ class NavigationBar extends Component {
     const { currentUser, showModeratorBoard, showAdminBoard, showEmployeeBoard } = this.state;
     return (
       <Styles>
-        <Navbar expand="md" fixed="top">
+        <Navbar expand="md" fixed="top" id="navigation-bar">
           <Navbar.Brand href="/">QMS</Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: '#3D9280' }} onClick={() =>this.toggleMenu()} />

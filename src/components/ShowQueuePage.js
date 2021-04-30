@@ -96,6 +96,9 @@ class ShowQueuePage extends Component {
 
   }
   componentDidMount() {
+    document.getElementById('navigation-bar').style.display = "none";
+    document.getElementById('footer-id').style.display = "none";
+    document.body.style.overflow = "hidden"
     this.callAPI();
     const user = this.props.user;
 
@@ -116,25 +119,24 @@ class ShowQueuePage extends Component {
     const { currentUser, rightChevron, leftChevron } = this.state;
 
     return (
-      <div style={{ marginInline: "2%", maxHeight: "85vh" }}>
+      <div style={{ marginInline: "1%"}}>
         <div className="row" style={{ margin: "auto" }}>
           <div className="col-md-9">
-
-            <div class="card text-center" style={{ minHeight: "50vh" }}>
-              <div class="card-header">
-                <h1 className="h1">{storeName}</h1>
+            <div class="card text-center" style={{marginTop: "0px", height: "50%" }}>
+              <div class="card-header" style={{ backgroundColor: "#222", borderRadius: "5px" }}>
+                <h1 className="h1" style={{ color: "#F2C035" }}>{storeName}</h1>
               </div>
               <div class="card-body">
-                {this.state.previousQueue.length ? (
+                {this.state.previousQueue.queue_no && this.state.previousQueue.service_no ? (
                   <>
-                    <h1 className="h1">หมายเลขคิว</h1>
+                    <h1 className="h1 mt-4">หมายเลขคิว</h1>
                     <p className="display-1">{this.state.previousQueue.queue_no}</p>
                     <h2 className="h2">เชิญที่ช่องบริการ</h2>
                     <p className="display-3">{this.state.previousQueue.service_no}</p>
                   </>
                 ) : (
                   <div style={{ textAlign: "center", color: "gray" }}>
-                    <h1 className="h1">
+                    <h1 className="h1 mt-5">
                       ไม่มีคิวที่กำลังเข้ารับบริการ
                     </h1>
                   </div>
@@ -142,73 +144,86 @@ class ShowQueuePage extends Component {
               </div>
             </div>
 
-            <h1 className="h2 ml-5">คิวถัดไป</h1>
 
-            {this.state.currentQueueDetailList.length ? (
-              <div className="text-center" style={{ borderWidth: "1px", paddingInline: "30px", minHeight: "25vh" }}>
-                <ItemsCarousel
-                  requestToChangeActive={this.onChange}
-                  activeItemIndex={this.state.activeItemIndex}
-                  numberOfCards={4}
-                  gutter={20}
-                  leftChevron={<i class="fas fa-angle-left"></i>}
-                  rightChevron={<i class="fas fa-angle-right"></i>}
-                  outsideChevron
-                  chevronWidth={30}
-                  alwaysShowChevrons={true}
-                >
-                  {this.state.currentQueueDetailList.map((item) => {
-                    return <div>
-                      <div className="card" style={{ marginTop: "4%", marginLeft: "1%" }}>
-                        <div class="card-body">
-                          <h1 className="card-title">หมายเลขคิว</h1>
-                          <p className="display-4 card-text">{item.queue_no}</p>
-                        </div>
-                      </div>
+            <div class="card" style={{ marginTop: "0px", marginBottom: "0px", padding: "0 25 0", height : "35%"}}>
+              <div class="card-header" style={{ backgroundColor: "#222", padding: "2px", borderRadius: "5px" }}>
+                <h1 className="h2 ml-5" style={{ color: "#F2C035" }}>คิวถัดไป</h1>
+              </div>
+              <div class="card-body">
+                {this.state.currentQueueDetailList.length ? (
+                  <>
+                    <div className="text-center" style={{paddingInline: "30px" }}>
+                      <ItemsCarousel
+                        requestToChangeActive={this.onChange}
+                        activeItemIndex={this.state.activeItemIndex}
+                        numberOfCards={4}
+                        gutter={20}
+                        leftChevron={<i class="fas fa-angle-left"></i>}
+                        rightChevron={<i class="fas fa-angle-right"></i>}
+                        outsideChevron
+                        chevronWidth={30}
+                        alwaysShowChevrons={true}
+                      >
+                        {this.state.currentQueueDetailList.map((item) => {
+                          return <div>
+                            <div className="card" style={{ marginTop: "4%", marginLeft: "1%" }}>
+                              <div class="card-body">
+                                <h1 className="card-title">หมายเลขคิว</h1>
+                                <p className="display-4 card-text">{item.queue_no}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                        })}
+                      </ItemsCarousel>
                     </div>
-
-                  })}
-                </ItemsCarousel>
+                  </>
+                ) : (
+                  <div style={{ textAlign: "center", color: "gray" }}>
+                    <h1 className="h3 mt-5">
+                      ไม่มีคิวถัดไป
+                            </h1>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div style={{ textAlign: "center", color: "gray" }}>
-                <h1 className="h3">
-                  ไม่มีคิวถัดไป
-                    </h1>
-              </div>
-            )}
-
-
-
-
-
+            </div>
           </div>
-          <div className="col-md-3">
-            <h1 className="h2 mt-3">คิวที่เรียกไปแล้ว</h1>
 
-            {this.state.previousQueueDetailList.length ? (
-              <div style={{ borderWidth: "1px", maxHeight: "80vh", overflowY: "scroll", overflowX: 'hidden' }}>
+          <div className="col-md-3">
+            <div class="card text-center" style={{ height: "85%", marginTop: "0px" }}>
+              <div class="card-header row" style={{ backgroundColor: "#222", borderRadius: "5px", padding: "2px"}}>
+                <h1 className="h2 mt-3 col" style={{ color: "#F2C035" }}>หมายเลขคิว</h1>
+                <h1 className="h2 mt-3 col" style={{ color: "#F2C035" }}>ช่องบริการ</h1>
+              </div>
+              <div class="card-body" style={{overflowY: "hidden", overflowX: 'hidden'}}>
+              <table class="card-table table">
+                {this.state.previousQueueDetailList.length ? (
+                    this.state.previousQueueDetailList.map((item) => {
+                      return <tbody>
+                        <tr>
+                          <td className="display-4 card-text">{item.queue_no}</td>
+                          <td className="display-4 card-text">{item.service_no}</td>
+                        </tr>
+                      </tbody>
+                    })
+                ) : (
+                  <div style={{ textAlign: "center", color: "gray" }}>
+                    <h1 className="h1 mt-5">
+                      ไม่มีคิวที่เรียกไปแล้ว
+                    </h1>
+                  </div>
+                )}
+                </table>
+              </div>
+            </div>
+
+            {/* <div style={{ borderWidth: "1px", maxHeight: "80vh", overflowY: "scroll", overflowX: 'hidden' }}>
                 <div className="row d-flex flex-column" style={{ alignContent: "center" }}>
                   <div className="col-md-10">
                     <div className="card">
                       <div className="row">
                         <div className="col">
-                          <table class="card-table table">
-                            <thead>
-                              <tr>
-                                <th scope="col">หมายเลขคิว</th>
-                                <th scope="col">ช่องบริการ</th>
-                              </tr>
-                            </thead>
-                            {this.state.previousQueueDetailList.map((item) => {
-                              return <tbody>
-                                <tr>
-                                  <td className="display-4 card-text">{item.queue_no}</td>
-                                  <td className="display-4 card-text">{item.service_no}</td>
-                                </tr>
-                              </tbody>
-                            })}
-                          </table>
+                          
 
                         </div>
                       </div>
@@ -227,7 +242,7 @@ class ShowQueuePage extends Component {
                   ไม่มีคิวที่เรียกไปแล้ว
                     </h1>
               </div>
-            )}
+            )} */}
 
           </div>
         </div>
