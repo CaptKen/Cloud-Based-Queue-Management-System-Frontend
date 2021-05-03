@@ -46,6 +46,7 @@ class BookQueue extends Component {
         branch: this.props.branch,
         book_time: '',
         queueDetail: {},
+        constraint: []
       },
     };
   }
@@ -59,11 +60,12 @@ class BookQueue extends Component {
     console.log("branch", this.state.branch);
     businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
       res => {
-        console.log("apiResponse: " + res.data.BusinessDetail[0].fields);
+        console.log("constraint: " + res.data.BusinessDetail[0].constraint);
         this.setState({
           apiResponse: res.data.BusinessDetail[0].fields,
           serviceList: res.data.BusinessDetail[0].tableDetail,
           isRestaurant: (res.data.BusinessDetail[0].categories === "ร้านอาหาร" ? true : false),
+          constraint: res.data.BusinessDetail[0].constraint
         })
       }
     )
@@ -286,8 +288,13 @@ class BookQueue extends Component {
 
   render() {
     const { message } = this.props;
-    const { apiResponse, now, booked, listWithFilterByDate, serviceList, isRestaurant , isLoading} = this.state;
-
+    const { apiResponse, now, booked, listWithFilterByDate, serviceList, isRestaurant , isLoading, constraint} = this.state;
+    const numberOfBookDay = (constraint === undefined ? undefined : constraint.filter((item) => {
+      console.log("constraint's item : ", item)
+      console.log(item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)");
+      return item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)";
+    }));
+    console.log("numberOfBookDay : ", numberOfBookDay);
     const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== '') && (this.state.formElements.queue_no !== "กรุณาเลือกประเภทบริการ") && (this.state.formElements.book_time !== "") && (!isLoading));
     console.log("disableButton", disableButton);
 
@@ -390,7 +397,9 @@ class BookQueue extends Component {
                   excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
                   dateFormat="yyyy-MM-dd hh:mm aa"
                   filterTime={this.filterPassedTime}
-                  includeDates={[new Date(), addDays(new Date(), 1)]}
+                  // includeDates={[new Date(), addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))]}
+                  minDate={addDays(new Date(), 1)}
+                  maxDate={addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))}
                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                 />
               </div>

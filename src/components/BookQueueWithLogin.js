@@ -78,6 +78,7 @@ class BookQueueWithLogin extends Component {
                     apiResponse: res.data.BusinessDetail[0].fields,
                     serviceList: res.data.BusinessDetail[0].tableDetail,
                     isRestaurant: (res.data.BusinessDetail[0].categories === "ร้านอาหาร" ? true : false),
+                    constraint: res.data.BusinessDetail[0].constraint
                 })
             }
         )
@@ -317,8 +318,13 @@ class BookQueueWithLogin extends Component {
     render() {
         const { message } = this.props;
         const { currentUser } = this.state;
-        const { apiResponse, now, booked, listWithFilterByDate, isRestaurant, serviceList } = this.state;
-
+        const { apiResponse, now, booked, listWithFilterByDate, isRestaurant, serviceList, constraint } = this.state;
+        const numberOfBookDay = (constraint === undefined ? undefined : constraint.filter((item) => {
+            console.log("constraint's item : ", item)
+            console.log(item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)");
+            return item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)";
+          }));
+          console.log("numberOfBookDay : ", numberOfBookDay);
         // const disableButton = ();
         // console.log("disableButton", disableButton);
 
@@ -412,7 +418,9 @@ class BookQueueWithLogin extends Component {
                                     excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
                                     dateFormat="yyyy-MM-dd hh:mm aa"
                                     filterTime={this.filterPassedTime}
-                                    includeDates={[new Date(), addDays(new Date(), 1)]}
+                                    minDate={addDays(new Date(), 1)}
+                                    maxDate={addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))}
+                                    // includeDates={[new Date(), addDays(new Date(), 1)]}
                                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                                 />
                             </div>

@@ -4,10 +4,18 @@ import {
   VIEW_QUEUE,
   ADD_QUEUE_FAIL,
   CANCEL_QUEUE_SUCCESS,
-  LIST_USER_QUEUE
+  LIST_USER_QUEUE,
+  GET_INPROCESS_QUEUE,
+  GET_WAITING_QUEUE,
+  GET_INPROCES_AND_DONE_QUEUE,
+  GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE
 } from "../actions/types";
 
-const initialState = {};
+const initialState = {
+  previousQueue: undefined,
+  waitingQueue: undefined,
+  inprocessAndDoneQueue: undefined
+};
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
@@ -39,6 +47,31 @@ export default function (state = initialState, action) {
         ...state
       };
 
+    case GET_INPROCESS_QUEUE:
+      return {
+        ...state,
+        previousQueue: payload
+      };
+
+    case GET_WAITING_QUEUE:
+      return {
+        ...state,
+        waitingQueue: payload
+      };
+
+      case GET_INPROCES_AND_DONE_QUEUE:
+      return {
+        ...state,
+        inprocessAndDoneQueue: payload
+      };
+
+      case GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE:
+      return {
+        previousQueue: payload.inprocessQueue[0],
+        waitingQueue: payload.waitingQueue,
+        inprocessAndDoneQueue: payload.inprocessAndDoneQueue,
+      };
+    
     default:
       return state;
   }

@@ -183,8 +183,8 @@ class ConstraintManage extends React.Component {
                         />
                       </div>
                     ) : (
-                        this.state.rows[idx].name
-                      )}
+                      this.state.rows[idx].name
+                    )}
                   </td>
 
                   <td>
@@ -199,20 +199,25 @@ class ConstraintManage extends React.Component {
                         />
                       </div>
                     ) : (
-                        this.state.rows[idx].text
-                      )}
+                      this.state.rows[idx].text
+                    )}
                   </td>
 
                   <td className="text-center">
-                    {this.state.editMode.status && this.state.editMode.rowKey === idx ? (
-                      <button
-                        className={"btn btn-outline-success btn-sm"}
-                        onClick={this.handleSave}
-                      >
-                        Save
-                      </button>
-
+                    {this.state.rows[idx].name === "อนุญาตให้จองคิวล่วงหน้า (วัน)" ? (
+                      <>
+                      
+                      </>
                     ) : (
+                      this.state.editMode.status && this.state.editMode.rowKey === idx ? (
+                        <button
+                          className={"btn btn-outline-success btn-sm"}
+                          onClick={this.handleSave}
+                        >
+                          Save
+                        </button>
+  
+                      ) : (
                         <div>
                           <button
                             style={{ marginRight: "10px" }}
@@ -220,16 +225,18 @@ class ConstraintManage extends React.Component {
                             onClick={this.handleEdit(idx)}
                           >
                             Edit
-                            </button>
-
+                              </button>
+  
                           <button
                             className="btn btn-outline-danger btn-sm"
                             onClick={this.handleRemoveSpecificRow(idx)}
                           >
                             Remove
-                            </button>
+                              </button>
                         </div>
-                      )}
+                      )
+                    )}
+                    
                   </td>
                 </tr>
               ))}

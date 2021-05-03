@@ -6,6 +6,7 @@ import { addqueue } from "../actions/userQueue";
 import { connect } from "react-redux";
 import { clearMessage, setMessage } from "../actions/message";
 import businessService from '../services/business.service';
+import { getInprocessQueue, getWaitingQueue, findQueueForShowQueuePage } from "../actions/userQueue";
 class GetInQueue extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +41,7 @@ class GetInQueue extends Component {
     });
     console.log("storeName", this.state.storeName);
     console.log("branch", this.state.branch);
+    this.props.dispatch(findQueueForShowQueuePage(this.state.storeName))
     businessService.getBusinessDetail(this.state.storeName, this.state.branch).then(
       res => {
         console.log("apiResponse: " + res.data.BusinessDetail[0].tableDetail);
@@ -291,6 +293,8 @@ class GetInQueue extends Component {
 function mapStateToProps(state) {
   const { isLoggedIn } = state.auth;
   const { message } = state.message;
+  
+  console.log("mapStateToProps : ", state);
   return {
     isLoggedIn,
     message

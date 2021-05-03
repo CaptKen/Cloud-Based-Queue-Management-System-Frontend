@@ -4,7 +4,10 @@ import {
     VIEW_QUEUE,
     ADD_QUEUE_FAIL,
     CANCEL_QUEUE_SUCCESS,
-    LIST_USER_QUEUE
+    LIST_USER_QUEUE,
+    GET_INPROCESS_QUEUE,
+    GET_WAITING_QUEUE,
+    GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE
   } from "./types";
 
 import UserService from "../services/user.service";
@@ -148,6 +151,81 @@ export const addqueue = (formData) => (dispatch) => {
             type: SET_MESSAGE,
             payload: message,
           });
+          
+        return Promise.reject();
+      }
+    );
+  };
+
+  export const getInprocessQueue = (stroeName) => (dispatch) => {
+    return UserService.findShowCurentQueueDetail(stroeName).then(
+      (response) => {
+        if (response.data.showCurrentQueueDetail.length !== 0) {
+          // this.setState({
+          //   previousQueue: response.data.showCurrentQueueDetail[0],
+          // })
+          dispatch({
+            type: GET_INPROCESS_QUEUE,
+            payload: response.data.showCurrentQueueDetail[0],
+          });
+        } 
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+          
+        return Promise.reject();
+      }
+    );
+  };
+
+  export const getWaitingQueue = (stroeName) => (dispatch) => {
+    return UserService.curentQueueDetailForShowPage(stroeName).then(
+      (response) => {
+        if (response.data.currentQueueDetail.length !== 0) {
+          dispatch({
+            type: GET_WAITING_QUEUE,
+            payload: response.data.currentQueueDetail,
+          });
+        } 
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+          
+        return Promise.reject();
+      }
+    );
+  };
+
+  export const findQueueForShowQueuePage = (stroeName) => (dispatch) => {
+    return UserService.findQueueForShowQueuePage(stroeName).then(
+      (response) => {
+        if (response.data) {
+          dispatch({
+            type: GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE,
+            payload: response.data,
+          });
+        } 
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
           
         return Promise.reject();
       }

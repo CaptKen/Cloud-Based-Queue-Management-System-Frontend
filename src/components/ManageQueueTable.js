@@ -10,11 +10,12 @@ import businessService from "../services/business.service";
 import DatePicker from 'react-datepicker';
 import { addDays, subDays } from "date-fns";
 import { clearMessage, setMessage } from "../actions/message";
+import { findQueueForShowQueuePage } from "../actions/userQueue";
 import axios from "axios";
-import { connect } from "react-redux";
+import { connect, useDispatch  } from "react-redux";
 // import DropDownTable from "./DropDownTable"
 // import OptionServiceList from "./OptionServiceList"
-import ShowQueuePage from "./ShowQueuePage"
+import showQueuePage from "./ShowQueuePage"
 // import makeData from './makeData'
 
 const Styles = styled.div`
@@ -154,6 +155,7 @@ function Table({ columns, data, forceUpdate, handleShow, handleShowSkip }) {
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [details, setDetails] = useState([]);
   let [isShowMarkDone, setShowMarkDone] = useState(false);
+  const dispatch = useDispatch()
 
   const handleClose = () => {
     setIsShowDetail(false)
@@ -196,12 +198,14 @@ function Table({ columns, data, forceUpdate, handleShow, handleShowSkip }) {
   const handleMarkAsDone = () => {
     setIsLoading(true)
     const queueDetailData = details;
+    console.log(details);
     userService.markQueueAsDone(details.username, details)
       .then(() => {
         setIsLoading(false)
         alert("สิ้นสุดการให้บริการคิว : " + details.queue_no + " สำเร็จ")
         handleClose()
         forceUpdate()
+        dispatch(findQueueForShowQueuePage(details.business_name))
       })
       .catch((err) => {
         console.error(err);
@@ -211,6 +215,7 @@ function Table({ columns, data, forceUpdate, handleShow, handleShowSkip }) {
         forceUpdate()
       });
     console.log("queueDetailData : ", queueDetailData);
+    
   }
   const defaultColumn = React.useMemo(
     () => ({
@@ -595,8 +600,10 @@ function ManageQueueTable(props) {
   let [disableButton, setDisableButton] = useState(true);
   let [message, setMessage] = useState("");
   let [successful, setSuccessful] = useState(false);
-  const [service_no, setService_no] = useState("")
-
+  const [service_no, setService_no] = useState("");
+  const dispatch = useDispatch()
+  const [constraint, setConstraint] = useState(undefined)
+  
   const forceUpdate = () => {
     updateState(!update)
   }
@@ -613,6 +620,7 @@ function ManageQueueTable(props) {
         setIsLoading(false)
         alert("รับคิวสำเร็จ")
         updateState(!update)
+        dispatch(findQueueForShowQueuePage(event.business_name))
         setShow(false)
       })
       .catch((err) => {
@@ -627,7 +635,7 @@ function ManageQueueTable(props) {
 
   const handleSkipQueue = () => {
     setIsLoading(true)
-    console.log("handleAcceptQueue : ", event);
+    console.log("skip : ", event);
     const queueDetailData = event;
     userService.skipCurrentQueue(event.username, event)
       .then(() => {
@@ -636,6 +644,7 @@ function ManageQueueTable(props) {
         setIsLoading(true)
         setShowSkip(false)
         updateState(!update)
+        dispatch(findQueueForShowQueuePage(event.business_name))
       })
       .catch((err) => {
         setIsLoading(false)
@@ -694,9 +703,13 @@ function ManageQueueTable(props) {
     console.log("queues : ", queues);
     setListQueues(toDayQueues);
   };
-
+  const numberOfBookDay = (constraint === undefined ? undefined : constraint.filter((item) => {
+    console.log("constraint's item : ", item)
+    console.log(item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)");
+    return item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)";
+  }));
   const isPassDate = (date) => {
-    return new Date() > date
+    return addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text))) > date
   }
 
   const handleChangeTableName = (e) => {
@@ -732,6 +745,8 @@ function ManageQueueTable(props) {
         console.log("res.data.BusinessDetail[0]: " + res.data.BusinessDetail[0].categories);
         setCategories(res.data.BusinessDetail[0].categories)
         setServiceList(res.data.BusinessDetail[0].tableDetail)
+        setConstraint(res.data.BusinessDetail[0].constraint)
+        
         const tableslist = []
 
         res.data.BusinessDetail[0].tableDetail.forEach((item) => {
@@ -832,7 +847,7 @@ function ManageQueueTable(props) {
     ],
     []
   )
-
+  
   //   const [queue_data, set_queue_data] = useState();
   //   useEffect(() => {
   //     UserService.allQueueOfBusiness("burinLKB")

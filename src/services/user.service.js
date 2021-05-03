@@ -111,6 +111,11 @@ class UserService {
     return axios.patch(QUEUE_URL_API + 'getServiceNo/' + username + '/' + service_no, queueDetail);
   }
 
+  //หน้าโชว์คิว "ทั้งหมด"
+  findQueueForShowQueuePage(business_name){
+    return axios.get(QUEUE_URL_API + 'findQueueForShowQueuePage?business_name=' + business_name)
+  }
+
 }
 
 export default new UserService();
