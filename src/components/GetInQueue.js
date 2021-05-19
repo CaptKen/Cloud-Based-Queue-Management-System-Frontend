@@ -216,7 +216,7 @@ class GetInQueue extends Component {
 
             {apiResponse.map((item, i) => (
               <div className="form-inline">
-                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}<p style={{ color: "red" }}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p>
+                <label className="col-xs-3 col-sm-3 col-md-3 form-label form-inline" style={{ justifyContent: "left" }}>{item}<p style={{ color: "red" }}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p>
                 </label>
                 <input
                   type="text"
@@ -234,7 +234,7 @@ class GetInQueue extends Component {
             ))}
 
             <div className="form-inline" name="services">
-              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label form-inline" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
                 <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
                 {serviceList.map((item) => (

@@ -9,7 +9,7 @@ import businessService from '../services/business.service';
 import DatePicker from 'react-datepicker';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { addDays, subDays } from "date-fns";
+import { addDays, subDays, addHours } from "date-fns";
 
 import CheckButton from "react-validation/build/button";
 
@@ -285,7 +285,7 @@ class BookQueue extends Component {
   }
 
   filterPassedTime = time => {
-    const currentDate = new Date();
+    const currentDate = addHours(new Date(), 2);
     const selectedDate = new Date(time);
     return currentDate.getTime() < selectedDate.getTime();
   }
@@ -317,8 +317,8 @@ class BookQueue extends Component {
       return item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)";
     }));
     console.log("numberOfBookDay : ", numberOfBookDay);
-
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== '') && (this.state.formElements.queue_no !== "กรุณาเลือกประเภทบริการ") && (this.state.formElements.book_time !== "") && (!isLoading));
+    
+    const disableButton = (this.state.formElements.username === '' || this.state.formElements.email === '' || this.state.formElements.queue_no === '' || this.state.formElements.queue_no === "กรุณาเลือกประเภทบริการ" || this.state.formElements.book_time === "" ||isLoading);
     console.log("disableButton", disableButton);
 
     const initialFilterByDate = this.filterByDate(new Date());
@@ -417,12 +417,15 @@ class BookQueue extends Component {
                   onChange={date => this.setBook_time(date)}
                   style={{ marginBottom: "10px" }}
                   showTimeSelect
+                  timeIntervals={15}
                   filterDate={this.isPassDate}
                   excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                  minTime={setHours(setMinutes(new Date(), 0), 9)}
+                  maxTime={setHours(setMinutes(new Date(), 30), 20)}
                   dateFormat="yyyy-MM-dd hh:mm aa"
                   filterTime={this.filterPassedTime}
                   // includeDates={[new Date(), addDays(new Date(), 1)]}
-                  minDate={addDays(new Date(), 1)}
+                  minDate={new Date()}
                   maxDate={addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))}
                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                 />
@@ -472,7 +475,7 @@ class BookQueue extends Component {
                 <Button variant="secondary" onClick={this.handleClose}>
                   ยกเลิก
               </Button>
-                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!disableButton}>
+                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={disableButton}>
                   ยืนยัน
               </Button>
               </Modal.Footer>

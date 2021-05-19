@@ -66,7 +66,9 @@ export default function (state = initialState, action) {
       };
 
       case GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE:
+        console.log("GET_ALL_QUEUE_FOR_SHOWQUEUE_PAGE : ", payload);
       return {
+        ...state,
         previousQueue: payload.inprocessQueue[0],
         waitingQueue: payload.waitingQueue,
         inprocessAndDoneQueue: payload.inprocessAndDoneQueue,

@@ -8,7 +8,7 @@ import BookQueueWithLogin from "./BookQueueWithLoginV2";
 import DatePicker from 'react-datepicker';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { addDays, subDays } from "date-fns";
+import { addDays, subDays, addHours } from "date-fns";
 import userService from "../services/user.service";
 
 // import { cancelQueue } from "../actions/userQueue";
@@ -266,7 +266,7 @@ class CurrentQueue extends Component {
   }
 
   filterPassedTime = time => {
-    const currentDate = new Date();
+    const currentDate = addHours(new Date(), 2);
     const selectedDate = new Date(time);
     return currentDate.getTime() < selectedDate.getTime();
   }
@@ -355,11 +355,14 @@ class CurrentQueue extends Component {
                                   onChange={date => this.setBook_time(date)}
                                   style={{ marginBottom: "10px" }}
                                   showTimeSelect
+                                  timeIntervals={15}
                                   filterDate={this.isPassDate}
                                   excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                                  minTime={setHours(setMinutes(new Date(), 0), 9)}
+                                  maxTime={setHours(setMinutes(new Date(), 30), 20)}
                                   dateFormat="yyyy-MM-dd hh:mm aa"
                                   filterTime={this.filterPassedTime}
-                                  includeDates={[new Date(), addDays(new Date(), 1)]}
+                                  includeDates={[new Date()]}
                                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                                 />
                               </div>

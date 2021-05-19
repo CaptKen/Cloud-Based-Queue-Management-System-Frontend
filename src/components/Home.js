@@ -73,13 +73,14 @@ export default class Home extends Component {
               src={AD1}
               alt="First slide"
               width="100%"
+              style={{height: "50vh"}}
             />
-            <Carousel.Caption>
+            {/* <Carousel.Caption>
               <h3>โฆษณา</h3>
               <p>โปรโมชั่น</p>
-            </Carousel.Caption>
+            </Carousel.Caption> */}
           </Carousel.Item>
-          <Carousel.Item interval={500}>
+          {/* <Carousel.Item interval={500}>
             <img
               className="img-responsive"
               src={AD2}
@@ -102,11 +103,12 @@ export default class Home extends Component {
               <h3>โฆษณา</h3>
               <p>โปรโมชั่น</p>
             </Carousel.Caption>
-          </Carousel.Item>
+          </Carousel.Item> */}
         </Carousel>
 
-        <AutoPlayCarousel typeName="ร้านอาหาร" data={this.state.listByCategory}/>
         <AutoPlayCarousel typeName="อาคาร" />
+        <AutoPlayCarousel typeName="ร้านอาหาร" data={this.state.listByCategory}/>
+        
 
 
 

@@ -726,8 +726,28 @@ function ManageQueueTable(props) {
       </button>
     ),
   );
+  
+  
+
   useEffect(() => {
     const selectedDateArr = [new Date().getDate(), new Date().getMonth(), new Date().getFullYear()]
+    
+    console.log("use eff log prop :", props);
+    // const fetcher = setInterval(()=>{
+    //   userService.allQueueOfBusiness(businessName).then(
+    //     res => {
+    //       setQueues(res.data)
+    //       setListQueues(res.data.filter((item) => {
+    //         let itemDate = [new Date(item.book_time).getDate(), new Date(item.book_time).getMonth(), new Date(item.book_time).getFullYear()];
+    //         console.log("filter queue: ", JSON.stringify(itemDate) === JSON.stringify(selectedDateArr));
+    //         return JSON.stringify(itemDate) === JSON.stringify(selectedDateArr);
+    //       }))
+    //       console.log("setQueue : ", res.data);
+    //       // setServices(res.data[0].service_type)
+    //     }
+    //   )
+    // }, 300000)
+
     userService.allQueueOfBusiness(businessName).then(
       res => {
         setQueues(res.data)
@@ -740,6 +760,7 @@ function ManageQueueTable(props) {
         // setServices(res.data[0].service_type)
       }
     )
+    
     businessService.getBusinessDetail(businessName, branch).then(
       res => {
         console.log("res.data.BusinessDetail[0]: " + res.data.BusinessDetail[0].categories);
@@ -765,6 +786,7 @@ function ManageQueueTable(props) {
 
       }
     )
+    // return () => clearInterval(fetcher);
   },
     [update]);
 
@@ -856,6 +878,7 @@ function ManageQueueTable(props) {
   //           set_queue_data(data);
   //       });
   //   }, []);
+  
   return (
 
     <Styles>
@@ -956,8 +979,13 @@ function ManageQueueTable(props) {
 
 function mapStateToProps(state) {
   const { user } = state.auth;
+  const { previousQueue, waitingQueue, inprocessAndDoneQueue } = state.userQueue;
+  console.log("mapStateToProps :", state);
   return {
     user,
+    previousQueue,
+    waitingQueue,
+    inprocessAndDoneQueue
   };
 }
 

@@ -9,7 +9,7 @@ import businessService from '../services/business.service';
 import DatePicker from 'react-datepicker';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { addDays, subDays } from "date-fns";
+import { addDays, subDays,  addHours} from "date-fns";
 
 import CheckButton from "react-validation/build/button";
 
@@ -82,7 +82,7 @@ class BookQueue extends Component {
         })
         this.setState({
           booked: bookedLists,
-          listWithFilterByDate: this.filterByDate(new Date())
+          listWithFilterByDate: this.filterByDate(new Date(), 2)
         })
       })
 
@@ -114,12 +114,30 @@ class BookQueue extends Component {
   }
 
 
-  filterByDate = allListBook => {
+  filterByDate = (allListBook, noQueueOfOneTimeSlot) => {
+    let counts = {};
+    this.state.booked.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+    console.log("counts : ", counts);
+    for (const key in counts) {
+      console.log(`${key}: ${counts[key]}`);
+      if (counts[key] > noQueueOfOneTimeSlot) {
+        console.log("key > " + noQueueOfOneTimeSlot + " :", key);
+      }
+  }
+  
     let result = this.state.booked.filter((lst) => {
+      console.log("lst.getDate(): ", lst.getDate(), lst.getTime(),lst);
       console.log(lst.getDate() === new Date(allListBook).getDate());
+      if (lst.getDate() === new Date(allListBook).getDate()) {
+        if (counts[lst] > noQueueOfOneTimeSlot) {
+          // console.log("key > 2:", lst);
+          return counts[lst] > noQueueOfOneTimeSlot
+        }
+      }
       // lst.getDate()
-      return lst.getDate() === new Date(allListBook).getDate();
+      // return lst.getDate() === new Date(allListBook).getDate();
     })
+    console.log("result :", result);
     return result
   }
 
@@ -130,7 +148,7 @@ class BookQueue extends Component {
     let updateForm = { ...this.state.formElements.queueDetail };
     updateForm["book_time"] = e;
 
-    let lst = this.filterByDate(e);
+    let lst = this.filterByDate(e, 2);
     console.log("lst ", lst);
     this.setState({
       ...this.state,
@@ -272,7 +290,7 @@ class BookQueue extends Component {
   }
 
   filterPassedTime = time => {
-    const currentDate = new Date();
+    const currentDate = addHours(new Date(), 2);
     const selectedDate = new Date(time);
 
     // console.log("time", time);
@@ -288,39 +306,66 @@ class BookQueue extends Component {
 
   render() {
     const { message } = this.props;
-    const { apiResponse, now, booked, listWithFilterByDate, serviceList, isRestaurant , isLoading, constraint} = this.state;
+    const { apiResponse, now, booked, listWithFilterByDate, serviceList, isRestaurant, isLoading, constraint } = this.state;
     const numberOfBookDay = (constraint === undefined ? undefined : constraint.filter((item) => {
       console.log("constraint's item : ", item)
       console.log(item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)");
       return item.name === "อนุญาตให้จองคิวล่วงหน้า (วัน)";
     }));
     console.log("numberOfBookDay : ", numberOfBookDay);
-    const disableButton = ((this.state.formElements.username !== '') && (this.state.formElements.queueDetail.Email !== '') && (this.state.formElements.queue_no !== '') && (this.state.formElements.queue_no !== "กรุณาเลือกประเภทบริการ") && (this.state.formElements.book_time !== "") && (!isLoading));
+    const disableButton = (this.state.formElements.username === '' || this.state.formElements.email === '' || this.state.formElements.queue_no === '' || this.state.formElements.queue_no === "กรุณาเลือกประเภทบริการ" || this.state.formElements.book_time === "" || isLoading);
     console.log("disableButton", disableButton);
 
-    const initialFilterByDate = this.filterByDate(new Date());
-    const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
-    setHours(setMinutes(new Date(), 30), 22),
-    setHours(setMinutes(new Date(), 0), 23),
-    setHours(setMinutes(new Date(), 30), 23),
-    setHours(setMinutes(new Date(), 0), 0),
-    setHours(setMinutes(new Date(), 30), 0),
-    setHours(setMinutes(new Date(), 0), 1),
-    setHours(setMinutes(new Date(), 30), 1),
-    setHours(setMinutes(new Date(), 0), 2),
-    setHours(setMinutes(new Date(), 30), 2),
-    setHours(setMinutes(new Date(), 0), 3),
-    setHours(setMinutes(new Date(), 30), 3),
-    setHours(setMinutes(new Date(), 0), 4),
-    setHours(setMinutes(new Date(), 30), 4),
-    setHours(setMinutes(new Date(), 0), 5),
-    setHours(setMinutes(new Date(), 30), 5),
-    setHours(setMinutes(new Date(), 0), 6),
-    setHours(setMinutes(new Date(), 30), 6),
-    setHours(setMinutes(new Date(), 0), 7),
-    setHours(setMinutes(new Date(), 30), 7),
-    setHours(setMinutes(new Date(), 0), 8),
-    setHours(setMinutes(new Date(), 30), 8),
+    const initialFilterByDate = this.filterByDate(new Date(), 2);
+    const closeTimeList = [
+      setHours(setMinutes(new Date(), 0), 22),
+      setHours(setMinutes(new Date(), 15), 22),
+      setHours(setMinutes(new Date(), 30), 22),
+      setHours(setMinutes(new Date(), 45), 22),
+      setHours(setMinutes(new Date(), 0), 23),
+      setHours(setMinutes(new Date(), 15), 23),
+      setHours(setMinutes(new Date(), 30), 23),
+      setHours(setMinutes(new Date(), 45), 23),
+      setHours(setMinutes(new Date(), 0), 0),
+      setHours(setMinutes(new Date(), 15), 0),
+      setHours(setMinutes(new Date(), 30), 0),
+      setHours(setMinutes(new Date(), 45), 0),
+      setHours(setMinutes(new Date(), 0), 1),
+      setHours(setMinutes(new Date(), 15), 1),
+      setHours(setMinutes(new Date(), 30), 1),
+      setHours(setMinutes(new Date(), 45), 1),
+      setHours(setMinutes(new Date(), 0), 2),
+      setHours(setMinutes(new Date(), 15), 2),
+      setHours(setMinutes(new Date(), 30), 2),
+      setHours(setMinutes(new Date(), 45), 2),
+      setHours(setMinutes(new Date(), 0), 3),
+      setHours(setMinutes(new Date(), 15), 3),
+      setHours(setMinutes(new Date(), 30), 3),
+      setHours(setMinutes(new Date(), 45), 3),
+      setHours(setMinutes(new Date(), 0), 4),
+      setHours(setMinutes(new Date(), 15), 4),
+      setHours(setMinutes(new Date(), 30), 4),
+      setHours(setMinutes(new Date(), 45), 4),
+
+      setHours(setMinutes(new Date(), 0), 5),
+      setHours(setMinutes(new Date(), 15), 5),
+      setHours(setMinutes(new Date(), 30), 5),
+      setHours(setMinutes(new Date(), 45), 5),
+
+      setHours(setMinutes(new Date(), 0), 6),
+      setHours(setMinutes(new Date(), 15), 6),
+      setHours(setMinutes(new Date(), 30), 6),
+      setHours(setMinutes(new Date(), 45), 6),
+
+      setHours(setMinutes(new Date(), 0), 7),
+      setHours(setMinutes(new Date(), 15), 7),
+      setHours(setMinutes(new Date(), 30), 7),
+      setHours(setMinutes(new Date(), 45), 7),
+
+      setHours(setMinutes(new Date(), 0), 8),
+      setHours(setMinutes(new Date(), 15), 8),
+      setHours(setMinutes(new Date(), 30), 8),
+      setHours(setMinutes(new Date(), 45), 8),
     ]
     console.log("booked ", booked);
     console.log("listWithFilterByDate ", listWithFilterByDate);
@@ -351,7 +396,7 @@ class BookQueue extends Component {
       return (<Redirect
         to={{
           pathname: "/currentQueue/" + this.state.formElements.business_name + "/" + this.state.formElements.username,
-          state: { username: this.state.formElements.username,email: this.state.formElements.email, business_name: this.state.formElements.business_name }
+          state: { username: this.state.formElements.username, email: this.state.formElements.email, business_name: this.state.formElements.business_name }
         }}
       />)
     }
@@ -365,7 +410,7 @@ class BookQueue extends Component {
 
             {apiResponse.map((item, i) => (
               <div className="form-inline">
-                <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }}>{item}<p style={{color: "red"}}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p>
+                <label className="col-xs-3 col-sm-3 col-md-3 form-label form-inline" style={{ justifyContent: "left" }}>{item}<p style={{ color: "red" }}>{item === "ชื่อ-นามสกุล" || item === "Email" ? " *" : ""}</p>
                 </label>
                 <input
                   type="text"
@@ -382,7 +427,7 @@ class BookQueue extends Component {
             ))}
 
             <div className="form-inline">
-              <label className="form-inline col-xs-3 col-sm-3 col-md-3" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง <p style={{color: "red"}}>*</p></label>
+              <label className="form-inline col-xs-3 col-sm-3 col-md-3 form-inline" style={{ justifyContent: "left" }}>เลือกเวลาในการจอง <p style={{ color: "red" }}>*</p></label>
               <div className="customDatePickerWidth">
                 <DatePicker
                   className="form-control col-xs-9 col-sm-9 col-md-9"
@@ -393,12 +438,15 @@ class BookQueue extends Component {
                   onChange={date => this.setBook_time(date)}
                   style={{ marginBottom: "10px" }}
                   showTimeSelect
+                  timeIntervals={15}
                   filterDate={this.isPassDate}
                   excludeTimes={listWithFilterByDate.length === 0 ? initialFilterByDate.concat(closeTimeList) : listWithFilterByDate.concat(closeTimeList)}
+                  minTime={setHours(setMinutes(new Date(), 0), 9)}
+                  maxTime={setHours(setMinutes(new Date(), 30), 20)}
                   dateFormat="yyyy-MM-dd hh:mm aa"
                   filterTime={this.filterPassedTime}
                   // includeDates={[new Date(), addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))]}
-                  minDate={addDays(new Date(), 1)}
+                  minDate={new Date()}
                   maxDate={addDays(new Date(), (numberOfBookDay === undefined ? 1 : parseInt(numberOfBookDay[0].text)))}
                 // highlightDates={[new Date(), addDays(new Date(), 1)]}
                 />
@@ -406,7 +454,7 @@ class BookQueue extends Component {
             </div>
 
             <div className="form-inline mt-2" name="services">
-              <label className="col-xs-3 col-sm-3 col-md-3 form-label" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{color: "red"}}>*</p></label>
+              <label className="col-xs-3 col-sm-3 col-md-3 form-label form-inline" style={{ justifyContent: "left" }} htmlFor="services">ประเภทบริการ <p style={{ color: "red" }}>*</p></label>
               <select onChange={this.onChangeSerivce} className="form-control" style={{ marginBottom: "10px" }}>
                 <option selected value="กรุณาเลือกประเภทบริการ">กรุณาเลือกประเภทบริการ</option>
                 {serviceList.map((item) => (
@@ -436,7 +484,7 @@ class BookQueue extends Component {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 ) : "ต้องการเข้าคิว/ต่อคิวหรือไม่"}
-                </Modal.Body>
+              </Modal.Body>
               {message && (
                 <div className="form-group">
                   <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
@@ -448,7 +496,7 @@ class BookQueue extends Component {
                 <Button variant="secondary" onClick={this.handleClose}>
                   ยกเลิก
               </Button>
-                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={!this.state.selectBookTime}>
+                <Button variant="primary" type="submit" onClick={this.handleAddqueue} disabled={disableButton}>
                   ยืนยัน
               </Button>
               </Modal.Footer>
