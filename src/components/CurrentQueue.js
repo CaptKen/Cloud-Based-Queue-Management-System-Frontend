@@ -111,7 +111,7 @@ class CurrentQueue extends Component {
         })
         this.setState({
           booked: bookedLists,
-          listWithFilterByDate: this.filterByDate(new Date())
+          listWithFilterByDate: this.filterByDate(new Date(), 2)
         })
       })
   }
@@ -123,7 +123,7 @@ class CurrentQueue extends Component {
     let updateForm = { ...this.state.queueDetail.queueDetail };
     updateForm["book_time"] = e;
 
-    let lst = this.filterByDate(e);
+    let lst = this.filterByDate(e, 2);
     console.log("lst ", lst);
 
     this.setState({
@@ -252,12 +252,30 @@ class CurrentQueue extends Component {
     })
   }
 
-  filterByDate = allListBook => {
+  filterByDate = (allListBook, noQueueOfOneTimeSlot) => {
+    let counts = {};
+    this.state.booked.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+    console.log("counts : ", counts);
+    for (const key in counts) {
+      console.log(`${key}: ${counts[key]}`);
+      if (counts[key] > noQueueOfOneTimeSlot) {
+        console.log("key > " + noQueueOfOneTimeSlot + " :", key);
+      }
+  }
+  
     let result = this.state.booked.filter((lst) => {
+      console.log("lst.getDate(): ", lst.getDate(), lst.getTime(),lst);
       console.log(lst.getDate() === new Date(allListBook).getDate());
+      if (lst.getDate() === new Date(allListBook).getDate()) {
+        if (counts[lst] > noQueueOfOneTimeSlot) {
+          // console.log("key > 2:", lst);
+          return counts[lst] > noQueueOfOneTimeSlot
+        }
+      }
       // lst.getDate()
-      return lst.getDate() === new Date(allListBook).getDate();
+      // return lst.getDate() === new Date(allListBook).getDate();
     })
+    console.log("result :", result);
     return result
   }
 
@@ -276,7 +294,7 @@ class CurrentQueue extends Component {
     const storeName = this.props.match.params.businessName;
     const nowDateTime = new Date();
     const { timer, currentUser, listWithFilterByDate } = this.state;
-    const initialFilterByDate = this.filterByDate(new Date());
+    const initialFilterByDate = this.filterByDate(new Date(), 2);
     const closeTimeList = [setHours(setMinutes(new Date(), 0), 22),
     setHours(setMinutes(new Date(), 30), 22),
     setHours(setMinutes(new Date(), 0), 23),
