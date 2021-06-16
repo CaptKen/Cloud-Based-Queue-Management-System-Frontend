@@ -40,7 +40,7 @@ class BusinessService {
 
   //เอารูป Promotion
   getPromotionImg(businessName) {
-    return axios.get(BUSINESS_URL_API + businessName + '/' + "files");
+    return axios.get(BUSINESS_URL_API + businessName + "/files");
   }
 
   //update fields
@@ -92,7 +92,7 @@ class BusinessService {
 
   //เอารูป Icon
   getIconImg(businessName) {
-    return axios.get(BUSINESS_URL_API + businessName + '/' + "icons");
+    return axios.get(BUSINESS_URL_API + businessName  + "/icons");
   }
 
   //delete Icon

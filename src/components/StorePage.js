@@ -168,7 +168,7 @@ class StorePage extends Component {
               {/* // Important! Always set the container height explicitly */}
               <div style={{ height: '50vh', width: '100%' }}>
                 <GoogleMapReact
-                  bootstrapURLKeys={{ key: "AIzaSyB39kdWlUdqS-D1uXrcUlRNjjT0U7xUWNU" }}
+                  bootstrapURLKeys={{ key: "PutYpurKeyHere" }}
                   center={this.state.center && this.state.center ? this.state.center : null}
                   defaultZoom={this.state.zoom}
                 >

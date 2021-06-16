@@ -9,14 +9,13 @@ import CurrentQueue from './components/CurrentQueue';
 import Admin from './components/NextQueueDetail'
 import Home from "./components/Home";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
+
 import StorePage from "./components/StorePage"
 import Footer from './components/Footer';
 import './footer.css';
-import UserQueueList from './components/UserQueueList';
+
 import CheckQueuePage from './components/CheckQueuePage'
-import ManageQueuetable from './components/ManageQueueTable';
+
 import ManageStore from './components/ManageStore';
 
 
@@ -27,27 +26,21 @@ import { history } from './helpers/history';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 import CreateBusiness from './components/CreateBusiness';
 
-import BookQueue from './components/BookQueue';
+
 import LoginPageAdmin from './components/LoginPageAdmin';
 import LoginPageManager from './components/LoginPageManager';
 import LoginPageEmployee from './components/LoginPageEmployee';
-import SignUpEmployee from './components/SignUpEmployee';
-
-import ListEmployee from './components/ListEmployee'
 import ListEmployees from './components/ListEmployees'
 import ShowQueuePage from './components/ShowQueuePage'
-
-import SetPW from './components/SetPw'
 import BookQueueMain from './components/BookQueueMain';
-import DetailEmployee from './components/DetailEmployee';
+
 import ChangePassword from './components/ChangePassword';
 import ManageTable from './components/TableManage'
 import ManageField from './components/FieldManage'
 import ManagePromotion from './components/PromoImgManage'
 import CountDownPage from './components/CountDownPage'
 import ManageQueueTable from './components/ManageQueueTable';
-import BusinessLocation from './components/BusinessLocation';
-import NotFoundPage from './components/NotFoundPage';
+
 
 class App extends Component {
   constructor(props) {
@@ -115,7 +108,7 @@ class App extends Component {
     });
   };
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { showAdminBoard } = this.state;
     const user = this.props.user;
     console.log("showAdminBoard : ", showAdminBoard);
     console.log("user", user);
@@ -123,77 +116,7 @@ class App extends Component {
       <div >
         <div className="myapp">
           <Router history={history}>
-            {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <Link to={"/"} className="navbar-brand">
-              QMS
-            </Link>
-            
-            <div className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link to={"/getqueue"} className="nav-link">
-                  เข้าคิว/ต่อคิว
-                </Link>
-              </li>
-
-              {showModeratorBoard && (
-                <li className="nav-item">
-                  <Link to={"/mod"} className="nav-link">
-                    Moderator Board
-                  </Link>
-                </li>
-              )}
-
-              {showAdminBoard && (
-                <li className="nav-item">
-                  <Link to={"/admin"} className="nav-link">
-                    Admin Board
-                  </Link>
-                </li>
-              )}
-
-              {currentUser && (
-                <li className="nav-item">
-                  <Link to={"/user"} className="nav-link">
-                    User
-                  </Link>
-                </li>
-              )}
-            </div>
-
-            {currentUser ? (
-              <div className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link to={"/profile"} className="nav-link">
-                    {currentUser.username}
-                  </Link>
-                  
-                </li>
-                <li className="nav-item">
-                  <a href="/" className="nav-link" onClick={this.logOut}>
-                    LogOut
-                  </a>
-                </li>
-              </div>
-            ) : (
-              <div className="navbar-nav ml-auto">
-                <li className="nav-item">{
-                  true ? <Link to={"/login"} className="nav-link">
-                  Login
-                </Link>:<Link to={"/register"} className="nav-link">
-                    Sign Up
-                  </Link>
-                }
-                  
-                </li>
-              </div>
-            )}
-          </nav> */}
-
             <NavigationBar />
-            {/* {showAdminBoard && (
-              <SideNav/>
-              )} */}
-
             <div>
               <Switch>
                 <Route exact path={["/", "/home"]} component={Home} />
@@ -229,14 +152,6 @@ class App extends Component {
                     <ManageQueueTable {...props} /> : <Redirect to="/LoginPageEmployee" />
                   } />
 
-                {/* <Route exact path='/setPassword/:username' render={(props) => <SetPW{...props} />} /> */}
-                {/* <Route exact path="/login" component={Login} /> */}
-                {/* <Route exact path="/register" component={SignUpPage} /> */}
-                {/* <Route path="/check" component={UserQueueList} /> */}
-                {/* <Route path="/user" component={BoardUser} />
-                 <Route path="/mod" component={BoardModerator} /> */}
-                {/* <Route path="/ManageQueuetable" component={ManageQueuetable} />*/}
-
                 <Route path="/LoginPageManager" component={LoginPageManager} />
                 <Route
                   path="/ManageStore"
@@ -267,20 +182,8 @@ class App extends Component {
                     <ManagePromotion {...props} /> : <Redirect to="/LoginPageManager" />
                   } />
 
-                {/*<Route component={NotFoundPage} />*/}
                 <Route component={Home} />
-
-                // <Route path="/SignUpEmployee" component={SignUpEmployee} />
-
                 <Route path="/CountDownPage" component={CountDownPage} />
-                // <Route path="/BusinessLocation" component={BusinessLocation} />
-
-                {/*
-                <Route path="/ListEmployee" component={ListEmployee} />
-                <Route path="/ListEmployee" component={ListEmployees} />
-                <Route path="/DetailEmployee" component={DetailEmployee} />*/}
-
-
               </Switch>
 
             </div>

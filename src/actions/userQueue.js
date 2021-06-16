@@ -59,13 +59,6 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        // const message =
-        //   (error.response &&
-        //     error.response.data &&
-        //     error.response.data.message) ||
-        //   error.message ||
-        //   error.toString();
-          
         return Promise.reject();
       }
     );
@@ -82,13 +75,6 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        // const message =
-        //   (error.response &&
-        //     error.response.data &&
-        //     error.response.data.message) ||
-        //   error.message ||
-        //   error.toString();
-          
         return Promise.reject();
       }
     );
@@ -109,13 +95,6 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        // const message =
-        //   (error.response &&
-        //     error.response.data &&
-        //     error.response.data.message) ||
-        //   error.message ||
-        //   error.toString();
-          
         return Promise.reject();
       }
     );
@@ -161,9 +140,6 @@ export const addqueue = (formData) => (dispatch) => {
     return UserService.findShowCurentQueueDetail(stroeName).then(
       (response) => {
         if (response.data.showCurrentQueueDetail.length !== 0) {
-          // this.setState({
-          //   previousQueue: response.data.showCurrentQueueDetail[0],
-          // })
           dispatch({
             type: GET_INPROCESS_QUEUE,
             payload: response.data.showCurrentQueueDetail[0],
@@ -171,14 +147,7 @@ export const addqueue = (formData) => (dispatch) => {
         } 
         return Promise.resolve();
       },
-      (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-          
+      (error) => {   
         return Promise.reject();
       }
     );
@@ -195,14 +164,7 @@ export const addqueue = (formData) => (dispatch) => {
         } 
         return Promise.resolve();
       },
-      (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-          
+      (error) => { 
         return Promise.reject();
       }
     );
@@ -220,13 +182,6 @@ export const addqueue = (formData) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-          
         return Promise.reject();
       }
     );

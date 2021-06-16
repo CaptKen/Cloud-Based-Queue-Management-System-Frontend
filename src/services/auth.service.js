@@ -119,8 +119,7 @@ class AuthService {
 
 
   listEmployee(businessName, branch) {
-    console.log("testURL________________________________" + API_URL + 'findEmployeeByBusiness/' + '?businessName=' + 'burinLKB' + "&branch=" + 'LKB');
-    return axios.get(API_URL + 'findEmployeeByBusiness/' + '?businessName=' + businessName + "&branch=" + branch)
+    return axios.get(API_URL + 'findEmployeeByBusiness/?businessName=' + businessName + "&branch=" + branch)
 
   }
 
@@ -131,11 +130,5 @@ class AuthService {
 
 
 }
-
-
-
-
-
-
 
 export default new AuthService();
